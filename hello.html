@@ -1,0 +1,94 @@
+
+
+
+
+
+
+
+
+
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> </head><style>.trek-name-section{background-color:red}</style><body><div class="container" style="background-color: #ffb3b3;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="trek-trekkers-section"><div class="row col-md-12 form-group"><h3 style="text-align: center;">Trekkers List</h3></div> <br><div class="row col-md-12 form-group"><div class="col-md-12 boxpadding"><div class="imgbox margin_top"><div class="boxmargintop clearfix exped_bg"><div style="padding: 10px;"><div class="col-md-12"><div class="col-md-12"><div class="form-group"> <select name="drpNoOfTrekker" class="form-control" id="drpNoOfTrekker" required="required" data-live-search="true" onchange="createNodes(this.value);" class="form-control input-sm selectpicker show-tick"><option value="">Select Number Of Trekkers</option><option value="Me Only">Me Only</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option> </select></div></div></div> <br><div><span class="margin_top"></span><span id="data">
+		
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container"> -->
+   <div class="row">
+      <div class="col-md-2"><input type="text" class="form-control input-sm naT" name="otherTrekkerName_' + i + '" id="otherTrekkerName_' + i + '" placeholder="Name" required/></div>
+      <div class="col-md-2"><input type="text" class="form-control input-sm nuT" name="otherTrekkerContact_' + i + '" id="otherTrekkerContact_' + i + '" placeholder="Contact Number" required/></div>
+      <div class="col-md-2">
+         <select class= "form-control input-sm geT" name="otherTrekkerGender_' + i + '" id="otherTrekkerGender_' + i + '" required>
+            <option value="0">Select Gender</option>
+            <option value="Male" >Male</option>
+            <option value="Female">Female</option>
+            <option value="UnSpecifed">UnSpecifed</option>
+         </select>
+      </div>
+      <div class="col-md-2">
+         <input type="date" class="form-control input-sm doT" name="othersdob_' + i + '" id="othersdob_' + i + '" required>
+      </div>
+      <div class="col-md-2">
+      	 <input type="number" class="form-control input-sm weT"  min="30" max="150" placeholder="Weight" name="othersweight_' + i + '" id="othersweight_' + i + '" required>
+         
+      </div>
+      <div class="col-md-2">
+      	 <input type="number" class="form-control input-sm heT"  min="50" max="205" placeholder="Height" name="othersheight_' + i + '" id="othersheight_' + i + '" required>
+      </div>
+   </div>
+   <br>
+<!-- </div> -->
+
+
+
+
+
+
+
+	</span></div></div></div></div></div></div> <br></div>
+
+
+
+
+
+
+
+
+
+
+
+	<div class="trek-other-section"><div class="row col-md-12 form-group"><h3 style="text-align: center;">Other details</h3></div> <br><div class="row col-md-12 form-group"><div class="col-md-6"> <label for="select-how" class="form-label">How did you find us?</label> <select id="select-how" class="form-control" placeholder="Select (Not Mandatory)"><option value="">Select (Not Mandatory)</option><option value="Search Engine">Search Engine</option><option value="Friend">Friend</option><option value="Fourms">Fourms</option><option value="Social Media">Social Media</option><option value="Travel Magazines">Travel Magazines</option><option value="Through TTH Email">Through TTH Email</option><option value="Other">Other</option> </select></div><div class="col-md-6"> <label for="select-before" class="form-label">Have you trekked with us?</label> <select id="select-before" class="form-control" placeholder="Select (Not Mandatory)"><option value="">Select (Not Mandatory)</option><option value="Yes">Yes</option><option value="No">No</option> </select></div></div> <br><div class="row col-md-12 form-group"><div class="column col-md-6"><div class="col-md-6 checkbox"> <input type="checkbox" required="required" name="terms" id="terms" value="terms"/> <label for="terms">I agree all </label> <a style="cursor: pointer !important;" onclick="">Terms and Condition</a></div><div class="col-md-6 checkbox"> <input type="checkbox" name="insurance" id="insurance" value="insurance"/> <label for="insurance">I opt for Insurance</label></div></div><div class="col-md-6"><div class="form-group"> <label class="control-label" for="txtnote">Note</label><textarea name="txtnote" rows="2" cols="20" id="txtnote" class="form-control"> </textarea></div></div></div> <br></div><div class="trek-submit-section"><div class="row col-md-12 form-group"><div style="text-align: center;"> <button class="btn btn-primary">Submit</button></div></div></div></div></body>
