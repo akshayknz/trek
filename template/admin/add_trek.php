@@ -1212,7 +1212,7 @@ for ($i = 0; $i < $countf; $i++) {
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <select id="trek_season_delete" class="form-control" required="required"
+                            <select multiple id="trek_season_delete" class="form-control" required="required"
                                 data-error="Please specify your Grade.">
                                 <option value="" selected>--Select Season--
                                 </option>
@@ -1251,7 +1251,7 @@ for ($i = 0; $i < $countf; $i++) {
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <select id="trek_theme_delete" class="form-control" required="required"
+                            <select multiple id="trek_theme_delete" class="form-control" required="required"
                                 data-error="Please specify your Grade.">
                                 <option value="" selected>--Select Theme--
                                 </option>

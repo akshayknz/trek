@@ -795,19 +795,29 @@ if (isset($_POST['data'])) {
         } else {
             $region = ' ';
         }
-        if (!empty($season)) {
-            $season = explode(",", $season);
-            $season = "'" . implode("','", $season) . "'";
-            $season = str_replace("'", "", $season);
-            $season = str_replace("),", ")','", $season);
-            $season = " and trek_season in('" . $season . "')";
+        if (!empty($season) && $season != "[]") {
+            // $season = explode(",", $season);
+            // $season = "'" . implode("','", $season) . "'";
+            // $season = str_replace("'", "", $season);
+            // $season = str_replace("),", ")','", $season);
+            // $season = " and trek_season in('" . $season . "')";
+            $seasonArr = json_decode(stripslashes($season));
+            $season = "";
+            foreach ($seasonArr as $key => $value) {
+                $season .= "AND JSON_CONTAINS(trek_season, '\"".stripslashes($value)."\"', '$') ";
+            }
         } else {
             $season = ' ';
         }
-        if (!empty($theme)) {
-            $theme = explode(",", $theme);
-            $theme = "'" . implode("', '", $theme) . "'";
-            $theme = ' and trek_filter_theme in(' . $theme . ')';
+        if (!empty($theme) && $theme != "[]") {
+            // $theme = explode(",", $theme);
+            // $theme = "'" . implode("', '", $theme) . "'";
+            // $theme = ' and trek_filter_theme in(' . $theme . ')';
+            $themeArr = json_decode(stripslashes($theme));
+            $theme = "";
+            foreach ($themeArr as $key => $value) {
+                $theme .= "AND JSON_CONTAINS(trek_filter_theme, '\"".stripslashes($value)."\"', '$') ";
+            }
         } else {
             $theme = ' ';
         }
@@ -842,8 +852,7 @@ if (isset($_POST['data'])) {
         }
 
         $filterSql = $filterQuery . $region . $season . $theme . $interest . $difficulty . $month;
-       
-
+        
         $output = $wpdb->get_results("" . $filterSql . "");
         if (!empty($output)) {
             $fcount = count($output);

@@ -308,11 +308,14 @@ if ($ppc != '000') {
                                                 </option>
                                               
                                                 <?php
-                                                $countf1 = count($dataSeasons);
-                                                for ($i = 0; $i < $countf1; $i++) {
+                                                foreach ($dataSeasons as $key => $value) {
+                                                    $check = false;
+                                                    foreach (json_decode($data[0]->trek_season) as $keyi => $valuei) {
+                                                        if($valuei==$value->trek_season){ $check = true; }
+                                                    }
                                                     ?>
-                                                <option><?php echo $dataSeasons[$i]->trek_season; ?></option>
-                                                <?php
+                                                        <option <?php echo ($check)? 'selected':null; ?>><?php echo $value->trek_season; ?></option>
+                                                    <?php
                                                 }
                                                 ?>
                                             </select>
@@ -1125,19 +1128,15 @@ $countf6 = count($dataRiskAndRespond);
                                                 data-error="Please specify your Theme.">
                                                 <option value="">--Select Your Theme--
                                                 </option>
-                                              
                                                 <?php
-                                                $countf1 = count($dataThemes);
-                                                for ($i = 0; $i < $countf1; $i++) {
-                                                    if ($data[0]->trek_filter_theme == $dataThemes[$i]->trek_theme) {
-                                                        ?>
-                                                        <option selected><?php echo $dataThemes[$i]->trek_theme; ?></option>
-                                                    <?php
-                                                    } else {
-                                                        ?>
-                                                        <option><?php echo $dataThemes[$i]->trek_theme; ?></option>
-                                                    <?php
+                                                foreach ($dataThemes as $key => $value) {
+                                                    $check = false;
+                                                    foreach (json_decode($data[0]->trek_filter_theme) as $keyi => $valuei) {
+                                                        if($valuei==$value->trek_theme){ $check = true; }
                                                     }
+                                                    ?>
+                                                        <option <?php echo ($check)? 'selected':null; ?>><?php echo $value->trek_theme; ?></option>
+                                                    <?php
                                                 }
                                                 ?>
                                             </select>
@@ -1640,7 +1639,6 @@ CKFinder.setupCKEditor(editor1000);
     });
      $("#trek_city").val("<?php echo $data[0]->trek_region_city; ?>");
      $("#trek_grade").val("<?php echo $data[0]->trek_grade; ?>");
-     $("#trek_season").val("<?php echo $data[0]->trek_season; ?>");
      $("#trek_pp").val("<?php echo $data[0]->trek_pickup_place1; ?>");
      $("#trek_drop").val("<?php echo $data[0]->trek_drop_place; ?>");
      $("#trek_participation_policy").val("<?php echo $data[0]->trek_participation_policy; ?>");

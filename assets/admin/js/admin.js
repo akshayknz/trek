@@ -1228,7 +1228,7 @@ function check_null_value(action) {
     data.append("trek_service_tax", trek_tax);
     data.append("trek_region_country", trek_country);
     data.append("trek_region_state", trek_state);
-    data.append("trek_season", trek_season);
+    data.append("trek_season", JSON.stringify(trek_season));
     data.append("trek_grade", trek_grade);
     data.append("trek_days", trek_day);
     data.append("trek_altitude", trek_altitude);
@@ -1264,7 +1264,7 @@ function check_null_value(action) {
     data.append("trek_upload2", gallery_url);
     data.append("trek_upload3", slider_url);
     data.append("trek_upload4", trek_maps_url);
-    data.append("trek_filter_theme", trek_filter_theme);
+    data.append("trek_filter_theme", JSON.stringify(trek_filter_theme));
     data.append("trek_filter_interests", trek_filter_interests);
     data.append("trek_suitable_for", trek_suitable_for);
     data.append("trek_experience", trek_experience);
@@ -1381,7 +1381,7 @@ function check_null_value_edit(action, id) {
     data.append("trek_service_tax", trek_tax);
     data.append("trek_region_country", trek_country);
     data.append("trek_region_state", trek_state);
-    data.append("trek_season", trek_season);
+    data.append("trek_season", JSON.stringify(trek_season));
     data.append("trek_grade", trek_grade);
     data.append("trek_days", trek_day);
     data.append("trek_altitude", trek_altitude);
@@ -1409,7 +1409,7 @@ function check_null_value_edit(action, id) {
     data.append("trek_service_from", trek_service_from);
     data.append("trek_food", trek_food);
     data.append("trek_filter_interests", trek_filter_interests);
-    data.append("trek_filter_theme", trek_filter_theme);
+    data.append("trek_filter_theme", JSON.stringify(trek_filter_theme));
     data.append("trek_filter_from", trek_filter_from);
     data.append("trek_filter_to", trek_filter_to);
     // data.append('trek_total_seats',trek_total_seats);

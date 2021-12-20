@@ -28,7 +28,7 @@ if (isset($_POST['action'])) {
         $trek_service_tax = $_POST['trek_service_tax'];
         $trek_region_country = $_POST['trek_region_country'];
         $trek_region_state = $_POST['trek_region_state'];
-        $trek_season = $_POST['trek_season'];
+        $trek_season = json_decode(stripslashes($_POST['trek_season']));
         $trek_days = $_POST['trek_days'];
         $trek_grade = $_POST['trek_grade'];
         $trek_altitude = $_POST['trek_altitude'];
@@ -46,7 +46,7 @@ if (isset($_POST['action'])) {
         $trek_team_member = $_POST['trek_team_member'];
         $trek_cancellation_policies = $_POST['trek_cancellation_policies'];
         $trek_essential = $_POST['trek_essential'];
-        $trek_filter_theme = $_POST['trek_filter_theme'];
+        $trek_filter_theme = json_decode(stripslashes($_POST['trek_filter_theme']));
         $trek_filter_interests = $_POST['trek_filter_interests'];
         $trek_filter_from = $_POST['trek_filter_from'];
         $trek_filter_to = $_POST['trek_filter_to'];
@@ -74,7 +74,7 @@ if (isset($_POST['action'])) {
             'trek_service_tax' => $trek_service_tax,
             'trek_region_country' => $trek_region_country,
             'trek_region_state' => $trek_region_state,
-            'trek_season' => $trek_season,
+            'trek_season' => json_encode($trek_season),
             'trek_days' => $trek_days,
             'trek_grade' => $trek_grade,
             'trek_altitude' => $trek_altitude,
@@ -83,7 +83,7 @@ if (isset($_POST['action'])) {
             'trek_best_months' => $trek_best_months,
             'trek_participation_policy' => $trek_participation_policy,
             'trek_fitness_policy' => $trek_fitness_policy,
-            'trek_filter_theme' => $trek_filter_theme,
+            'trek_filter_theme' => json_encode($trek_filter_theme),
             'trek_filter_interests' => $trek_filter_interests,
             'trek_rail_head' => $trek_rail_head,
             'trek_airport' => $trek_airport,
@@ -170,7 +170,8 @@ if (isset($_POST['action'])) {
         $trek_service_tax = $_POST['trek_service_tax'];
         $trek_region_country = $_POST['trek_region_country'];
         $trek_region_state = $_POST['trek_region_state'];
-        $trek_season = $_POST['trek_season'];
+        $trek_season = json_decode(stripslashes($_POST['trek_season']));
+        $trek_filter_theme = json_decode(stripslashes($_POST['trek_filter_theme']));
         $trek_days = $_POST['trek_days'];
         $trek_grade = $_POST['trek_grade'];
         $trek_altitude = $_POST['trek_altitude'];
@@ -190,7 +191,6 @@ if (isset($_POST['action'])) {
         $trek_cancellation_policies = $_POST['trek_cancellation_policies'];
         $trek_essential = $_POST['trek_essential'];
         $trek_filter_interests = $_POST['trek_filter_interests'];
-        $trek_filter_theme = $_POST['trek_filter_theme'];
         $trek_rail_head = $_POST['trek_rail_head'];
         $trek_filter_from = $_POST['trek_filter_from'];
         $trek_filter_to = $_POST['trek_filter_to'];
@@ -232,7 +232,7 @@ if (isset($_POST['action'])) {
                 'trek_service_tax' => $trek_service_tax,
                 'trek_region_country' => $trek_region_country,
                 'trek_region_state' => $trek_region_state,
-                'trek_season' => $trek_season,
+                'trek_season' => json_encode($trek_season),
                 'trek_days' => $trek_days,
                 'trek_grade' => $trek_grade,
                 'trek_altitude' => $trek_altitude,
@@ -253,7 +253,7 @@ if (isset($_POST['action'])) {
                 'trek_about_trek' => $trek_about_trek,
                 'trek_risk_respond' => $trek_risk_respond,
                 'trek_assigned_to' => $trek_team_member,
-                'trek_filter_theme' => $trek_filter_theme,
+                'trek_filter_theme' => json_encode($trek_filter_theme),
                 'trek_filter_interests' => $trek_filter_interests,
                 'trek_filter_from' => $trek_filter_from,
                 'trek_filter_to' => $trek_filter_to,
