@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @package TrekPlugin
  */
 
 use PHPMailer\PHPMailer\PHPMailer;
+
 $path = preg_replace('/wp-content.*$/', '', __DIR__);
 require_once $path . '/wp-load.php';
 global $wpdb;
@@ -53,7 +55,6 @@ if (isset($_POST['data'])) {
 
             echo json_encode($result);
         }
-
     }
 
     function validateCouponCode($userId, $bookingId, $trek, $couponId)
@@ -100,7 +101,16 @@ if (isset($_POST['data'])) {
                 }
             }
             //End coupon usage limit check
-
+// Check if individual coupon 
+            if($coupon[0]->coupon_display_category=='individual'){
+                $email = $wpdb->get_results('SELECT trek_uid
+                FROM `wp_trektable_trekkers_list`
+                WHERE trekker_token="'.$userId.'"' );
+                if($coupon[0]->coupon_ind_email != $email[0]->trek_uid){
+                    return 102;
+                    exit;
+                }
+            }
             // Check coupon merge eligibility
 
             if ($coupon_merge_type == 'no') {
@@ -110,7 +120,6 @@ if (isset($_POST['data'])) {
                     return 103;
                     exit;
                 }
-
             }
             // End coupon merge elibility
 
@@ -134,7 +143,6 @@ if (isset($_POST['data'])) {
                         exit;
                     }
                 }
-
             }
             // End region eligibility
 
@@ -156,18 +164,15 @@ if (isset($_POST['data'])) {
                         exit;
                     }
                 }
-
             }
             // End Trek eligibility
 
             return 107;
             exit;
-
         } else {
             return 102;
             exit;
         }
-
     }
 
     function calculateAmountCoupon($couponId, $trek, $bookingId, $userId)
@@ -178,7 +183,7 @@ if (isset($_POST['data'])) {
 
         $coupon = $wpdb->get_results('SELECT * FROM wp_trektable_coupons_new where coupon_code="' . $couponId . '" and coupon_expiry>=curdate() order by id desc limit 1');
 
-         $totalDeductedAmt = $wpdb->get_results('SELECT sum(trek_coupon_deducted_amount) as totalDeductedAmt FROM wp_trektable_coupon_usage where  trek_coupon_booking_id="' . $bookingId . '" and trek_coupon_user="'.$userId.'"');
+        $totalDeductedAmt = $wpdb->get_results('SELECT sum(trek_coupon_deducted_amount) as totalDeductedAmt FROM wp_trektable_coupon_usage where  trek_coupon_booking_id="' . $bookingId . '" and trek_coupon_user="' . $userId . '"');
         // No booking available
         if (empty($booking)) {
             return 0;
@@ -200,23 +205,23 @@ if (isset($_POST['data'])) {
             } else if ($coupon_amount_type == 'amount') {
                 $deductedAmount = $coupon_amount;
             }
-            if($perPerson<$deductedAmount){
+            if ($perPerson < $deductedAmount) {
                 // Coupon amount is greater than trek cost
                 return 'greater';
                 die;
             }
-            if(isset($totalDeductedAmt[0]->totalDeductedAmt)){
+            if (isset($totalDeductedAmt[0]->totalDeductedAmt)) {
                 $totaldeductedAmt = $totalDeductedAmt[0]->totalDeductedAmt;
-                $totaldeductedAmtAfterNewCoupon = $totaldeductedAmt+$deductedAmount;
-                if($perPerson<$totaldeductedAmt){
-                // if total Coupon amount is greater than trek cost
-                return 'total greater';
-                die;
+                $totaldeductedAmtAfterNewCoupon = $totaldeductedAmt + $deductedAmount;
+                if ($perPerson < $totaldeductedAmt) {
+                    // if total Coupon amount is greater than trek cost
+                    return 'total greater';
+                    die;
                 }
-                if($perPerson<$totaldeductedAmtAfterNewCoupon){
-                 // if total Coupon amount + new coupon amount is greater than trek cost
-                return 'new total greater';
-                die;
+                if ($perPerson < $totaldeductedAmtAfterNewCoupon) {
+                    // if total Coupon amount + new coupon amount is greater than trek cost
+                    return 'new total greater';
+                    die;
                 }
             }
             return $deductedAmount;
@@ -249,7 +254,6 @@ if (isset($_POST['data'])) {
                     echo json_encode($result);
                     exit;
                 }
-
             } else if ($couponId == '10percent') {
                 if ($getParticipantsCount[0]->totalParticipants < 10) {
                     $info_message = "You are not eligible for 10% group discount, There must be atleast 10 participants for the trek";
@@ -266,7 +270,7 @@ if (isset($_POST['data'])) {
                 }
             }
         }
-        $checkBasicDetails = $wpdb->get_results('SELECT id,coupon_name,coupon_amount,coupon_type,coupon_merge,coupon_description FROM wp_trektable_coupons_new where coupon_code ="'.$couponId.'" limit 1');
+        $checkBasicDetails = $wpdb->get_results('SELECT id,coupon_name,coupon_amount,coupon_type,coupon_merge,coupon_description,coupon_terms,coupon_transfer_type,coupon_code,coupon_expiry,coupon_trek_type,coupon_ind_usage FROM wp_trektable_coupons_new where coupon_code ="' . $couponId . '" limit 1');
         if (empty($checkBasicDetails)) {
             $info_message = "Something Went wrong";
             $result = new stdClass();
@@ -276,7 +280,7 @@ if (isset($_POST['data'])) {
             $result->couponId = $couponId;
             $result->couponType = $couponType;
             $result->trekker = $userId;
-             $result->trekker32 = $checkBasicDetails;
+            $result->trekker32 = $checkBasicDetails;
             $result->result = 'failed to process the request1';
             echo json_encode($result);
             exit;
@@ -323,17 +327,17 @@ if (isset($_POST['data'])) {
             $info_message = "Coupon valid";
             $info_status = "107";
             $deducted = calculateAmountCoupon($couponId, $trek, $bookingId, $userId);
-            if($deducted == 'greater'){
+            if ($deducted == 'greater') {
                 $info_message = "Coupon amount is greater than trek cost";
                 $info_status = "111";
-            }else if($deducted == 'total greater'){
+            } else if ($deducted == 'total greater') {
                 $info_message = "Total discount amount purchased exceeds the limit";
                 $info_status = "112";
-            }else if($deducted == 'new total greater'){
+            } else if ($deducted == 'new total greater') {
                 $info_message = "Total Coupon amount is greater than your trek cost";
                 $info_status = "113";
-            }else{
-                          // Ready to insert value in coupon usage table
+            } else {
+                // Ready to insert value in coupon usage table
                 $ptbd_table_name = 'wp_trektable_coupon_usage';
                 $checkDuplication = $wpdb->get_results('SELECT id FROM wp_trektable_coupon_usage where trek_coupon_code="' . $couponId . '" and trek_coupon_user="' . $userId . '" and trek_coupon_trek="' . $trek . '" and trek_coupon_booking_id="' . $bookingId . '"');
 
@@ -391,7 +395,6 @@ if (isset($_POST['data'])) {
                         echo json_encode($result);
                         exit;
                     }
-
                 } else {
                     $result = new stdClass();
                     $result->statusCode = 401;
@@ -404,7 +407,6 @@ if (isset($_POST['data'])) {
                     exit;
                 }
             }
-  
         }
 
         $result = new stdClass();
@@ -455,7 +457,6 @@ if (isset($_POST['data'])) {
                     echo json_encode($result);
                     exit;
                 }
-
             } else {
                 $result = new stdClass();
                 $result->statusCode = 401;
@@ -463,7 +464,6 @@ if (isset($_POST['data'])) {
                 echo json_encode($result);
                 exit;
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 401;
@@ -510,7 +510,6 @@ if (isset($_POST['data'])) {
                 echo json_encode($result);
                 exit;
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 401;
@@ -581,7 +580,6 @@ if (isset($_POST['data'])) {
 
             echo json_encode($result);
         }
-
     }
 
     if ($_POST['data'] == 'getSelectedCoupons') {
@@ -602,31 +600,37 @@ if (isset($_POST['data'])) {
             } else {
                 //delete 5% coupons
                 $data1 = $wpdb->delete($tname, array('trek_coupon_booking_id' => $bookingId, 'trek_coupon_trek' => $trek, 'trek_coupon_code' => '5percent'));
-
             }
         }
         $table = 'wp_trektable_coupon_usage';
+
         $getAppliedCoupons = $wpdb->get_results('SELECT
-            wp_trektable_coupons_new.coupon_merge,
-            wp_trektable_coupons_new.coupon_display_category as trek_coupon_type,
-            wp_trektable_coupons_new.coupon_name,
-            wp_trektable_coupons_new.coupon_expiry,
-            wp_trektable_coupons_new.coupon_code as trek_coupon_code,
-            wp_trektable_coupons_new.coupon_region_type,
-            wp_trektable_coupons_new.coupon_inc_trek,
-            wp_trektable_coupons_new.coupon_description,
-            wp_trektable_coupons_new.coupon_ind_usage,
-            wp_trektable_coupons_new.coupon_inc_region,
-            wp_trektable_coupon_usage.trek_coupon_user,
-            wp_trektable_coupon_usage.trek_coupon_booking_id
-            FROM
-              wp_trektable_coupon_usage
-            INNER JOIN wp_trektable_coupons_new
-            ON wp_trektable_coupons_new.coupon_code collate utf8_general_ci
-              = wp_trektable_coupon_usage.trek_coupon_code collate utf8_general_ci  Where
-           wp_trektable_coupon_usage.trek_coupon_booking_id ="' . $bookingId . '"
-            and wp_trektable_coupon_usage.trek_coupon_trek="' . $trek . '"
-             order by wp_trektable_coupon_usage.id desc');
+        wp_trektable_coupons_new.coupon_merge,
+        wp_trektable_coupons_new.coupon_display_category as trek_coupon_type,
+        wp_trektable_coupons_new.coupon_name,
+        wp_trektable_coupons_new.coupon_expiry,
+        wp_trektable_coupons_new.coupon_code as trek_coupon_code,
+        wp_trektable_coupons_new.coupon_region_type,
+        wp_trektable_coupons_new.coupon_inc_trek,
+        wp_trektable_coupons_new.coupon_description,
+        wp_trektable_coupons_new.coupon_terms,
+        wp_trektable_coupons_new.coupon_transfer_type,
+        wp_trektable_coupons_new.coupon_ind_usage,
+        wp_trektable_coupons_new.coupon_amount,
+        wp_trektable_coupons_new.coupon_type,
+        wp_trektable_coupons_new.coupon_trek_type,
+        wp_trektable_coupons_new.coupon_inc_region,
+        wp_trektable_coupon_usage.trek_coupon_user,
+        wp_trektable_coupon_usage.trek_coupon_booking_id
+        FROM
+          wp_trektable_coupon_usage
+        INNER JOIN wp_trektable_coupons_new
+        ON wp_trektable_coupons_new.coupon_code collate utf8_general_ci
+          = wp_trektable_coupon_usage.trek_coupon_code collate utf8_general_ci  Where
+       wp_trektable_coupon_usage.trek_coupon_booking_id ="' . $bookingId . '"
+        and wp_trektable_coupon_usage.trek_coupon_trek="' . $trek . '"
+         order by wp_trektable_coupon_usage.id desc');
+
         if (!empty($getAppliedCoupons)) {
 
             $result = new stdClass();
@@ -635,7 +639,6 @@ if (isset($_POST['data'])) {
             $result->dataCoupons = $getAppliedCoupons;
             echo json_encode($result);
             exit;
-
         } else {
             $result = new stdClass();
             $result->statusCode = 401;
@@ -671,7 +674,6 @@ if (isset($_POST['data'])) {
 
         echo json_encode($result);
         exit;
-
     }
 
     if ($_POST['data'] == 'getDepartures') {
@@ -685,7 +687,6 @@ if (isset($_POST['data'])) {
         $result->data = $departures;
 
         echo json_encode($result);
-
     }
 
     if ($_POST['data'] == 'otp_verify') {
@@ -763,7 +764,6 @@ if (isset($_POST['data'])) {
             } else {
                 $target .= 'No Treks';
             }
-
         } else {
             $target .= 'No Treks';
         }
@@ -774,7 +774,6 @@ if (isset($_POST['data'])) {
 
         echo json_encode($result);
         die;
-
     }
 
     if ($_POST['data'] == 'filtering') {
@@ -787,7 +786,7 @@ if (isset($_POST['data'])) {
         $month = $_POST['month'];
         $date = $_POST['date'];
 
-        $filterQuery = 'SELECT id,trek_name,trek_region_state,trek_altitude,trek_distance,trek_profile_image FROM wp_trektable_addtrekdetails where trek_publish_status=0 and trek_adddetails_status=0';
+        $filterQuery = 'SELECT id,trek_name,trek_region_state,trek_altitude,trek_distance,trek_profile_image,trek_selected_flags FROM wp_trektable_addtrekdetails where trek_publish_status=0 and trek_adddetails_status=0';
         if (!empty($region)) {
             $region = explode(",", $region);
             $region = "'" . implode("', '", $region) . "'";
@@ -804,7 +803,7 @@ if (isset($_POST['data'])) {
             $seasonArr = json_decode(stripslashes($season));
             $season = "";
             foreach ($seasonArr as $key => $value) {
-                $season .= "AND JSON_CONTAINS(trek_season, '\"".stripslashes($value)."\"', '$') ";
+                $season .= "AND JSON_CONTAINS(trek_season, '\"" . stripslashes($value) . "\"', '$') ";
             }
         } else {
             $season = ' ';
@@ -816,7 +815,7 @@ if (isset($_POST['data'])) {
             $themeArr = json_decode(stripslashes($theme));
             $theme = "";
             foreach ($themeArr as $key => $value) {
-                $theme .= "AND JSON_CONTAINS(trek_filter_theme, '\"".stripslashes($value)."\"', '$') ";
+                $theme .= "AND JSON_CONTAINS(trek_filter_theme, '\"" . stripslashes($value) . "\"', '$') ";
             }
         } else {
             $theme = ' ';
@@ -846,13 +845,13 @@ if (isset($_POST['data'])) {
             } else {
                 $month = ' and id in (SELECT distinct(trek_selected_trek) as trek_selected_trek FROM `wp_trektable_trek_departure` WHERE MONTH(trek_start_date) in (' . $month . ') and trek_start_date>= curdate()) ';
             }
-
         } else {
             $month = ' ';
         }
 
         $filterSql = $filterQuery . $region . $season . $theme . $interest . $difficulty . $month;
-        
+
+
         $output = $wpdb->get_results("" . $filterSql . "");
         if (!empty($output)) {
             $fcount = count($output);
@@ -861,7 +860,14 @@ if (isset($_POST['data'])) {
             } else {
                 $target = '';
                 for ($i = 0; $i < $fcount; $i++) {
-                    $target .= '<div id="slider-two-item" class="item"> <div class="image" style=" background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url(' . $output[$i]->trek_profile_image . '); "> <img src="' . get_template_directory_uri() . '/assets/illustration/mountain1.svg" alt=""> <h4>' . $output[$i]->trek_name . '</h4> <p>' . $output[$i]->trek_region_state . '</p></div><div class="bottom"> <div class="content"> <div class="left"> <div> <div class="icon"> <div><img src="' . get_template_directory_uri() . '/assets/icons/altitude.svg" alt=""></div><div class="info"> <p>Altitude</p><p class="bold">' . $output[$i]->trek_altitude . '  Ft.</p></div></div></div></div><div class="right"> <div> <div class="icon"> <div><img src="' . get_template_directory_uri() . '/assets/icons/approx.svg" alt=""></div><div class="info"> <p>Approx</p><p class="bold">' . $output[$i]->trek_distance . '   Km.</p></div></div></div></div></div><a href="' . get_site_url() . '/index.php/trek-details?trek=' . $output[$i]->id . '" target="_blank"><div class="button"> View Details <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""> </div></a></div></div>';
+
+                    if ($output[$i]->trek_selected_flags != 'nil') {
+                        $trek_graph_img = $output[$i]->trek_selected_flags;
+                    } else {
+                        $trek_graph_img = get_template_directory_uri() . '/assets/illustration/mountain1.svg';
+                    }
+
+                    $target .= '<div id="slider-two-item" class="item"> <div class="image" style=" background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url(' . $output[$i]->trek_profile_image . '); "> <img src="' . $trek_graph_img . '" alt=""> <h4>' . $output[$i]->trek_name . '</h4> <p>' . $output[$i]->trek_region_state . '</p></div><div class="bottom"> <div class="content"> <div class="left"> <div> <div class="icon"> <div><img src="' . get_template_directory_uri() . '/assets/icons/altitude.svg" alt=""></div><div class="info"> <p>Altitude</p><p class="bold">' . $output[$i]->trek_altitude . '  Ft.</p></div></div></div></div><div class="right"> <div> <div class="icon"> <div><img src="' . get_template_directory_uri() . '/assets/icons/approx.svg" alt=""></div><div class="info"> <p>Approx</p><p class="bold">' . $output[$i]->trek_distance . '   Km.</p></div></div></div></div></div><a href="' . get_site_url() . '/index.php/trek-details?trek=' . $output[$i]->id . '" target="_blank"><div class="button"> View Details <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""> </div></a></div></div>';
                 }
             }
         } else {
@@ -874,7 +880,6 @@ if (isset($_POST['data'])) {
         $result->output = $target;
 
         echo json_encode($result);
-
     }
 
     function sendmail($email, $subject, $body)
@@ -912,7 +917,6 @@ if (isset($_POST['data'])) {
         }
 
         exit(json_encode(array("status" => $status, "response" => $response, "statusCode" => $statusCode)));
-
     }
 
     if ($_POST['data'] == 'sendMail') {
@@ -922,10 +926,10 @@ if (isset($_POST['data'])) {
                 $name = $_POST['name'];
                 $email = $_POST['email'];
                 $subject = "We have got your request.";
-//                $body = "Dear " . $name . "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Thank you for your mail.";
+                //                $body = "Dear " . $name . "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Thank you for your mail.";
                 $body = '<!DOCTYPE html><meta content="width=device-width"name=viewport><meta content="text/html; charset=UTF-8"http-equiv=Content-Type><title>Simple Transactional Email</title><style>img{border:none;-ms-interpolation-mode:bicubic;max-width:100%}body{background-color:#f6f6f6;font-family:sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4;margin:0;padding:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}table{border-collapse:separate;mso-table-lspace:0;mso-table-rspace:0;width:100%}table td{font-family:sans-serif;font-size:14px;vertical-align:top}.body{background-color:#f6f6f6;width:100%}.container{display:block;margin:0 auto!important;max-width:580px;padding:10px;width:580px}.content{box-sizing:border-box;display:block;margin:0 auto;max-width:580px;padding:10px}.main{background:#fff;border-radius:3px;width:100%}.wrapper{box-sizing:border-box;padding:20px}.content-block{padding-bottom:10px;padding-top:10px}.footer{clear:both;margin-top:10px;text-align:center;width:100%}.footer a,.footer p,.footer span,.footer td{color:#999;font-size:12px;text-align:center}h1,h2,h3,h4{color:#000;font-family:sans-serif;font-weight:400;line-height:1.4;margin:0;margin-bottom:30px}h1{font-size:35px;font-weight:300;text-align:center;text-transform:capitalize}ol,p,ul{font-family:sans-serif;font-size:14px;font-weight:400;margin:0;margin-bottom:15px}ol li,p li,ul li{list-style-position:inside;margin-left:5px}a{color:#3498db;text-decoration:underline}.btn{box-sizing:border-box;width:100%}.btn>tbody>tr>td{padding-bottom:15px}.btn table{width:auto}.btn table td{background-color:#fff;border-radius:5px;text-align:center}.btn a{background-color:#fff;border:solid 1px #3498db;border-radius:5px;box-sizing:border-box;color:#3498db;cursor:pointer;display:inline-block;font-size:14px;font-weight:700;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize}.btn-primary table td{background-color:#3498db}.btn-primary a{background-color:#3498db;border-color:#3498db;color:#fff}.last{margin-bottom:0}.first{margin-top:0}.align-center{text-align:center}.align-right{text-align:right}.align-left{text-align:left}.clear{clear:both}.mt0{margin-top:0}.mb0{margin-bottom:0}.preheader{color:transparent;display:none;height:0;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;visibility:hidden;width:0}.powered-by a{text-decoration:none}hr{border:0;border-bottom:1px solid #f6f6f6;margin:20px 0}@media only screen and (max-width:620px){table[class=body] h1{font-size:28px!important;margin-bottom:10px!important}table[class=body] a,table[class=body] ol,table[class=body] p,table[class=body] span,table[class=body] td,table[class=body] ul{font-size:16px!important}table[class=body] .article,table[class=body] .wrapper{padding:10px!important}table[class=body] .content{padding:0!important}table[class=body] .container{padding:0!important;width:100%!important}table[class=body] .main{border-left-width:0!important;border-radius:0!important;border-right-width:0!important}table[class=body] .btn table{width:100%!important}table[class=body] .btn a{width:100%!important}table[class=body] .img-responsive{height:auto!important;max-width:100%!important;width:auto!important}}@media all{.ExternalClass{width:100%}.ExternalClass,.ExternalClass div,.ExternalClass font,.ExternalClass p,.ExternalClass span,.ExternalClass td{line-height:100%}.apple-link a{color:inherit!important;font-family:inherit!important;font-size:inherit!important;font-weight:inherit!important;line-height:inherit!important;text-decoration:none!important}#MessageViewBody a{color:inherit;text-decoration:none;font-size:inherit;font-family:inherit;font-weight:inherit;line-height:inherit}.btn-primary table td:hover{background-color:#34495e!important}.btn-primary a:hover{background-color:#34495e!important;border-color:#34495e!important}}</style><span class=preheader>This is preheader text. Some clients will show this text as a preview.</span><table role=presentation border=0 cellpadding=0 cellspacing=0 class=body><tr><td><td class=container><div class=content><table role=presentation class=main><tr><td class=wrapper><table role=presentation border=0 cellpadding=0 cellspacing=0><tr><td><p>Hi there,<p>Sometimes you just want to send a simple HTML email with a simple design and clear call to action. This is it.<p>This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.<p>Good luck! Hope it works.</table></table><div class=footer><table role=presentation border=0 cellpadding=0 cellspacing=0><tr><td class=content-block><span class=apple-link>Company Inc, 3 Abbey Road, San Francisco CA 94102</span><br>Don not like these emails? <a href=http://i.imgur.com/CScmqnj.gif>Unsubscribe</a>.<tr><td class="content-block powered-by">Powered by <a href=http://claruz.com>Claruz</a>.</table></div></div><td></table>';
 
-                // sendmail($email, $subject, $body);
+                 sendmail($email, $subject, $body);
 
             }
         } else if ($_POST['topic'] == 'otp_verification') {
@@ -978,7 +982,6 @@ if (isset($_POST['data'])) {
                 exit;
             }
         }
-
     }
 
     if ($_POST['data'] == 'Bookdata') {
@@ -1072,7 +1075,6 @@ if (isset($_POST['data'])) {
                             "trek_trole" => 'accompany',
                         ));
                     }
-
                 }
             } else {
 
@@ -1088,7 +1090,6 @@ if (isset($_POST['data'])) {
                     "trek_theight" => $height,
                     "trek_trole" => 'owner',
                 ));
-
             }
 
             $result = new stdClass();
@@ -1106,9 +1107,7 @@ if (isset($_POST['data'])) {
             echo json_encode($result);
             die;
         }
-
     }
-
 } else {
     $result = new stdClass();
     $result->message = 'Access Denied!';

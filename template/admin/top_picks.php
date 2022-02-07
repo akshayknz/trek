@@ -26,7 +26,8 @@ if (isset($_GET['season'])||isset($_GET['grade'])) {
     }
 
     if($season!=''){
-        $queryBuild .= 'and trek_season = "'.$season.'"';
+        // $queryBuild .= 'and trek_season = "'.$season.'"';
+        $queryBuild .= " AND JSON_CONTAINS(trek_season, '\"" . $season . "\"', '$') ";
     }else{
         $queryBuild .= '';
     }
@@ -40,8 +41,9 @@ if (isset($_GET['season'])||isset($_GET['grade'])) {
 }
 
 
-$dataFilterSeason = $wpdb->get_results('SELECT distinct(trek_season) as seasons FROM ' . $table_prefix . 'trektable_addtrekdetails where trek_adddetails_status=0 order by top_pick ASC');
+
 $dataFilterGrade = $wpdb->get_results('SELECT distinct(trek_grade) as grades FROM ' . $table_prefix . 'trektable_addtrekdetails where trek_adddetails_status=0 order by top_pick ASC');
+$dataFilterSeason = $wpdb->get_results('SELECT trek_season as seasons,id FROM ' . $table_prefix . 'trektable_season where trek_season_status=0');
 
 
 //print_r( site_url()."/wp-admin/admin.php?page=trek_tth_top_picks");

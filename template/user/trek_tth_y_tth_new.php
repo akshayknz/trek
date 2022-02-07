@@ -211,7 +211,7 @@ die;*/
 
                 </form>
                 <img src="" id="tth-award-img" style="max-height: 200px;max-width: 200px;"><br>
-                <label for="recipient-name" class="col-form-label">Add Photo (max 3):</label>
+                <label for="recipient-name" class="col-form-label">Add Photo (max 3 Dimension 410x344):</label>
                 <input type="button" value="Choose File" onclick="uploadNewsImages()"
                        class="form-control-file" id="tth-award-img1" name="tth-award-img1">
             </div>
@@ -229,7 +229,7 @@ die;*/
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -258,7 +258,7 @@ die;*/
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" onclick="updatewhytth()" class="btn btn-primary">Add</button>
+                <button type="button" onclick="updatewhytth()" class="btn btn-primary">Update</button>
                 <input type="hidden" id="whytth_id">
             </div>
         </div>

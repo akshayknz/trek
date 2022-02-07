@@ -1,6 +1,6 @@
 <?php
 /**
- *@package TrekPlugin
+ * @package TrekPlugin
  */
 $path = preg_replace('/wp-content.*$/', '', __DIR__);
 require_once $path . '/wp-load.php';
@@ -44,6 +44,8 @@ if (isset($_POST['action'])) {
         $trek_fitness_policy = $_POST['trek_fitness_policy'];
         $trek_transportation_insurace = $_POST['trek_transportation_insurace'];
         $trek_team_member = $_POST['trek_team_member'];
+        $trek_cook = $_POST['trek_cook'];
+        $trek_leader = $_POST['trek_leader'];
         $trek_cancellation_policies = $_POST['trek_cancellation_policies'];
         $trek_essential = $_POST['trek_essential'];
         $trek_filter_theme = json_decode(stripslashes($_POST['trek_filter_theme']));
@@ -124,7 +126,8 @@ if (isset($_POST['action'])) {
             'trek_cost_terms_inclusion' => $trek_cost_terms_inclusion,
             'trek_discount_percentage' => $trek_discount_percentage,
             'trek_discount_end_date' => $trek_discount_end_date,
-
+			'trek_cook' => $trek_cook,
+            'trek_leader' => $trek_leader,
         ));
 
         if ($result_check) {
@@ -187,6 +190,8 @@ if (isset($_POST['action'])) {
         $trek_participation_policy = $_POST['trek_participation_policy'];
         $trek_fitness_policy = $_POST['trek_fitness_policy'];
         $trek_team_member = $_POST['trek_team_member'];
+        $trek_cook = $_POST['trek_cook'];
+        $trek_leader = $_POST['trek_leader'];
         // $trek_cost_terms = $_POST['trek_cost_terms'];
         $trek_cancellation_policies = $_POST['trek_cancellation_policies'];
         $trek_essential = $_POST['trek_essential'];
@@ -215,14 +220,14 @@ if (isset($_POST['action'])) {
         $ptbd_table_name1 = $wpdb->prefix . 'trektable_trek_riskandrespond';
         $query = "select count(trek_name) as tk_name from " . $ptbd_table_name . " where trek_adddetails_status=0 and id=" . $trek_id . "";
         $results = $wpdb->get_results($query);
-        
+
         $rr = array(
-                
-                'trek_how_reach_pp' => $trek_reach_air, //pickup place
-                'trek_how_reach_dp' => $trek_reach_bus, // drop place
-                'trek_how_reach_note' => $trek_reach_train, // how to reach note
-               
-            );
+
+            'trek_how_reach_pp' => $trek_reach_air, //pickup place
+            'trek_how_reach_dp' => $trek_reach_bus, // drop place
+            'trek_how_reach_note' => $trek_reach_train, // how to reach note
+
+        );
 
         if ($results[0]->tk_name == 1) {
 
@@ -253,6 +258,8 @@ if (isset($_POST['action'])) {
                 'trek_about_trek' => $trek_about_trek,
                 'trek_risk_respond' => $trek_risk_respond,
                 'trek_assigned_to' => $trek_team_member,
+                'trek_cook' => $trek_cook,
+                'trek_leader' => $trek_leader,
                 'trek_filter_theme' => json_encode($trek_filter_theme),
                 'trek_filter_interests' => $trek_filter_interests,
                 'trek_filter_from' => $trek_filter_from,
@@ -330,6 +337,26 @@ if (isset($_POST['action'])) {
         }
     }
 
+  if ($_POST['action'] == 'deleteBrochure') {
+        $broch_id = $_POST['id'];
+        $ptbd_table_name = $wpdb->prefix . 'trektable_trek_brochure';
+        $result = $wpdb->delete($ptbd_table_name, array('id' => $broch_id));
+
+        $result = new stdClass();
+        if ($result) {
+            $result->statusCode = 200;
+            $result->message = 'Deleted';
+        } else {
+            $result->statusCode = 400;
+            $result->message = 'failed';
+            $result->result = 'fail';
+            $result->info = 'id not acceptable';
+        }
+        echo json_encode($result);
+        exit;
+
+    }
+
     if ($_POST['action'] == 'deleteTrek') {
         $trek_id = $_POST['trek_id'];
         $ptbd_table_name = $wpdb->prefix . 'trektable_addtrekdetails';
@@ -366,12 +393,12 @@ if (isset($_POST['action'])) {
         $trek_content = $_POST['content'];
         $trek_context = $_POST['context'];
         $ptbd_table_name = $wpdb->prefix . 'trektable_context';
-        
-        if (isset($trek_content)&&isset($trek_context)) {
+
+        if (isset($trek_content) && isset($trek_context)) {
             $wpdb->update('' . $ptbd_table_name . '', array(
                 'trek_content' => $trek_content,
             ), array('trek_context' => $trek_context));
-           
+
             $result = new stdClass();
             $result->statusCode = 200;
             $result->message = 'success';
@@ -988,23 +1015,22 @@ if (isset($_POST['action'])) {
         }
     }
 
-    if ($_POST['action'] == 'getModalDeparture') {
+   if ($_POST['action'] == 'getModalDeparture') {
         $flag = 0;
         $trek_id = $_POST['trek_id'];
         $spin = $_POST['spin'];
         $ptbd_table_name = $wpdb->prefix . 'trektable_trek_departure';
+        $style="";
         if ($spin == "getAllTrek") {
             $flag = 1;
             $query = "SELECT
   wp_trektable_trek_departure.*,
-  COUNT(wp_trektable_trekkers_list.id) AS Total, (select count(wp_trektable_trekkers_list.id) from
+  COUNT(wp_trektable_trekkers_list.id) AS Total,trek_trekker_status, (select count(wp_trektable_trekkers_list.id) from
   wp_trektable_trekkers_list where wp_trektable_trekkers_list.payment_status='paid' and
-  wp_trektable_trekkers_list.trek_trekker_status='0' and
   wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date ) as paid
 FROM
   wp_trektable_trek_departure
 LEFT JOIN wp_trektable_trekkers_list ON wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date
-and (wp_trektable_trekkers_list.trek_trekker_status !=1 or wp_trektable_trekkers_list.trek_trekker_status is null)
 where wp_trektable_trek_departure.trek_selected_trek = '" . $trek_id . "' and wp_trektable_trek_departure.trek_departure_status!=1
 GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selected_trek order by
 wp_trektable_trek_departure.trek_start_date asc";
@@ -1012,14 +1038,12 @@ wp_trektable_trek_departure.trek_start_date asc";
             $flag = 2;
             $query = "SELECT
   wp_trektable_trek_departure.*,
-  COUNT(wp_trektable_trekkers_list.id) AS Total, (select count(wp_trektable_trekkers_list.id) from
+  COUNT(wp_trektable_trekkers_list.id) AS Total,trek_trekker_status, (select count(wp_trektable_trekkers_list.id) from
   wp_trektable_trekkers_list where wp_trektable_trekkers_list.payment_status='paid' and
-  wp_trektable_trekkers_list.trek_trekker_status='0' and
   wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date ) as paid
 FROM
   wp_trektable_trek_departure
 LEFT JOIN wp_trektable_trekkers_list ON wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date
-and (wp_trektable_trekkers_list.trek_trekker_status !=1 or wp_trektable_trekkers_list.trek_trekker_status is null)
 where wp_trektable_trek_departure.trek_selected_trek = '" . $trek_id . "' and wp_trektable_trek_departure.trek_departure_status!=1 and wp_trektable_trek_departure.trek_end_date >= CURDATE()
 GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selected_trek order by
 wp_trektable_trek_departure.trek_start_date asc";
@@ -1027,14 +1051,12 @@ wp_trektable_trek_departure.trek_start_date asc";
             $flag = 3;
             $query = "SELECT
   wp_trektable_trek_departure.*,
-  COUNT(wp_trektable_trekkers_list.id) AS Total, (select count(wp_trektable_trekkers_list.id) from
+  COUNT(wp_trektable_trekkers_list.id) AS Total,trek_trekker_status, (select count(wp_trektable_trekkers_list.id) from
   wp_trektable_trekkers_list where wp_trektable_trekkers_list.payment_status='paid' and
-  wp_trektable_trekkers_list.trek_trekker_status='0' and
-  wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date ) as paid
+    wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date ) as paid
 FROM
   wp_trektable_trek_departure
 LEFT JOIN wp_trektable_trekkers_list ON wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date
-and (wp_trektable_trekkers_list.trek_trekker_status !=1 or wp_trektable_trekkers_list.trek_trekker_status is null)
 where wp_trektable_trek_departure.trek_selected_trek = '" . $trek_id . "' and wp_trektable_trek_departure.trek_departure_status!=1 and wp_trektable_trek_departure.trek_end_date < CURDATE()
 GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selected_trek order by
 wp_trektable_trek_departure.trek_start_date asc";
@@ -1067,12 +1089,19 @@ wp_trektable_trek_departure.trek_start_date asc";
                 $k2 = date('j M ', $k1);
                 $l2 = date('j M Y', $l1);
                 $m2 = $result[$k]->trek_section;
-                $departureDate .= '<div class="expand-collapse"><h5>';
+                if($result[$k]->trek_trekker_status==1)//Completed
+                    $style="style='background-color:#d4edda;'";
+                else if($result[$k]->trek_trekker_status==2)//Cancelled
+                    $style="style='background-color:#f8d7da;'";
+
+                $departureDate .= '<div class="expand-collapse" '.$style.'><h5 '.$style.'>';
                 $departureDate .= $k2;
                 $departureDate .= ' - ';
                 $departureDate .= $l2;
                 $departureDate .= ' : ';
                 $departureDate .= $m2;
+               
+
                 if ($trekRemainingSeats < 0) {
                     $departureDate .= '<span style="font-size: 12px;float: right;color:red;">Action Required!</span>';
                 } else if ($trekRemainingSeats == 0) {
@@ -1105,6 +1134,10 @@ wp_trektable_trek_departure.trek_start_date asc";
                     $departureDate .= '<span style="font-size: 16px;"> Remaining Seats : ';
                     $departureDate .= $trekRemainingSeats;
                     $departureDate .= '</span>';
+                }
+                if($result[$k]->dep_event_name)
+                {
+                    $departureDate.='<label class="badge badge-success" style="margin-left: 15px;">'.$result[$k]->dep_event_name.'</label>';
                 }
 
                 $departureDate .= '<a class="btn btn-secondary" style="float:right;margin-top:-7px;height:37px;" href="admin.php?page=manage_trek_users&num=' . $result[$k]->trek_selected_trek . '&dep=' . $result[$k]->id . '">Details ';
@@ -1456,10 +1489,10 @@ wp_trektable_trek_departure.trek_start_date asc";
     if ($_POST['action'] == 'getDepartureContent') {
         $departureId = $_POST['departureId'];
         $ptbd_table_name = $wpdb->prefix . 'trektable_trek_departure';
-        $query = "select count(id) from " . $ptbd_table_name . " where trek_departure_status=0 and id=" . $departureId . "";
+        $query = "select count(id) from " . $ptbd_table_name . " where id=" . $departureId . "";
         $result = $wpdb->get_results($query);
         if (count($result) == 1) {
-            $data = $wpdb->get_results('SELECT id,trek_start_date,trek_end_date,trek_seats,trek_section,dep_event FROM ' . $ptbd_table_name . ' where trek_departure_status=0 and id=' . $departureId . '');
+            $data = $wpdb->get_results('SELECT id,trek_departure_status,trek_start_date,trek_end_date,trek_seats,trek_section,dep_event FROM ' . $ptbd_table_name . ' where id=' . $departureId . '');
             $result = new stdClass();
             $result->statusCode = 200;
             $result->message = 'success';
@@ -1470,6 +1503,7 @@ wp_trektable_trek_departure.trek_start_date asc";
             $result->seats = $data[0]->trek_seats;
             $result->section = $data[0]->trek_section;
             $result->eventId = $data[0]->dep_event;
+            $result->show = $data[0]->trek_departure_status;
             // $result->eventText = $data[0]->dep_event_name;
 
             echo json_encode($result);
@@ -1714,7 +1748,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         $seats = $_POST['seats'];
         $section = $_POST['section'];
         $eventId = $_POST['eventId'];
-
+        $show = $_POST['show'];
         if ($eventId == '') {
             $eventId = null;
             $eventText = null;
@@ -1724,12 +1758,13 @@ wp_trektable_trek_departure.trek_start_date asc";
 
         $ptbd_table_name = $wpdb->prefix . 'trektable_trek_departure';
 
-        $query = "select trek_selected_trek from " . $ptbd_table_name . " where trek_departure_status=0 and id=" . $departureId . "";
+        $query = "select trek_selected_trek from " . $ptbd_table_name . " where id=" . $departureId . "";
         $result = $wpdb->get_results($query);
 
         if (count($result) == 1) {
 
-            $query1 = "select count(id) as cout from " . $ptbd_table_name . " where trek_departure_status=0 and trek_selected_trek=" . $result[0]->trek_selected_trek . " and trek_section='" . $section . "' and trek_start_date ='" . $sdate . "' and id !='" . $departureId . "'";
+            $query1 = "select count(id) as cout from " . $ptbd_table_name . " where trek_selected_trek=" . $result[0]->trek_selected_trek . " and trek_section='" . $section . "' and trek_start_date ='" . $sdate . "' and id !='" . $departureId . "'";
+
 
             $result1 = $wpdb->get_results($query1);
             $c = $result1[0]->cout;
@@ -1741,7 +1776,8 @@ wp_trektable_trek_departure.trek_start_date asc";
                     'trek_section' => $section,
                     'dep_event' => $eventId,
                     'dep_event_name' => $eventText,
-                ), array('id' => $departureId, 'trek_departure_status' => 0));
+                    'trek_departure_status' => ($show=='true')? 2:0
+                ), array('id' => $departureId));
                 $result = new stdClass();
                 $result->statusCode = 200;
                 $result->message = 'Success';
@@ -1804,7 +1840,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         }
     }
 
-     if ($_POST['action'] == 'know_us_better') {
+    if ($_POST['action'] == 'know_us_better') {
 
         $imgs = $_POST['imgs'];
         $cap = $_POST['caption'];
@@ -1812,7 +1848,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         $shrt_desc = $_POST['short_desc'];
 
 
-        $result_check= $wpdb->update('wp_tth_why', array(
+        $result_check = $wpdb->update('wp_tth_why', array(
             'tth_why_short_desc' => $shrt_desc,
             'tth_why_caption' => $cap,
             'tth_why_imgs' => $imgs
@@ -1826,7 +1862,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         } else {
             $result->statusCode = 400;
             $result->message = 'Failed';
-            $result->info= 'Internal server error.';
+            $result->info = 'Internal server error.';
         }
         echo json_encode($result);
         exit;
@@ -1842,7 +1878,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         $shrt_desc = $_POST['short_desc'];
 
 
-        $result_check= $wpdb->update('wp_tth_why', array(
+        $result_check = $wpdb->update('wp_tth_why', array(
             'tth_why_short_desc' => $shrt_desc,
             'tth_why_caption' => $cap,
             'tth_why_imgs' => $imgs
@@ -1856,7 +1892,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         } else {
             $result->statusCode = 400;
             $result->message = 'Failed';
-            $result->info= 'Internal server error.';
+            $result->info = 'Internal server error.';
         }
         echo json_encode($result);
         exit;
@@ -2431,7 +2467,7 @@ WHERE trek_tbooking_id='" . $bookingId . "'";
                     $bmi = ($result[$k]->trek_tweight / $height_in_meter_sqr);
                     $target .= '<td class="text-center">';
                     // $target .= $bmi;//bmi
-                    $target .= number_format((float) $bmi, 2, '.', '');
+                    $target .= number_format((float)$bmi, 2, '.', '');
                     $target .= '</td>';
                 } else {
                     $target .= '<td class="text-center">';
@@ -2936,8 +2972,12 @@ WHERE trek_tbooking_id='" . $bookingId . "'";
         $trk_usr_id = $_POST['user_id'];
 
         $ptbd_table_name = $wpdb->prefix . 'trektable_contacts';
-        $query = "select * from " . $ptbd_table_name . " where contact_email=" . $trk_mail . "";
-        $result = $wpdb->get_results($query);
+        $query = "select * from " . $ptbd_table_name . " where contact_email='" . $trk_mail . "'";
+        try {
+            $result = $wpdb->get_results($query);
+        } catch (\Throwable $th) {
+            $res = [1,2];
+        }
         if (count($result) == 1) {
 
             $result = new stdClass();
@@ -2970,12 +3010,12 @@ WHERE trek_tbooking_id='" . $bookingId . "'";
 
     if ($_POST['action'] == 'deleteContact') {
         $con_id = $_POST['con_id'];
-        $ptbd_table_name = $wpdb->prefix . 'trek_pages_tth_contacts';
+        $ptbd_table_name = $wpdb->prefix . 'trektable_contacts';
         $query = "select count(id) from " . $ptbd_table_name . " where id=" . $con_id . "";
         $result = $wpdb->get_results($query);
         if (count($result) == 1) {
-            $wpdb->update('' . $ptbd_table_name . '', array(
-                'coupon_delete_status' => 1), array('id' => $con_id));
+            $wpdb->delete('' . $ptbd_table_name . '', array(
+                'id' => $con_id), $where_format = null );
 
             $result = new stdClass();
             $result->statusCode = 200;
@@ -2996,6 +3036,277 @@ WHERE trek_tbooking_id='" . $bookingId . "'";
         }
     }
 
+    if ($_POST['action'] == 'getContact') {
+        $id = $_POST['id'];
+        $table_name = $wpdb->prefix . 'trektable_contacts';
+        $data = $wpdb->get_results('SELECT * FROM '.$table_name.' 
+        WHERE id='.$id.'');
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'fetched';
+        $result->info = 'Success';
+        $result->name = $data[0]->contact_name;
+        $result->email = $data[0]->contact_email;
+        $result->contact_num1 = $data[0]->contact_num1;
+        $result->contact_num2 = $data[0]->contact_num2;
+        $result->id = $data[0]->id;
+
+        echo json_encode($result);
+        exit;
+    }
+
+    if ($_POST['action'] == 'updateContact') {
+        $trek_message_id = $_POST['id'];
+        $table_name = $wpdb->prefix . 'trektable_contacts';
+        $wpdb->update('' . $table_name . '', 
+            array(
+                'contact_name' => $_POST['contact_name'],
+                'contact_email' => $_POST['contact_email'],
+                'contact_num1' => $_POST['contact_num1'],
+                'contact_num2' => $_POST['contact_num2'],
+            ), 
+            array('id' => $_POST['id'])
+        );
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+
+        echo json_encode($result);
+        exit;
+    }
+
+
+    //Cooks
+
+
+    if ($_POST['action'] == 'addCook') {
+
+        $trk_mail = $_POST['mail'];
+        $trk_ph1 = $_POST['phone1'];
+        $trk_ph2 = $_POST['phone2'];
+        $trk_usr_id = $_POST['user_id'];
+
+        $ptbd_table_name = $wpdb->prefix . 'trektable_cooks';
+        $query = "select * from " . $ptbd_table_name . " where cook_email='" . $trk_mail . "'";
+        try {
+            $result = $wpdb->get_results($query);
+        } catch (\Throwable $th) {
+            $res = [1,2];
+        }
+        if (count($result) == 1) {
+
+            $result = new stdClass();
+            $result->statusCode = 201;
+            $result->message = 'failed';
+            $result->result = 'fail';
+            $result->info = 'User already assigned.';
+            echo json_encode($result);
+            exit;
+
+        } else {
+
+            $wpdb->insert('' . $ptbd_table_name . '', array(
+                'cook_name' => $trk_usr_id,
+                'cook_email' => $trk_mail,
+                'cook_num1' => $trk_ph1,
+                'cook_num2' => $trk_ph2,
+            ));
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'success';
+            $result->result = 'reload';
+            $result->info = 'create action success';
+
+            echo json_encode($result);
+            exit;
+
+        }
+    }
+
+    if ($_POST['action'] == 'deleteCook') {
+        $con_id = $_POST['con_id'];
+        $ptbd_table_name = $wpdb->prefix . 'trektable_cooks';
+        $query = "select count(id) from " . $ptbd_table_name . " where id=" . $con_id . "";
+        $result = $wpdb->get_results($query);
+        if (count($result) == 1) {
+            $wpdb->delete('' . $ptbd_table_name . '', array(
+                'id' => $con_id), $where_format = null );
+
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'success';
+            $result->result = 'reload';
+            $result->info = 'Action success';
+
+            echo json_encode($result);
+            exit;
+        } else {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'failed';
+            $result->result = 'fail';
+            $result->info = 'id not acceptable';
+            echo json_encode($result);
+            exit;
+        }
+    }
+
+    if ($_POST['action'] == 'getCook') {
+        $id = $_POST['id'];
+        $table_name = $wpdb->prefix . 'trektable_cooks';
+        $data = $wpdb->get_results('SELECT * FROM '.$table_name.' 
+        WHERE id='.$id.'');
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'fetched';
+        $result->info = 'Success';
+        $result->name = $data[0]->cook_name;
+        $result->email = $data[0]->cook_email;
+        $result->cook_num1 = $data[0]->cook_num1;
+        $result->cook_num2 = $data[0]->cook_num2;
+        $result->id = $data[0]->id;
+
+        echo json_encode($result);
+        exit;
+    }
+
+    if ($_POST['action'] == 'updateCook') {
+        $trek_message_id = $_POST['id'];
+        $table_name = $wpdb->prefix . 'trektable_cooks';
+        $wpdb->update('' . $table_name . '', 
+            array(
+                'cook_name' => $_POST['cook_name'],
+                'cook_email' => $_POST['cook_email'],
+                'cook_num1' => $_POST['cook_num1'],
+                'cook_num2' => $_POST['cook_num2'],
+            ), 
+            array('id' => $_POST['id'])
+        );
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+
+        echo json_encode($result);
+        exit;
+    }
+
+    //Leaders
+
+
+    if ($_POST['action'] == 'addLeader') {
+
+        $trk_mail = $_POST['mail'];
+        $trk_ph1 = $_POST['phone1'];
+        $trk_ph2 = $_POST['phone2'];
+        $trk_usr_id = $_POST['user_id'];
+
+        $ptbd_table_name = $wpdb->prefix . 'trektable_leaders';
+        $query = "select * from " . $ptbd_table_name . " where leader_email='" . $trk_mail . "'";
+        try {
+            $result = $wpdb->get_results($query);
+        } catch (\Throwable $th) {
+            $res = [1,2];
+        }
+        if (count($result) == 1) {
+
+            $result = new stdClass();
+            $result->statusCode = 201;
+            $result->message = 'failed';
+            $result->result = 'fail';
+            $result->info = 'User already assigned.';
+            echo json_encode($result);
+            exit;
+
+        } else {
+
+            $wpdb->insert('' . $ptbd_table_name . '', array(
+                'leader_name' => $trk_usr_id,
+                'leader_email' => $trk_mail,
+                'leader_num1' => $trk_ph1,
+                'leader_num2' => $trk_ph2,
+            ));
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'success';
+            $result->result = 'reload';
+            $result->info = 'create action success';
+
+            echo json_encode($result);
+            exit;
+
+        }
+    }
+
+    if ($_POST['action'] == 'deleteLeader') {
+        $con_id = $_POST['con_id'];
+        $ptbd_table_name = $wpdb->prefix . 'trektable_leaders';
+        $query = "select count(id) from " . $ptbd_table_name . " where id=" . $con_id . "";
+        $result = $wpdb->get_results($query);
+        if (count($result) == 1) {
+            $wpdb->delete('' . $ptbd_table_name . '', array(
+                'id' => $con_id), $where_format = null );
+
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'success';
+            $result->result = 'reload';
+            $result->info = 'Action success';
+
+            echo json_encode($result);
+            exit;
+        } else {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'failed';
+            $result->result = 'fail';
+            $result->info = 'id not acceptable';
+            echo json_encode($result);
+            exit;
+        }
+    }
+
+    if ($_POST['action'] == 'getLeader') {
+        $id = $_POST['id'];
+        $table_name = $wpdb->prefix . 'trektable_leaders';
+        $data = $wpdb->get_results('SELECT * FROM '.$table_name.' 
+        WHERE id='.$id.'');
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'fetched';
+        $result->info = 'Success';
+        $result->name = $data[0]->leader_name;
+        $result->email = $data[0]->leader_email;
+        $result->leader_num1 = $data[0]->leader_num1;
+        $result->leader_num2 = $data[0]->leader_num2;
+        $result->id = $data[0]->id;
+
+        echo json_encode($result);
+        exit;
+    }
+
+    if ($_POST['action'] == 'updateLeader') {
+        $trek_message_id = $_POST['id'];
+        $table_name = $wpdb->prefix . 'trektable_leaders';
+        $wpdb->update('' . $table_name . '', 
+            array(
+                'leader_name' => $_POST['leader_name'],
+                'leader_email' => $_POST['leader_email'],
+                'leader_num1' => $_POST['leader_num1'],
+                'leader_num2' => $_POST['leader_num2'],
+            ), 
+            array('id' => $_POST['id'])
+        );
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+
+        echo json_encode($result);
+        exit;
+    }
+
     if ($_POST['action'] == 'getPart') {
         $trek_part_id = $_POST['elementid'];
         $ptbd_table_name = $wpdb->prefix . 'trektable_participation_policy';
@@ -3012,6 +3323,404 @@ WHERE trek_tbooking_id='" . $bookingId . "'";
         echo json_encode($result);
         exit;
     }
+    //Add Remarks
+    if ($_POST['action'] == 'addremarks') {
+        $ptbd_table_name = $wpdb->prefix . 'trektable_trekkers_remarks';
+        $Trekker_ID = $_POST['Trekker_ID'];
+        $OffLoad = $_POST['OffLoad'];
+        $Transport = $_POST['Transport'];
+        $Comments = $_POST['Comments'];
+        $Added_By = $_POST['Added_By'];
+        $wpdb->insert('' . $ptbd_table_name . '', array(
+            'Trekker_ID' => $Trekker_ID,
+            'OffLoad' => $OffLoad,
+            'Transport' => $Transport,
+            'Comments' => $Comments,
+            'Added_By' => $Added_By,
+        ));
+
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'New flag added';
+        echo json_encode($result);
+        exit;      
+
+    }
+    
+    //Update Remarks
+     if ($_POST['action'] == 'updateremarks') {
+        $ptbd_table_name = $wpdb->prefix . 'trektable_trekkers_remarks';
+        $remarksID = $_POST['RemarksID'];
+        $OffLoad = $_POST['OffLoad'];
+        $Transport = $_POST['Transport'];
+        $Comments = $_POST['Comments'];
+        $Added_By = $_POST['Added_By'];
+       
+        $result1 = $wpdb->update('' . $ptbd_table_name . '', 
+        array(         
+            'OffLoad' => $OffLoad,
+            'Transport' => $Transport,
+            'Comments' => $Comments,
+            'Added_By' => $Added_By,
+        ), 
+        array('ID' => $remarksID)
+        );
+
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'New flag added';
+        echo json_encode($result);
+        exit;  
+    }
+
+    //update trekker status
+    if ($_POST['action'] == 'updatetrekkerstatus') {
+        $ptbd_table_name = $wpdb->prefix . 'trektable_trekkers_list';
+        $log_table_name = $wpdb->prefix . 'trektable_trekker_status_log';
+        $Trekker_ID = $_POST['Trekker_ID'];
+        $Status = $_POST['Status'];    
+        $Added_By = $_POST['Added_By'];
+        //Update trekker table
+        $wpdb->update('' . $ptbd_table_name . '', array(
+            'trek_trekker_status' => $Status, 
+        ), array('trekker_token' => $Trekker_ID));
+        //Insert status log
+        $wpdb->insert('' . $log_table_name . '', array(
+            'Trekker_ID' => $Trekker_ID,
+            'Status' => $Status,            
+            'Added_By' => $Added_By,
+        ));
+        
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'New flag added';
+		
+		//Send Mail
+        $curl = curl_init();
+$name ="Anu"; 
+$email = "anu.v@ecesistech.com"; 
+$subject = "test"; 
+$message = "test";
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => "https://api.sendgrid.com/v3/mail/send",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n \"personalizations\": [\n {\n\"to\": [\n {\n \"email\": \"anu.v@ecesistech.com\"\n }\n],\n\"subject\": \"Test\"\n }\n  ],\n  \"from\": {\n \"email\": \"tthdevelopers@gmail.com\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"$name<br>$email<br>$subject<br>$message\"\n    }\n  ]\n}",
+  CURLOPT_HTTPHEADER => array(
+    "authorization: Bearer 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",
+    "cache-control: no-cache",
+    "content-type: application/json"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+		
+        echo json_encode($result);
+        exit;      
+
+    }
+	//update trekker departure date
+    if ($_POST['action'] == 'updatetrekkerdeparturedate') {
+        $ptbd_table_name = $wpdb->prefix . 'trektable_trekkers_list';
+        $ptbd_booking_name = $wpdb->prefix . 'trektable_bookings';
+        $Trekker_ID = $_POST['Trekker_ID'];
+        $DepartureDate = $_POST['Departure_Date'];  
+        $Added_By = $_POST['Added_By'];
+        $Trekid = $_POST['TrekID'];   
+        
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < 5; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+        $bookingid = rand(11111, 99999) . $randomString . rand(11111, 99999);
+
+        $querytrekkers = "SELECT trek_tbooking_id,Amount,PaymentID FROM " . $ptbd_table_name . " WHERE trekker_token='" . $Trekker_ID. "'";
+        $datatrekkers = $wpdb->get_results($querytrekkers);
+        $databookings ="";
+        $trekbookid="";
+        $Amot=0;
+        $paymentID="";
+        foreach ($datatrekkers as $results)
+        {         
+            $trekbookid=  $results->trek_tbooking_id; 
+            $Amot=  $results->Amount;
+            $paymentID=$results->PaymentID;
+        }
+        $querybookings = "SELECT trek_booking_owner_id,trek_trems_condition,trek_insurance,fname,lname,phone_number,email,emergency_phone_number,date_of_birth,height,weight,user_gender,user_contry,user_state,user_city,token_amount FROM " . $ptbd_booking_name . " WHERE trek_booking_id='".$trekbookid."'";
+        $databookings = $wpdb->get_results($querybookings);   
+        $trek_booking_owner_id=0;
+        $trek_trems_condition="";
+        $trek_insurance="";
+        $fname=$lname=$email="";
+        foreach ($databookings as $results)
+        { 
+            $trek_booking_owner_id= $results->trek_booking_owner_id;
+            $trek_trems_condition=$results->trek_trems_condition;
+            $trek_insurance=$results->trek_insurance;
+            $fname=$results->fname;
+            $lname= $results->lname;
+            $email=$results->email;
+        }
+           
+        $data = array(
+            'trek_selected_trek_id' => $Trekid,
+            'trek_selected_departure_id' => $DepartureDate,
+            'trek_booking_id' => $bookingid,
+            'trek_booking_owner_id' => $trek_booking_owner_id,
+            'trek_trems_condition' => $trek_trems_condition,
+            'trek_insurance' => $trek_insurance,
+            'fname' => $fname,
+            'lname' => $lname,
+            //'phone_number' => $results->phone_number,
+            'email' => $email,
+            //'emergency_phone_number' => $results->emergency_phone_number,
+           // 'date_of_birth' => $results->date_of_birth,
+            //'height' => $results->height,
+            //'weight' => $results->weight,
+            //'user_gender' => $results->user_gender,
+            //'user_contry' => $results->user_contry,
+            //'user_state' => $results->user_state,
+           // 'user_city' => $results->user_city,
+            'number_of_participants' => 1,
+            'Amount' => $Amot,
+            'PaymentID' => $paymentID
+            //'token_amount' => $results->token_amount
+        );
+      
+        $result_check = $wpdb->insert('' . $ptbd_booking_name . '', $data);   
+        //echo $result_check;
+       
+        if ($result_check) {
+        //Update trekker table
+        $result1 = $wpdb->update('' . $ptbd_table_name . '', array(
+            'trek_selected_date' => $DepartureDate, 
+            'trek_selected_trek' => $Trekid,
+            'trek_tbooking_id' => $bookingid
+        ), array('trekker_token' => $Trekker_ID));
+              
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Tranfer Success';
+        echo json_encode($result);
+        exit;      
+    }   
+
+    }
+    
+    //Add cook rating
+    if ($_POST['action'] == 'addcookrating') {
+        $trekid = $_POST['TrekID'];
+        $departureid = $_POST['DepartureID'];
+        $addedby = $_POST['Added_By'];
+        $value = $_POST['Rating'];
+        $cookid = $_POST['CookID'];
+        $ptbd_table_name = $wpdb->prefix . 'trektable_cookrating';
+        $query = "select count(ID) AS count from " . $ptbd_table_name . " where 	TrekID=" . $trekid . " AND DepartureID=".$departureid." AND CookID=".$cookid."";
+        $data = $wpdb->get_results($query);
+        //echo $data[0]->count;        
+        if ($data[0]->count >0) {
+            $wpdb->update('' . $ptbd_table_name . '', array(
+                'Value' => $value, 'AddedBy' => $addedby,'Status'=>0), array('TrekID' => $trekid, 'DepartureID' => $departureid, 'CookID' =>$cookid));
+
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'success';
+            $result->result = 'reload';
+            $result->info = 'Action success';
+
+            echo json_encode($result);
+            exit;
+        } else {
+            $wpdb->insert('' . $ptbd_table_name . '', array(
+                'TrekID' => $trekid,
+                'DepartureID' => $departureid,            
+                'AddedBy' => $addedby,
+                'Value' => $value, 
+                'CookID' => $cookid              
+            ));
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->message = 'success';
+            $result->result = 'reload';
+            $result->info = 'Action success';
+            echo json_encode($result);
+            exit;
+        }
+    }
+//Add leader rating
+if ($_POST['action'] == 'addleaderrating') {
+    $trekid = $_POST['TrekID'];
+    $departureid = $_POST['DepartureID'];
+    $addedby = $_POST['Added_By'];
+    $value = $_POST['Rating'];
+    $leaderid = $_POST['LeaderID'];
+    $ptbd_table_name = $wpdb->prefix . 'trektable_leaderrating';
+    $query = "select count(ID) AS count from " . $ptbd_table_name . " where 	TrekID=" . $trekid . " AND DepartureID=".$departureid." AND LeaderID=".$leaderid."";
+    $data = $wpdb->get_results($query);
+    $data = $wpdb->get_results($query);
+    //echo $data[0]->count;        
+    if ($data[0]->count >0) {
+        $wpdb->update('' . $ptbd_table_name . '', array(
+            'Value' => $value, 'AddedBy' => $addedby,'Status'=>0), array('TrekID' => $trekid, 'DepartureID' => $departureid, 'LeaderID' =>$leaderid));
+
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Action success';
+
+        echo json_encode($result);
+        exit;
+    } else {
+        $wpdb->insert('' . $ptbd_table_name . '', array(
+            'TrekID' => $trekid,
+            'DepartureID' => $departureid,            
+            'AddedBy' => $addedby,
+            'Value' => $value,   
+            'LeaderID' => $leaderid             
+        ));
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Action success';
+        echo json_encode($result);
+        exit;
+    }
+}
+    //Add leader rating
+if ($_POST['action'] == 'addTrekLeaderRating') {
+    $leaderid = $_POST['leaderid'];
+    $noofbatch = $_POST['noofbatch'];
+    $noofdays = $_POST['noofdays'];
+    $rating = $_POST['rating'];
+    $Added_By = $_POST['Added_By'];
+    $ptbd_table_name = $wpdb->prefix . 'trektable_leaderrating';
+    
+        $wpdb->insert('' . $ptbd_table_name . '', array(
+            'LeaderID' => $leaderid,
+            'NoOfBatch' => $noofbatch,            
+            'NoOfDays' => $noofdays,
+            'Value' => $rating,   
+            'AddedBy' => $Added_By,            
+        ));
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Action success';
+        echo json_encode($result);
+        exit;   
+}
+
+//Add cook rating
+if ($_POST['action'] == 'addTrekCookRating') {
+    $cookid = $_POST['cookid'];
+    $noofbatch = $_POST['noofbatch'];
+    $noofdays = $_POST['noofdays'];
+    $rating = $_POST['rating'];
+    $Added_By = $_POST['Added_By'];
+    $ptbd_table_name = $wpdb->prefix . 'trektable_cookrating';
+    
+        $wpdb->insert('' . $ptbd_table_name . '', array(
+            'cookid' => $cookid,
+            'NoOfBatch' => $noofbatch,            
+            'NoOfDays' => $noofdays,
+            'Value' => $rating,   
+            'AddedBy' => $Added_By,            
+        ));
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Action success';
+        echo json_encode($result);
+        exit;   
+}
+//Delete Leader rating
+if ($_POST['action'] == 'deleteLeaderRating') {
+    $con_id = $_POST['con_id'];
+    $ptbd_table_name = $wpdb->prefix . 'trektable_leaderrating';
+    $query = "select count(id) from " . $ptbd_table_name . " where ID=" . $con_id . "";
+    $result = $wpdb->get_results($query);
+    if (count($result) == 1) {     
+            $wpdb->update('' . $ptbd_table_name . '', array(
+                'Status' => 1), array('ID' => $con_id));
+    
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Action success';
+
+        echo json_encode($result);
+        exit;
+    } else {
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'failed';
+        $result->result = 'fail';
+        $result->info = 'id not acceptable';
+        echo json_encode($result);
+        exit;
+    }
+}
+
+//Delete Cook rating
+if ($_POST['action'] == 'deleteCookRating') {
+    $con_id = $_POST['con_id'];
+    $ptbd_table_name = $wpdb->prefix . 'trektable_cookrating';
+    $query = "select count(id) from " . $ptbd_table_name . " where ID=" . $con_id . "";
+    $result = $wpdb->get_results($query);
+    if (count($result) == 1) {
+        $wpdb->update('' . $ptbd_table_name . '', array(
+            'Status' => 1), array('ID' => $con_id));
+
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'success';
+        $result->result = 'reload';
+        $result->info = 'Action success';
+
+        echo json_encode($result);
+        exit;
+    } else {
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'failed';
+        $result->result = 'fail';
+        $result->info = 'id not acceptable';
+        echo json_encode($result);
+        exit;
+    }
+}
+
 
 } else {
     $result = new stdClass();

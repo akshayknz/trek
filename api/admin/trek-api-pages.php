@@ -169,13 +169,185 @@ if (isset($_POST['action'])) {
 
     // End News Section
 
+  //suggest and customize trek
+    if ($_POST['action'] == 'removeSuggestTrekMsg') {
+        $ptbd_table_name = 'wp_trek_user_sugget_trek';
+        $id = $_POST['id'];
 
+        $stats=$wpdb->delete( $ptbd_table_name, array( 'id' => $id ) );
+        $result = new stdClass();
+        if($stats)
+        {
+            $result->statusCode = 200;
+            $result->result = 'Deleted';
+        }
+        else
+        {
+            $result->statusCode = 202;
+            $result->result = 'Some error occured.';
+        }
+        echo json_encode($result);
+        die;
+
+
+
+    }
+    if ($_POST['action'] == 'removeCustomizeTrekMsg') {
+        $ptbd_table_name = 'wp_trek_user_customization';
+        $id = $_POST['id'];
+
+        $stats=$wpdb->delete( $ptbd_table_name, array( 'id' => $id ) );
+        $result = new stdClass();
+        if($stats)
+        {
+            $result->statusCode = 200;
+            $result->result = 'Deleted';
+        }
+        else
+        {
+            $result->statusCode = 202;
+            $result->result = 'Some error occured.';
+        }
+        echo json_encode($result);
+        die;
+    }
+
+    if ($_POST['action'] == 'updateStatusSuggestTrek') {
+        $ptbd_table_name = 'wp_trek_user_sugget_trek';
+        $dataArr = array(
+            "trek_tth_status" => $_POST['status'],
+        );
+        $post_id = wp_insert_post(array (
+            'post_type' => 'notes',
+            'post_title' => 'log suggest',
+            'post_content' => $_POST['note'],
+            'post_status' => 'publish',
+            'comment_status' => 'closed',
+            'ping_status' => 'closed',
+        ));
+        if ($post_id) {
+            add_post_meta($post_id, 'entry_id', $_POST['id']);
+            add_post_meta($post_id, 'status', $_POST['statusText']);
+        }
+        if ($wpdb->update('' . $ptbd_table_name . '', $dataArr, array(
+            'id' => $_POST['id'])) === false) {
+            $result = new stdClass();
+            $result->statusCode = 401;
+            $result->result = 'failed';
+
+            echo json_encode($result);
+        } else {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->result = 'updated';
+
+            echo json_encode($result);
+        }
+        die;
+    }
+
+
+    if ($_POST['action'] == 'addNewNoteSuggestTrek') {
+        $ptbd_table_name = 'wp_trek_user_sugget_trek';
+        $post_id = wp_insert_post(array (
+            'post_type' => 'notes',
+            'post_title' => 'log suggest',
+            'post_content' => $_POST['note'],
+            'post_status' => 'publish',
+            'comment_status' => 'closed',
+            'ping_status' => 'closed',
+        ));
+        if ($post_id) {
+            add_post_meta($post_id, 'entry_id', $_POST['id']);
+            add_post_meta($post_id, 'status', $_POST['statusText']);
+        }
+        if ($post_id == '') {
+            $result = new stdClass();
+            $result->statusCode = 401;
+            $result->result = 'failed';
+
+            echo json_encode($result);
+        } else {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->result = 'updated';
+
+            echo json_encode($result);
+        }
+        die;
+    }
+    
+    
+    if ($_POST['action'] == 'updateStatusCustomizeTrek') {
+        $ptbd_table_name = 'wp_trek_user_customization';
+        $dataArr = array(
+            "trek_tth_status" => $_POST['status'],
+        );
+        $post_id = wp_insert_post(array (
+            'post_type' => 'notes',
+            'post_title' => 'log',
+            'post_content' => $_POST['note'],
+            'post_status' => 'publish',
+            'comment_status' => 'closed',
+            'ping_status' => 'closed',
+        ));
+        if ($post_id) {
+            add_post_meta($post_id, 'entry_id', $_POST['id']);
+            add_post_meta($post_id, 'status', $_POST['statusText']);
+        }
+        if ($wpdb->update('' . $ptbd_table_name . '', $dataArr, array(
+            'id' => $_POST['id'])) === false) {
+            $result = new stdClass();
+            $result->statusCode = 401;
+            $result->result = 'failed';
+
+            echo json_encode($result);
+        } else {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->result = 'updated';
+
+            echo json_encode($result);
+        }
+        die;
+    }
+if ($_POST['action'] == 'addNewNoteCustomizeTrek') {
+        $ptbd_table_name = 'wp_trek_user_customization';
+        $post_id = wp_insert_post(array (
+            'post_type' => 'notes',
+            'post_title' => 'log',
+            'post_content' => $_POST['note'],
+            'post_status' => 'publish',
+            'comment_status' => 'closed',
+            'ping_status' => 'closed',
+        ));
+        if ($post_id) {
+            add_post_meta($post_id, 'entry_id', $_POST['id']);
+            add_post_meta($post_id, 'status', $_POST['statusText']);
+        }
+        if ($post_id == '') {
+            $result = new stdClass();
+            $result->statusCode = 401;
+            $result->result = 'failed';
+
+            echo json_encode($result);
+        } else {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->result = 'updated';
+
+            echo json_encode($result);
+        }
+        die;
+    }
+    //suggest and customize trek end
 
 // Team members
 
     if ($_POST['action'] == 'addMember') {
         $ptbd_table_name = 'wp_trek_pages_tth_team';
         $role = $_POST['role'];
+        $category = $_POST['advisor_category'];
         $people_priority = $_POST['people_priority'];
         $people_name = $_POST['people_name'];
         $people_description = $_POST['people_description'];
@@ -188,15 +360,17 @@ if (isset($_POST['action'])) {
             "trek_tth_long_description" => $people_description_long,
             "trek_tth_images" => $people_image,
             "trek_tth_role" => $role,
+            "trek_tth_advisor_category" => $category,
             "trek_tth_role_priority" => $people_priority,
         );
         $result_check = $wpdb->insert('' . $ptbd_table_name . '', $dataArr);
         if ($result_check) {
+
             $result = new stdClass();
             $result->statusCode = 200;
             $result->result = 'inserted';
-
             echo json_encode($result);
+
         } else {
             $result = new stdClass();
             $result->statusCode = 401;
@@ -231,6 +405,7 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == 'updatePeople') {
         $ptbd_table_name = 'wp_trek_pages_tth_team';
         $role = $_POST['role'];
+        $category = $_POST['category'];
         $people_priority = $_POST['people_priority'];
         $people_name = $_POST['people_name'];
         $people_description = $_POST['people_description'];
@@ -246,6 +421,7 @@ if (isset($_POST['action'])) {
                 "trek_tth_long_description" => $people_description_long,
                 "trek_tth_images" => $people_image,
                 "trek_tth_role" => $role,
+                "trek_tth_advisor_category" => $category,
                 "trek_tth_role_priority" => $people_priority,
             );
         } else {
@@ -254,6 +430,7 @@ if (isset($_POST['action'])) {
                 "trek_tth_short_description" => $people_description,
                 "trek_tth_long_description" => $people_description_long,
                 "trek_tth_role" => $role,
+                "trek_tth_advisor_category" => $category,
                 "trek_tth_role_priority" => $people_priority,
             );
         }
@@ -439,6 +616,30 @@ if (isset($_POST['action'])) {
         echo json_encode($result);
 
     }
+    
+      if($_POST['action'] == 'checkCouponExistence')
+     {
+         $coupon=$_POST['coupon'];
+         $ptbd_table_name = 'wp_trektable_coupons_new';
+         $tth_data = $wpdb->get_results('SELECT id FROM ' . $ptbd_table_name . ' where coupon_code="' . $coupon . '"');
+         $result = new stdClass();
+         if (count($tth_data) >= 1)
+         {
+             $result->statusCode = 200;
+             $result->result = 'Coupon exist';
+
+         }
+         else
+         {
+             $result->statusCode = 201;
+             $result->result = 'Coupon not exist';
+
+
+         }
+         echo json_encode($result);
+         die;
+     }
+    
     if ($_POST['action'] == 'addGraph') {
         $img=$_POST['img'];
         $id=$_POST['trek_id'];
@@ -797,4 +998,3 @@ function check_email_validity($email)
         exit;
     }
 }
-

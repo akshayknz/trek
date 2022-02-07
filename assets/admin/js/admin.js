@@ -1,4 +1,7 @@
 jQuery(document).ready(function () {
+	 jQuery('#Modal_departure').on("hide.bs.modal", function() {
+    location.reload();
+  })
   jQuery(document).on("click", ".delconfdeluser", function () {
     alert("confirmation button clicked");
     var url_string = window.location.href; //window.location.href
@@ -14,9 +17,9 @@ jQuery(document).ready(function () {
   jQuery(document).delegate("a.add-record1", "click", function (e) {
     e.preventDefault();
     var content = jQuery("#sample_table tr"),
-      size = jQuery("#tbl_posts1 >tbody >tr").length + 1,
-      element = null,
-      element = content.clone();
+        size = jQuery("#tbl_posts1 >tbody >tr").length + 1,
+        element = null,
+        element = content.clone();
     element.attr("id", "rec-bg-" + size);
     element.find(".delete-record").attr("id", "bg-" + size);
     element.find(".name").attr("id", "name_bg-" + size);
@@ -30,9 +33,9 @@ jQuery(document).ready(function () {
   jQuery(document).delegate("a.add-record2", "click", function (e) {
     e.preventDefault();
     var content = jQuery("#sample_table tr"),
-      size = jQuery("#tbl_posts2 >tbody >tr").length + 1,
-      element = null,
-      element = content.clone();
+        size = jQuery("#tbl_posts2 >tbody >tr").length + 1,
+        element = null,
+        element = content.clone();
     element.attr("id", "rec-clth-" + size);
     element.find(".delete-record").attr("id", "clth-" + size);
     element.find(".name").attr("id", "name_clth-" + size);
@@ -46,9 +49,9 @@ jQuery(document).ready(function () {
   jQuery(document).delegate("a.add-record3", "click", function (e) {
     e.preventDefault();
     var content = jQuery("#sample_table tr"),
-      size = jQuery("#tbl_posts3 >tbody >tr").length + 1,
-      element = null,
-      element = content.clone();
+        size = jQuery("#tbl_posts3 >tbody >tr").length + 1,
+        element = null,
+        element = content.clone();
     element.attr("id", "rec-pu-" + size);
     element.find(".delete-record").attr("id", "pu-" + size);
     element.find(".name").attr("id", "name_pu-" + size);
@@ -62,9 +65,9 @@ jQuery(document).ready(function () {
   jQuery(document).delegate("a.add-record4", "click", function (e) {
     e.preventDefault();
     var content = jQuery("#sample_table tr"),
-      size = jQuery("#tbl_posts4 >tbody >tr").length + 1,
-      element = null,
-      element = content.clone();
+        size = jQuery("#tbl_posts4 >tbody >tr").length + 1,
+        element = null,
+        element = content.clone();
     element.attr("id", "rec-hg-" + size);
     // element.find('.delete-record').attr('data-id', size);
     element.find(".delete-record").attr("id", "hg-" + size);
@@ -79,9 +82,9 @@ jQuery(document).ready(function () {
   jQuery(document).delegate("a.add-record5", "click", function (e) {
     e.preventDefault();
     var content = jQuery("#sample_table tr"),
-      size = jQuery("#tbl_posts5 >tbody >tr").length + 1,
-      element = null,
-      element = content.clone();
+        size = jQuery("#tbl_posts5 >tbody >tr").length + 1,
+        element = null,
+        element = content.clone();
     element.attr("id", "rec-fg-" + size);
     // element.find('.delete-record').attr('data-id',size);
     element.find(".delete-record").attr("id", "fg-" + size);
@@ -109,8 +112,8 @@ jQuery(document).ready(function () {
       if (uid == "fg") {
         $("#tbl_posts_body5 tr").each(function (index) {
           $(this)
-            .find("span.sn")
-            .html(index + 1);
+              .find("span.sn")
+              .html(index + 1);
           console.log("hello " + index);
         });
         size = jQuery("#tbl_posts5 >tbody >tr").length;
@@ -124,8 +127,8 @@ jQuery(document).ready(function () {
       if (uid == "hg") {
         $("#tbl_posts_body4 tr").each(function (index) {
           $(this)
-            .find("span.sn")
-            .html(index + 1);
+              .find("span.sn")
+              .html(index + 1);
           console.log("hello " + index);
         });
         size = jQuery("#tbl_posts4 >tbody >tr").length;
@@ -138,8 +141,8 @@ jQuery(document).ready(function () {
       if (uid == "pu") {
         $("#tbl_posts_body3 tr").each(function (index) {
           $(this)
-            .find("span.sn")
-            .html(index + 1);
+              .find("span.sn")
+              .html(index + 1);
           console.log("hello " + index);
         });
         size = jQuery("#tbl_posts3 >tbody >tr").length;
@@ -153,8 +156,8 @@ jQuery(document).ready(function () {
       if (uid == "clth") {
         $("#tbl_posts_body2 tr").each(function (index) {
           $(this)
-            .find("span.sn")
-            .html(index + 1);
+              .find("span.sn")
+              .html(index + 1);
           console.log("hello " + index);
         });
         size = jQuery("#tbl_posts2 >tbody >tr").length;
@@ -168,8 +171,8 @@ jQuery(document).ready(function () {
       if (uid == "bg") {
         $("#tbl_posts_body1 tr").each(function (index) {
           $(this)
-            .find("span.sn")
-            .html(index + 1);
+              .find("span.sn")
+              .html(index + 1);
           console.log("hello " + index);
         });
         size = jQuery("#tbl_posts1 >tbody >tr").length;
@@ -276,7 +279,7 @@ jQuery(document).ready(function () {
     menutab2();
     if (flag2 == 1) {
       toastr.warning(
-        "Please complete required Fields on Image Section and continue"
+          "Please complete required Fields on Image Section and continue"
       );
       return;
     }
@@ -822,22 +825,22 @@ jQuery(document).ready(function () {
 
   function menutab1() {
     if (
-      trek_tax == "" ||
-      trek_about_video == "" ||
-      trek_fitness_required == "" ||
-      trek_experience == "" ||
-      trek_suitable_for == "" ||
-      trek_transportation_insurace == "" ||
-      trek_name == "" ||
-      trek_country == "" ||
-      trek_state == "" ||
-      trek_season == "" ||
-      trek_grade == "" ||
-      trek_day == "" ||
-      trek_altitude == "" ||
-      trek_distance == "" ||
-      trek_season == "" ||
-      trek_trail_type == ""
+        trek_tax == "" ||
+        trek_about_video == "" ||
+        trek_fitness_required == "" ||
+        trek_experience == "" ||
+        trek_suitable_for == "" ||
+        trek_transportation_insurace == "" ||
+        trek_name == "" ||
+        trek_country == "" ||
+        trek_state == "" ||
+        trek_season == "" ||
+        trek_grade == "" ||
+        trek_day == "" ||
+        trek_altitude == "" ||
+        trek_distance == "" ||
+        trek_season == "" ||
+        trek_trail_type == ""
     ) {
       jQuery("#menu_home").css("border-color", "red");
     } else {
@@ -847,10 +850,10 @@ jQuery(document).ready(function () {
 
   function menutab2() {
     if (
-      profile_url == "" ||
-      gallery_url == "" ||
-      slider_url == "" ||
-      trek_maps_url == ""
+        profile_url == "" ||
+        gallery_url == "" ||
+        slider_url == "" ||
+        trek_maps_url == ""
     ) {
       jQuery("#menu_one").css("border-color", "red");
     } else {
@@ -860,14 +863,14 @@ jQuery(document).ready(function () {
 
   function menutab3() {
     if (
-      trek_pp == "" ||
-      trek_fitness_policy == "" ||
-      trek_participation_policy == "" ||
-      trek_drop == "" ||
-      trek_cancel_policy == "&#&#&" ||
-      trek_essential == "" ||
-      trek_overview == "" ||
-      trek_about == ""
+        trek_pp == "" ||
+        trek_fitness_policy == "" ||
+        trek_participation_policy == "" ||
+        trek_drop == "" ||
+        trek_cancel_policy == "&#&#&" ||
+        trek_essential == "" ||
+        trek_overview == "" ||
+        trek_about == ""
     ) {
       jQuery("#menu_two").css("border-color", "red");
     } else {
@@ -877,16 +880,16 @@ jQuery(document).ready(function () {
 
   function menutab3edit() {
     if (
-      trek_cancel_policy == "&#&#&" ||
-      trek_fitness_policy == "" ||
-      trek_participation_policy == "" ||
-      trek_essential == "" ||
-      trek_overview == "" ||
-      trek_about == "" ||
-      trek_drop == null ||
-      trek_pp == null ||
-      trek_drop == "" ||
-      trek_pp == ""
+        trek_cancel_policy == "&#&#&" ||
+        trek_fitness_policy == "" ||
+        trek_participation_policy == "" ||
+        trek_essential == "" ||
+        trek_overview == "" ||
+        trek_about == "" ||
+        trek_drop == null ||
+        trek_pp == null ||
+        trek_drop == "" ||
+        trek_pp == ""
     ) {
       jQuery("#menu_two").css("border-color", "red");
     } else {
@@ -896,10 +899,10 @@ jQuery(document).ready(function () {
 
   function menutab4() {
     if (
-      trek_cost_terms_inclusion == "" ||
-      trek_cost_terms_exclusion == "" ||
-      trek_cost_terms_note == "" ||
-      trek_cost_terms_tour_fee == ""
+        trek_cost_terms_inclusion == "" ||
+        trek_cost_terms_exclusion == "" ||
+        trek_cost_terms_note == "" ||
+        trek_cost_terms_tour_fee == ""
     ) {
       jQuery("#menu_three").css("border-color", "red");
     } else {
@@ -909,15 +912,15 @@ jQuery(document).ready(function () {
 
   function menutab5() {
     if (
-      trek_rr == "" ||
-      trek_reach_air == "" ||
-      trek_reach_air == "" ||
-      trek_reach_bus == "" ||
-      trek_reach_train == "" ||
-      trek_filter_from == "" ||
-      trek_filter_to == "" ||
-      trek_filter_theme == "" ||
-      trek_filter_interests == ""
+        trek_rr == "" ||
+        trek_reach_air == "" ||
+        trek_reach_air == "" ||
+        trek_reach_bus == "" ||
+        trek_reach_train == "" ||
+        trek_filter_from == "" ||
+        trek_filter_to == "" ||
+        trek_filter_theme == "" ||
+        trek_filter_interests == ""
     ) {
       jQuery("#menu_four").css("border-color", "red");
     } else {
@@ -1067,6 +1070,8 @@ function get_values() {
   trek_drop = jQuery("#trek_drop").val();
   cancel_policy_id = jQuery("#cancel_id_modal").val();
   trek_team_member = jQuery("#trek_team_member").val();
+  trek_leader = jQuery("#trek_leader").val();
+  trek_cook = jQuery("#trek_cook").val();
   trek_flag = "nil";
   trek_participation_policy = jQuery("#trek_participation_policy").val();
   trek_fitness_policy = jQuery("#trek_fitness_policy").val();
@@ -1096,22 +1101,22 @@ function get_values() {
   trek_discount_end_date = jQuery("#trek_discount_end_date").val();
 
   trek_cost_terms_cancellation =
-    CKEDITOR.instances.trek_cost_terms_cancellation.getData();
+      CKEDITOR.instances.trek_cost_terms_cancellation.getData();
   trek_cost_terms_cancellation = trek_cost_terms_cancellation.replace(/"/g,"&&");
 
   trek_cost_terms_tour_fee =
-    CKEDITOR.instances.trek_cost_terms_tour_fee.getData();
+      CKEDITOR.instances.trek_cost_terms_tour_fee.getData();
   trek_cost_terms_tour_fee = trek_cost_terms_tour_fee.replace(/"/g, "&&");
 
   trek_cost_terms_note = CKEDITOR.instances.trek_cost_terms_note.getData();
   trek_cost_terms_note = trek_cost_terms_note.replace(/"/g, "&&");
 
   trek_cost_terms_exclusion =
-    CKEDITOR.instances.trek_cost_terms_exclusion.getData();
+      CKEDITOR.instances.trek_cost_terms_exclusion.getData();
   trek_cost_terms_exclusion = trek_cost_terms_exclusion.replace(/"/g, "&&");
 
   trek_cost_terms_inclusion =
-    CKEDITOR.instances.trek_cost_terms_inclusion.getData();
+      CKEDITOR.instances.trek_cost_terms_inclusion.getData();
   trek_cost_terms_inclusion = trek_cost_terms_inclusion.replace(/"/g, "&&");
 
   trek_reach_air = CKEDITOR.instances.trek_reach_air.getData();
@@ -1159,14 +1164,14 @@ function get_values() {
   // console.log(text);
 
   trek_youtube_links = text;
-   var map = [];
-    var size = jQuery('#tbl_posts-map >tbody >tr').length;
-    for (var i = 1; i <= size; i++) {
-        var temp = $('#link-map-' + i).val();
-        map.push(temp);
-    }
-    let mp = map.toString();
-    trek_map_url = mp;
+  var map = [];
+  var size = jQuery('#tbl_posts-map >tbody >tr').length;
+  for (var i = 1; i <= size; i++) {
+    var temp = $('#link-map-' + i).val();
+    map.push(temp);
+  }
+  let mp = map.toString();
+  trek_map_url = mp;
 }
 
 function check_null_value(action) {
@@ -1176,31 +1181,31 @@ function check_null_value(action) {
   // alert(trek_pp);
 
   if (
-    trek_name == "" ||
-    trek_pp == "" ||
-    trek_participation_policy == "" ||
-    trek_fitness_policy == "" ||
-    trek_drop == "" ||
-    trek_country == "" ||
-    profile_url == "" ||
-    gallery_url == "" ||
-    slider_url == "" ||
-    trek_maps_url == "" ||
-    trek_state == "" ||
-    trek_season == "" ||
-    trek_grade == "" ||
-    trek_day == "" ||
-    trek_altitude == "" ||
-    trek_distance == "" ||
-    trek_season == "" ||
-    trek_trail_type == "" ||
-    trek_cancel_policy == "&#&#&" ||
-    trek_essential == "" ||
-    trek_reach_air == "" ||
-    trek_overview == "" ||
-    trek_cost_terms_inclusion == "" ||
-    trek_about == "" ||
-    trek_rr == ""
+      trek_name == "" ||
+      trek_pp == "" ||
+      trek_participation_policy == "" ||
+      trek_fitness_policy == "" ||
+      trek_drop == "" ||
+      trek_country == "" ||
+      profile_url == "" ||
+      gallery_url == "" ||
+      slider_url == "" ||
+      trek_maps_url == "" ||
+      trek_state == "" ||
+      trek_season == "" ||
+      trek_grade == "" ||
+      trek_day == "" ||
+      trek_altitude == "" ||
+      trek_distance == "" ||
+      trek_season == "" ||
+      trek_trail_type == "" ||
+      trek_cancel_policy == "&#&#&" ||
+      trek_essential == "" ||
+      trek_reach_air == "" ||
+      trek_overview == "" ||
+      trek_cost_terms_inclusion == "" ||
+      trek_about == "" ||
+      trek_rr == ""
   ) {
     flag = 1;
     validate("add");
@@ -1272,6 +1277,8 @@ function check_null_value(action) {
     data.append("trek_about_video", trek_about_video);
 
     data.append("trek_team_member", trek_team_member);
+    data.append("trek_leader", trek_leader);
+    data.append("trek_cook", trek_cook);
     data.append("code", 3254);
 
     jQuery("#loader").css("display", "block");
@@ -1320,39 +1327,39 @@ function check_null_value_edit(action, id) {
   var mapimgs = $("#allmaptmpimg").val();
 
   if (
-    trek_tax == "" ||
-    trek_about_video == "" ||
-    trek_fitness_required == "" ||
-    trek_experience == "" ||
-    trek_suitable_for == "" ||
-    trek_transportation_insurace == "" ||
-    trek_name == "" ||
-    trek_country == "" ||
-    trek_state == "" ||
-    trek_season == "" ||
-    trek_grade == "" ||
-    trek_day == "" ||
-    trek_altitude == "" ||
-    trek_distance == "" ||
-    trek_season == "" ||
-    trek_trail_type == "" ||
-    trek_rr == "" ||
-    trek_cost_terms_cancellation == "" ||
-    trek_reach_air == "" ||
-    trek_reach_bus == "" ||
-    trek_reach_train == "" ||
-    trek_filter_from == "" ||
-    trek_filter_to == "" ||
-    trek_filter_theme == "" ||
-    trek_filter_interests == "" ||
-    trek_cancel_policy == "&#&#&" ||
-    trek_essential == "" ||
-    trek_overview == "" ||
-    trek_about == "" ||
-    trek_cost_terms_inclusion == "" ||
-    trek_cost_terms_exclusion == "" ||
-    trek_cost_terms_note == "" ||
-    trek_cost_terms_tour_fee == ""
+      trek_tax == "" ||
+      trek_about_video == "" ||
+      trek_fitness_required == "" ||
+      trek_experience == "" ||
+      trek_suitable_for == "" ||
+      trek_transportation_insurace == "" ||
+      trek_name == "" ||
+      trek_country == "" ||
+      trek_state == "" ||
+      trek_season == "" ||
+      trek_grade == "" ||
+      trek_day == "" ||
+      trek_altitude == "" ||
+      trek_distance == "" ||
+      trek_season == "" ||
+      trek_trail_type == "" ||
+      trek_rr == "" ||
+      trek_cost_terms_cancellation == "" ||
+      trek_reach_air == "" ||
+      trek_reach_bus == "" ||
+      trek_reach_train == "" ||
+      trek_filter_from == "" ||
+      trek_filter_to == "" ||
+      trek_filter_theme == "" ||
+      trek_filter_interests == "" ||
+      trek_cancel_policy == "&#&#&" ||
+      trek_essential == "" ||
+      trek_overview == "" ||
+      trek_about == "" ||
+      trek_cost_terms_inclusion == "" ||
+      trek_cost_terms_exclusion == "" ||
+      trek_cost_terms_note == "" ||
+      trek_cost_terms_tour_fee == ""
   ) {
     flag = 1;
 
@@ -1390,6 +1397,8 @@ function check_null_value_edit(action, id) {
     data.append("trek_trail_type", trek_trail_type);
     data.append("trek_pickup_place1", trek_pp);
     data.append("trek_team_member", trek_team_member);
+    data.append("trek_cook", trek_cook);
+    data.append("trek_leader", trek_leader);
     data.append("trek_drop_place", trek_drop);
     data.append("trek_selected_flags", trek_flag);
 
@@ -1533,10 +1542,10 @@ function validate(action) {
   }
 
   if (
-    trek_drop == "" ||
-    trek_drop == null ||
-    trek_pp == "" ||
-    trek_pp == null
+      trek_drop == "" ||
+      trek_drop == null ||
+      trek_pp == "" ||
+      trek_pp == null
   ) {
     // jQuery("#menu_two").css("background-color","#f7adb1");
 
@@ -1587,10 +1596,10 @@ function validate(action) {
       jQuery("#trek_map").css("border-color", "");
     }
     if (
-      profile_url == "" ||
-      gallery_url == "" ||
-      slider_url == "" ||
-      trek_maps_url == ""
+        profile_url == "" ||
+        gallery_url == "" ||
+        slider_url == "" ||
+        trek_maps_url == ""
     ) {
       jQuery("#menu_one").css("border-color", "red");
     } else {
@@ -1598,14 +1607,14 @@ function validate(action) {
     }
 
     if (
-      trek_cancel_policy == "&#&#&" ||
-      trek_essential == "" ||
-      trek_overview == "" ||
-      trek_about == "" ||
-      trek_drop == "" ||
-      trek_drop == null ||
-      trek_pp == "" ||
-      trek_pp == null
+        trek_cancel_policy == "&#&#&" ||
+        trek_essential == "" ||
+        trek_overview == "" ||
+        trek_about == "" ||
+        trek_drop == "" ||
+        trek_drop == null ||
+        trek_pp == "" ||
+        trek_pp == null
     ) {
       jQuery("#menu_two").css("border-color", "red");
     } else {
@@ -1646,22 +1655,22 @@ function validate(action) {
   }
 
   if (
-    trek_tax == "" ||
-    trek_about_video == "" ||
-    trek_fitness_required == "" ||
-    trek_experience == "" ||
-    trek_suitable_for == "" ||
-    trek_transportation_insurace == "" ||
-    trek_name == "" ||
-    trek_country == "" ||
-    trek_state == "" ||
-    trek_season == "" ||
-    trek_grade == "" ||
-    trek_day == "" ||
-    trek_altitude == "" ||
-    trek_distance == "" ||
-    trek_season == "" ||
-    trek_trail_type == ""
+      trek_tax == "" ||
+      trek_about_video == "" ||
+      trek_fitness_required == "" ||
+      trek_experience == "" ||
+      trek_suitable_for == "" ||
+      trek_transportation_insurace == "" ||
+      trek_name == "" ||
+      trek_country == "" ||
+      trek_state == "" ||
+      trek_season == "" ||
+      trek_grade == "" ||
+      trek_day == "" ||
+      trek_altitude == "" ||
+      trek_distance == "" ||
+      trek_season == "" ||
+      trek_trail_type == ""
   ) {
     jQuery("#menu_home").css("border-color", "red");
   } else {
@@ -1669,10 +1678,10 @@ function validate(action) {
   }
 
   if (
-    trek_cancel_policy == "&#&#&" ||
-    trek_essential == "" ||
-    trek_overview == "" ||
-    trek_about == ""
+      trek_cancel_policy == "&#&#&" ||
+      trek_essential == "" ||
+      trek_overview == "" ||
+      trek_about == ""
   ) {
     jQuery("#menu_two").css("border-color", "red");
   } else {
@@ -1680,10 +1689,10 @@ function validate(action) {
   }
 
   if (
-    trek_cost_terms_inclusion == "" ||
-    trek_cost_terms_exclusion == "" ||
-    trek_cost_terms_note == "" ||
-    trek_cost_terms_tour_fee == ""
+      trek_cost_terms_inclusion == "" ||
+      trek_cost_terms_exclusion == "" ||
+      trek_cost_terms_note == "" ||
+      trek_cost_terms_tour_fee == ""
   ) {
     jQuery("#menu_three").css("border-color", "red");
   } else {
@@ -1691,15 +1700,15 @@ function validate(action) {
   }
 
   if (
-    trek_rr == "" ||
-    trek_cost_terms_cancellation == "" ||
-    trek_reach_air == "" ||
-    trek_reach_bus == "" ||
-    trek_reach_train == "" ||
-    trek_filter_from == "" ||
-    trek_filter_to == "" ||
-    trek_filter_theme == "" ||
-    trek_filter_interests == ""
+      trek_rr == "" ||
+      trek_cost_terms_cancellation == "" ||
+      trek_reach_air == "" ||
+      trek_reach_bus == "" ||
+      trek_reach_train == "" ||
+      trek_filter_from == "" ||
+      trek_filter_to == "" ||
+      trek_filter_theme == "" ||
+      trek_filter_interests == ""
   ) {
     jQuery("#menu_four").css("border-color", "red");
   } else {
@@ -1922,9 +1931,9 @@ function allpageStatus(id, act) {
 
         swal({
           title:
-            "Itinerary Field is still pending! Do you want to publish " +
-            trek_name +
-            " anyway?",
+              "Itinerary Field is still pending! Do you want to publish " +
+              trek_name +
+              " anyway?",
           text: "You can edit Itinerary anytime.",
           icon: "warning",
           buttons: true,
@@ -1956,8 +1965,8 @@ function allpageStatus(id, act) {
                   } else if (json.result == "reload2") {
                     // alert("Please add all itinerary and continue!");
                     toastr.warning(
-                      "Please add all itinerary and continue!",
-                      "Oh no!"
+                        "Please add all itinerary and continue!",
+                        "Oh no!"
                     );
                   }
                 } else {
@@ -1977,9 +1986,9 @@ function allpageStatus(id, act) {
 
         swal({
           title:
-            "Itinerary Field is still pending! Do you want to display " +
-            trek_name +
-            " in top picks?",
+              "Itinerary Field is still pending! Do you want to display " +
+              trek_name +
+              " in top picks?",
           text: "You can edit Itinerary anytime.",
           icon: "warning",
           buttons: true,
@@ -2011,8 +2020,8 @@ function allpageStatus(id, act) {
                   } else if (json.result == "reload2") {
                     // alert("Please add all itinerary and continue!");
                     toastr.warning(
-                      "Please add all itinerary and continue!",
-                      "Oh no!"
+                        "Please add all itinerary and continue!",
+                        "Oh no!"
                     );
                   }
                 } else {
@@ -2065,8 +2074,8 @@ function allpageStatus(id, act) {
                   });
                 } else if (json.result == "reload2") {
                   toastr.warning(
-                    "Please add all itinerary and continue",
-                    "Oh no!"
+                      "Please add all itinerary and continue",
+                      "Oh no!"
                   );
                   // alert("Please add all itinerary and continue!");
                 }
@@ -2079,7 +2088,7 @@ function allpageStatus(id, act) {
       } else if (act == "top") {
         data.append("accomp", "toppick");
         var r = confirm(
-          "Do you want to display " + trek_name + " in top picks?"
+            "Do you want to display " + trek_name + " in top picks?"
         );
         if (r == true) {
           jQuery.ajax({
@@ -2106,8 +2115,8 @@ function allpageStatus(id, act) {
                   });
                 } else if (json.result == "reload2") {
                   toastr.warning(
-                    "Please add all itinerary and continue",
-                    "Oh no!"
+                      "Please add all itinerary and continue",
+                      "Oh no!"
                   );
                   // alert("Please add all itinerary and continue!");
                 }
@@ -2686,8 +2695,8 @@ function policyEdit(id) {
       jQuery("#" + elementid + "-policyEdit").css("display", "none");
 
       jQuery("#" + elementid + "-policySelected").css(
-        "border",
-        "3px solid rgba(3, 166, 120, 1)"
+          "border",
+          "3px solid rgba(3, 166, 120, 1)"
       );
 
       data = new FormData();
@@ -2707,9 +2716,9 @@ function policyEdit(id) {
 
           if (json.statusCode == 200) {
             if (
-              json.outputName != "" &&
-              json.outputContent != "" &&
-              json.outputId != ""
+                json.outputName != "" &&
+                json.outputContent != "" &&
+                json.outputId != ""
             ) {
               // location.reload();
               jQuery("#trek_cancel_policy_name").val("");
@@ -2745,8 +2754,8 @@ function policycancelBut(id) {
       jQuery("#" + elementid + "-policyCancelBut").css("display", "none");
       jQuery("#" + elementid + "-policyEdit").css("display", "");
       jQuery("#" + elementid + "-policySelected").css(
-        "border",
-        "1px solid rgba(255, 0, 0, 0.8)"
+          "border",
+          "1px solid rgba(255, 0, 0, 0.8)"
       );
       jQuery("#trek_cancel_policy_name").val("");
       jQuery("#trek_cancel_policy_id").val("");
@@ -2803,371 +2812,371 @@ function updateCancelPolicy() {
 function upload1() {
   profile_url = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: false,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
+      .media({
+        title: "Upload Images",
+        multiple: false,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
 
-      // selectimg=uploadedImages.toJSON();
-      // ;
-      count = uploadedImages.toJSON().length;
-      selectimage = uploadedImages.toJSON();
-      if (count == 1) {
-        result = selectimage[0].url;
-      }
-      profile_url.push(result);
-      $("#trek_upload_img1").append(result);
-      jQuery(".gallarybox1").css("box-shadow", "10px 10px green");
-      jQuery("#p1").css("display", "none");
-      jQuery("#p2").css("display", "block");
-      if (selectimage[0].url != "") {
-        jQuery("#p2").append(
-          '<img  src="' +
-            selectimage[0].url +
-            '" style="height: 100px;width: 100px;padding: 5px"/>'
-        );
-      }
-    });
+        // selectimg=uploadedImages.toJSON();
+        // ;
+        count = uploadedImages.toJSON().length;
+        selectimage = uploadedImages.toJSON();
+        if (count == 1) {
+          result = selectimage[0].url;
+        }
+        profile_url.push(result);
+        $("#trek_upload_img1").append(result);
+        jQuery(".gallarybox1").css("box-shadow", "10px 10px green");
+        jQuery("#p1").css("display", "none");
+        jQuery("#p2").css("display", "block");
+        if (selectimage[0].url != "") {
+          jQuery("#p2").append(
+              '<img  src="' +
+              selectimage[0].url +
+              '" style="height: 100px;width: 100px;padding: 5px"/>'
+          );
+        }
+      });
 }
 function upload15() {
   couponImage = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: false,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
+      .media({
+        title: "Upload Images",
+        multiple: false,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
 
-      // selectimg=uploadedImages.toJSON();
-      // ;
-      count = uploadedImages.toJSON().length;
-      selectimage = uploadedImages.toJSON();
-      if (count == 1) {
-        result = selectimage[0].url;
-      }
-      couponImage.push(result);
-      console.log(couponImage);
-      // $('#trek_upload_img1').append(result);
-      jQuery(".couponImg1").css("box-shadow", "10px 10px green");
-    });
+        // selectimg=uploadedImages.toJSON();
+        // ;
+        count = uploadedImages.toJSON().length;
+        selectimage = uploadedImages.toJSON();
+        if (count == 1) {
+          result = selectimage[0].url;
+        }
+        couponImage.push(result);
+        console.log(couponImage);
+        // $('#trek_upload_img1').append(result);
+        jQuery(".couponImg1").css("box-shadow", "10px 10px green");
+      });
 }
 function upload2() {
   gallery_url = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: true,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        gallery_url.push(itemdetails.url);
-        // console.log(itemdetails.url);
-        $("#trek_upload_img2").append(gallery_url);
-        jQuery(".gallarybox2").css("box-shadow", "10px 10px green");
-        jQuery("#g1").css("display", "none");
-        jQuery("#g2").css("display", "block");
-        if (itemdetails.url != "") {
-          jQuery("#g2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px"/>'
-          );
-        }
+      .media({
+        title: "Upload Images",
+        multiple: true,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          gallery_url.push(itemdetails.url);
+          // console.log(itemdetails.url);
+          $("#trek_upload_img2").append(gallery_url);
+          jQuery(".gallarybox2").css("box-shadow", "10px 10px green");
+          jQuery("#g1").css("display", "none");
+          jQuery("#g2").css("display", "block");
+          if (itemdetails.url != "") {
+            jQuery("#g2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px"/>'
+            );
+          }
+        });
       });
-    });
 }
 
 function upload3() {
   slider_url = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: true,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        slider_url.push(itemdetails.url);
-        // console.log(itemdetails.url);
-        $("#trek_upload_img3").append(slider_url);
-        jQuery(".gallarybox3").css("box-shadow", "10px 10px green");
-        jQuery("#s1").css("display", "none");
-        jQuery("#s2").css("display", "block");
-        if (itemdetails.url != "") {
-          jQuery("#s2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px"/>'
-          );
-        }
+      .media({
+        title: "Upload Images",
+        multiple: true,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          slider_url.push(itemdetails.url);
+          // console.log(itemdetails.url);
+          $("#trek_upload_img3").append(slider_url);
+          jQuery(".gallarybox3").css("box-shadow", "10px 10px green");
+          jQuery("#s1").css("display", "none");
+          jQuery("#s2").css("display", "block");
+          if (itemdetails.url != "") {
+            jQuery("#s2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px"/>'
+            );
+          }
+        });
       });
-    });
 }
 
 function upload4() {
   trek_maps_url = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: true,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        trek_maps_url.push(itemdetails.url);
-        console.log(itemdetails.url);
-        $("#trek_upload_img4").append(trek_maps_url);
-        jQuery(".gallarybox4").css("box-shadow", "10px 10px green");
-        jQuery("#l1").css("display", "none");
-        jQuery("#l2").css("display", "block");
-        if (itemdetails.url != "") {
-          jQuery("#l2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px"/>'
-          );
-        }
+      .media({
+        title: "Upload Images",
+        multiple: true,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          trek_maps_url.push(itemdetails.url);
+          console.log(itemdetails.url);
+          $("#trek_upload_img4").append(trek_maps_url);
+          jQuery(".gallarybox4").css("box-shadow", "10px 10px green");
+          jQuery("#l1").css("display", "none");
+          jQuery("#l2").css("display", "block");
+          if (itemdetails.url != "") {
+            jQuery("#l2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px"/>'
+            );
+          }
+        });
       });
-    });
 }
 
 function upload1Edit() {
   // console.log("==========upload fun================");
   profile_url_edit = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: false,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        profile_url_edit.push(itemdetails.url);
-        // console.log("==========Added url================");
-        // console.log(itemdetails.url);
-        jQuery("#allprofileimg").val(profile_url_edit);
-        profileval = jQuery("#allprofileimg").val();
-        //  console.log("==========textarea  value================");
-        // console.log(profileval);
-        // console.log(itemdetails.url);
-        if (itemdetails.url != "") {
-          jQuery("#pe2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px;"/>'
-          );
-        }
+      .media({
+        title: "Upload Images",
+        multiple: false,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          profile_url_edit.push(itemdetails.url);
+          // console.log("==========Added url================");
+          // console.log(itemdetails.url);
+          jQuery("#allprofileimg").val(profile_url_edit);
+          profileval = jQuery("#allprofileimg").val();
+          //  console.log("==========textarea  value================");
+          // console.log(profileval);
+          // console.log(itemdetails.url);
+          if (itemdetails.url != "") {
+            jQuery("#pe2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px;"/>'
+            );
+          }
+        });
+        // $('#trek_upload_img3').append(slider_url);
+        jQuery(".gallarybox1").css("box-shadow", "10px 10px #64b381");
       });
-      // $('#trek_upload_img3').append(slider_url);
-      jQuery(".gallarybox1").css("box-shadow", "10px 10px #64b381");
-    });
 }
 
 function upload2Edit() {
   // console.log("==========upload fun================");
 
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: true,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        gallery_url_edit = [];
-        gallery_url_edit.push(itemdetails.url);
-        // console.log("==========Added url================");
-        // console.log(gallery_url_edit);
-        existingGalleryImages = jQuery("#allgalleryimg").val();
-        existingGalleryImagesArray = existingGalleryImages.split(",");
-        // console.log("==========Existing Array================");
-        // console.log(existingGalleryImagesArray);
-        if (existingGalleryImagesArray.length == 1) {
-          if (existingGalleryImagesArray[0] == "") {
-            resultG = gallery_url_edit;
+      .media({
+        title: "Upload Images",
+        multiple: true,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          gallery_url_edit = [];
+          gallery_url_edit.push(itemdetails.url);
+          // console.log("==========Added url================");
+          // console.log(gallery_url_edit);
+          existingGalleryImages = jQuery("#allgalleryimg").val();
+          existingGalleryImagesArray = existingGalleryImages.split(",");
+          // console.log("==========Existing Array================");
+          // console.log(existingGalleryImagesArray);
+          if (existingGalleryImagesArray.length == 1) {
+            if (existingGalleryImagesArray[0] == "") {
+              resultG = gallery_url_edit;
+            } else {
+              resultG = gallery_url_edit.concat(existingGalleryImagesArray);
+            }
           } else {
             resultG = gallery_url_edit.concat(existingGalleryImagesArray);
           }
-        } else {
-          resultG = gallery_url_edit.concat(existingGalleryImagesArray);
-        }
 
-        // console.log("==========Result Array================");
-        // console.log(resultG);
-        jQuery("#allgalleryimg").val(resultG);
-        txtareaGallery = jQuery("#allgalleryimg").val();
+          // console.log("==========Result Array================");
+          // console.log(resultG);
+          jQuery("#allgalleryimg").val(resultG);
+          txtareaGallery = jQuery("#allgalleryimg").val();
 
-        //  console.log("==========textarea  value================");
-        // console.log(txtareaGallery);
-        // console.log(itemdetails.url);
-        if (itemdetails.url != "") {
-          jQuery("#ge2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px"/>'
-          );
-        }
+          //  console.log("==========textarea  value================");
+          // console.log(txtareaGallery);
+          // console.log(itemdetails.url);
+          if (itemdetails.url != "") {
+            jQuery("#ge2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px"/>'
+            );
+          }
+        });
+        // $('#trek_upload_img2').append(gallery_url_edit);
+        jQuery(".gallarybox2").css("box-shadow", "10px 10px #64b381");
       });
-      // $('#trek_upload_img2').append(gallery_url_edit);
-      jQuery(".gallarybox2").css("box-shadow", "10px 10px #64b381");
-    });
 }
 
 function upload3Edit() {
   // console.log("==========upload fun================");
 
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: true,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        slider_url_edit = [];
-        slider_url_edit.push(itemdetails.url);
-        // console.log("==========Added url================");
-        // console.log(slider_url_edit);
-        existingSliderImages = jQuery("#allsliderimg").val();
-        existingSliderImagesArray = existingSliderImages.split(",");
-        //   console.log("==========Existing Array================");
-        // console.log(existingSliderImagesArray);
-        // console.log("==========Existing Array length================");
-        // console.log(existingSliderImagesArray.length);
-        if (existingSliderImagesArray.length == 1) {
-          if (existingSliderImagesArray[0] == "") {
-            resultS = slider_url_edit;
+      .media({
+        title: "Upload Images",
+        multiple: true,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          slider_url_edit = [];
+          slider_url_edit.push(itemdetails.url);
+          // console.log("==========Added url================");
+          // console.log(slider_url_edit);
+          existingSliderImages = jQuery("#allsliderimg").val();
+          existingSliderImagesArray = existingSliderImages.split(",");
+          //   console.log("==========Existing Array================");
+          // console.log(existingSliderImagesArray);
+          // console.log("==========Existing Array length================");
+          // console.log(existingSliderImagesArray.length);
+          if (existingSliderImagesArray.length == 1) {
+            if (existingSliderImagesArray[0] == "") {
+              resultS = slider_url_edit;
+            } else {
+              resultS = slider_url_edit.concat(existingSliderImagesArray);
+            }
           } else {
             resultS = slider_url_edit.concat(existingSliderImagesArray);
           }
-        } else {
-          resultS = slider_url_edit.concat(existingSliderImagesArray);
-        }
 
-        //   console.log("==========Result Array================");
-        // console.log(resultS);
-        jQuery("#allsliderimg").val(resultS);
-        txtareaSlider = jQuery("#allsliderimg").val();
+          //   console.log("==========Result Array================");
+          // console.log(resultS);
+          jQuery("#allsliderimg").val(resultS);
+          txtareaSlider = jQuery("#allsliderimg").val();
 
-        //  console.log("==========textarea  value================");
-        // console.log(txtareaSlider);
-        // console.log(itemdetails.url);
-        if (itemdetails.url != "") {
-          jQuery("#se2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px"/>'
-          );
-        }
+          //  console.log("==========textarea  value================");
+          // console.log(txtareaSlider);
+          // console.log(itemdetails.url);
+          if (itemdetails.url != "") {
+            jQuery("#se2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px"/>'
+            );
+          }
+        });
+        // $('#trek_upload_img3').append(slider_url_edit);
+        jQuery(".gallarybox3").css("box-shadow", "10px 10px #64b381");
       });
-      // $('#trek_upload_img3').append(slider_url_edit);
-      jQuery(".gallarybox3").css("box-shadow", "10px 10px #64b381");
-    });
 }
 function upload4Edit() {
   // console.log("==========upload fun================");
 
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: true,
-      library: {
-        type: "image",
-      },
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
-      var selectimg = uploadedImages;
-      selectimg.map(function (image) {
-        var itemdetails = image.toJSON();
-        trek_maps_url_edit = [];
-        trek_maps_url_edit.push(itemdetails.url);
-        // console.log("==========Added url================");
-        // console.log(slider_url_edit);
-        existingMapTmpImages = jQuery("#allmaptmpimg").val();
-        existingMapTmpImagesArray = existingMapTmpImages.split(",");
-        //   console.log("==========Existing Array================");
-        // console.log(existingSliderImagesArray);
-        // console.log("==========Existing Array length================");
-        // console.log(existingSliderImagesArray.length);
-        if (existingMapTmpImagesArray.length == 1) {
-          if (existingMapTmpImagesArray[0] == "") {
-            resultS = trek_maps_url_edit;
+      .media({
+        title: "Upload Images",
+        multiple: true,
+        library: {
+          type: "image",
+        },
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
+        var selectimg = uploadedImages;
+        selectimg.map(function (image) {
+          var itemdetails = image.toJSON();
+          trek_maps_url_edit = [];
+          trek_maps_url_edit.push(itemdetails.url);
+          // console.log("==========Added url================");
+          // console.log(slider_url_edit);
+          existingMapTmpImages = jQuery("#allmaptmpimg").val();
+          existingMapTmpImagesArray = existingMapTmpImages.split(",");
+          //   console.log("==========Existing Array================");
+          // console.log(existingSliderImagesArray);
+          // console.log("==========Existing Array length================");
+          // console.log(existingSliderImagesArray.length);
+          if (existingMapTmpImagesArray.length == 1) {
+            if (existingMapTmpImagesArray[0] == "") {
+              resultS = trek_maps_url_edit;
+            } else {
+              resultS = trek_maps_url_edit.concat(existingMapTmpImagesArray);
+            }
           } else {
             resultS = trek_maps_url_edit.concat(existingMapTmpImagesArray);
           }
-        } else {
-          resultS = trek_maps_url_edit.concat(existingMapTmpImagesArray);
-        }
 
-        //   console.log("==========Result Array================");
-        // console.log(resultS);
-        jQuery("#allmaptmpimg").val(resultS);
-        txtareaMap = jQuery("#allmaptmpimg").val();
+          //   console.log("==========Result Array================");
+          // console.log(resultS);
+          jQuery("#allmaptmpimg").val(resultS);
+          txtareaMap = jQuery("#allmaptmpimg").val();
 
-        //  console.log("==========textarea  value================");
-        // console.log(txtareaSlider);
-        // console.log(itemdetails.url);
-        if (itemdetails.url != "") {
-          jQuery("#le2").append(
-            '<img  src="' +
-              itemdetails.url +
-              '" style="height: 60px;width: 60px;padding: 5px"/>'
-          );
-        }
+          //  console.log("==========textarea  value================");
+          // console.log(txtareaSlider);
+          // console.log(itemdetails.url);
+          if (itemdetails.url != "") {
+            jQuery("#le2").append(
+                '<img  src="' +
+                itemdetails.url +
+                '" style="height: 60px;width: 60px;padding: 5px"/>'
+            );
+          }
+        });
+        // $('#trek_upload_img3').append(slider_url_edit);
+        jQuery(".gallarybox4").css("box-shadow", "10px 10px #64b381");
       });
-      // $('#trek_upload_img3').append(slider_url_edit);
-      jQuery(".gallarybox4").css("box-shadow", "10px 10px #64b381");
-    });
 }
 
 function slider_img_edit(id) {
@@ -3239,25 +3248,25 @@ function gallery_img_edit(id) {
 function uploadMap() {
   map_url = [];
   var images = wp
-    .media({
-      title: "Upload Images",
-      multiple: false,
-    })
-    .open()
-    .on("select", function (e) {
-      var uploadedImages = images.state().get("selection");
+      .media({
+        title: "Upload Images",
+        multiple: false,
+      })
+      .open()
+      .on("select", function (e) {
+        var uploadedImages = images.state().get("selection");
 
-      // selectimg=uploadedImages.toJSON();
-      // ;
-      count = uploadedImages.toJSON().length;
-      selectimage = uploadedImages.toJSON();
-      if (count == 1) {
-        result = selectimage[0].url;
-      }
-      map_url.push(result);
-      jQuery("#trek_map").val("File Selected");
-      jQuery("#trek_map").css("border", "2px solid green");
-    });
+        // selectimg=uploadedImages.toJSON();
+        // ;
+        count = uploadedImages.toJSON().length;
+        selectimage = uploadedImages.toJSON();
+        if (count == 1) {
+          result = selectimage[0].url;
+        }
+        map_url.push(result);
+        jQuery("#trek_map").val("File Selected");
+        jQuery("#trek_map").css("border", "2px solid green");
+      });
 }
 
 function deleteGradeModal(act) {
@@ -3708,6 +3717,7 @@ function upload(file) {
   form.append("upload-image", files);
   $("#uploaderr").text("");
   $("#uploadSucess").text("");
+  $("#uploadSucess").text("File Uploading.. please wait.");
   $.ajax({
     type: "POST",
     url: my_obj_up.ajax_upload,
@@ -3725,6 +3735,7 @@ function upload(file) {
         //uploadurl,uploaderr
       } else {
         $("#uploaderr").text("There is some issues with this file.");
+        $("#uploadSucess").text("");
         //failed
       }
     },
@@ -3846,14 +3857,14 @@ function additinerary() {
   trek_itinerary_brief = CKEDITOR.instances.trek_itinerary_brief.getData();
   trek_itinerary_brief = trek_itinerary_brief.replace(/"/g, "&&");
   trek_itinerary_detailed =
-    CKEDITOR.instances.trek_itinerary_detailed.getData();
+      CKEDITOR.instances.trek_itinerary_detailed.getData();
   trek_itinerary_detailed = trek_itinerary_detailed.replace(/"/g, "&&");
   // alert(itinerary_day);
   if (
-    trek_id == "" ||
-    itinerary_day == "" ||
-    trek_itinerary_brief == "" ||
-    trek_itinerary_detailed == ""
+      trek_id == "" ||
+      itinerary_day == "" ||
+      trek_itinerary_brief == "" ||
+      trek_itinerary_detailed == ""
   ) {
     // alert("All fields required!");
     toastr.warning("All fields required!", "wait!");
@@ -3915,16 +3926,16 @@ function updateitinerary() {
   trek_itinerary_brief = CKEDITOR.instances.trek_itinerary_brief.getData();
   trek_itinerary_brief = trek_itinerary_brief.replace(/"/g, "&&");
   trek_itinerary_detailed =
-    CKEDITOR.instances.trek_itinerary_detailed.getData();
+      CKEDITOR.instances.trek_itinerary_detailed.getData();
   trek_itinerary_detailed = trek_itinerary_detailed.replace(/"/g, "&&");
   trek_itinerary_head = jQuery("#trek_itinerary_head").val();
   // alert(itinerary_day);
   if (
-    trek_id == "" ||
-    itinerary_day == "" ||
-    trek_itinerary_brief == "" ||
-    trek_itinerary_detailed == "" ||
-    trek_itinerary_head == ""
+      trek_id == "" ||
+      itinerary_day == "" ||
+      trek_itinerary_brief == "" ||
+      trek_itinerary_detailed == "" ||
+      trek_itinerary_head == ""
   ) {
     // alert("All fields required!");
     toastr.warning("All fields required!", "Wait!");
@@ -4250,8 +4261,56 @@ function manageBrochure(id, action) {
   }
 }
 
-function manageBrochureWarning() {
-  toastr.warning("Please activate any other brochure and continue.");
+function manageBrochureWarning(id) {
+  var res = id.split("-");
+    elementid = res[0];
+    swal({
+        title: "Are you sure?",
+        text: "Do you really want to delete this item!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+
+            data = new FormData();
+            data.append("id", elementid);
+            data.append("action", "deleteBrochure");
+
+
+            jQuery.ajax({
+                type: "post",
+                cache: false,
+                contentType: false,
+                processData: false,
+                url: my_obj.ajax_url,
+                data: data,
+                success: function (msg) {
+                    jQuery("#loader").css("display", "none");
+                    json = JSON.parse(msg);
+                    console.log(json);
+
+                    if (json.statusCode == 200) {
+
+                        swal({
+                            title: "Deleted!",
+                            text: "The data is deleted!",
+                            icon: "success",
+                            timer: 2000,
+                            buttons: false,
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        toastr.error("Some error occurred", "Oh no!");
+                    }
+                },
+            });
+
+
+        }
+    });
 }
 
 // add pickup js start
@@ -4426,7 +4485,7 @@ function pickEdit(id) {
               CKEDITOR.instances.pickup_reach_air1.setData(json.outputHowAir);
               CKEDITOR.instances.pickup_reach_bus1.setData(json.outputHowBus);
               CKEDITOR.instances.pickup_reach_train1.setData(
-                json.outputHowTrain
+                  json.outputHowTrain
               );
 
               jQuery("#loader").css("display", "none");
@@ -4461,10 +4520,10 @@ function updatePickup() {
   // )
 
   if (
-    pickplace == "" ||
-    pickId == "" ||
-    pickstate == ""
-  
+      pickplace == "" ||
+      pickId == "" ||
+      pickstate == ""
+
   ) {
     // alert("Something wrong!");
     toastr.error("Something wrong", "Oh no!");
@@ -4819,6 +4878,7 @@ function editDeparture(id) {
       jQuery("#departure-end-date-edit").val("");
       jQuery("#departure-Total-seats-edit").val("");
       jQuery("#departure-select-section-edit").val("");
+      document.querySelector('#departure-show').checked = false
       var data = new FormData();
       data.append("departureId", elementid);
       data.append("action", "getDepartureContent");
@@ -4836,12 +4896,14 @@ function editDeparture(id) {
 
           if (json.statusCode == 200) {
             if (json.result == "fetch") {
+            console.log(json)
               jQuery("#departure-ids-edit").val(json.val);
               jQuery("#departure-start-date-edit").val(json.start);
               jQuery("#departure-end-date-edit").val(json.end);
               jQuery("#departure-Total-seats-edit").val(json.seats);
               jQuery("#trek_event_edit").val(json.eventId);
               jQuery("#departure-select-section-edit").val(json.section);
+              json.show == 2 ? document.querySelector('#departure-show').checked = true : null;
               jQuery("#loader").css("display", "none");
             }
           } else {
@@ -4861,13 +4923,14 @@ function updateBookingDeparture() {
   section = jQuery("#departure-select-section-edit").val();
   eventId = jQuery("#trek_event_edit").val();
   eventText = $("#trek_event_edit option:selected").text();
+  show = document.querySelector("#departure-show").checked;
 
   if (
-    departureId != "" &&
-    sdate != "" &&
-    edate != "" &&
-    seats != "" &&
-    section != ""
+      departureId != "" &&
+      sdate != "" &&
+      edate != "" &&
+      seats != "" &&
+      section != ""
   ) {
     var data = new FormData();
     data.append("departureId", departureId);
@@ -4878,6 +4941,7 @@ function updateBookingDeparture() {
     data.append("eventText", eventText);
     data.append("section", section);
     data.append("action", "updateDepartureContent");
+    data.append("show", show);
 
     jQuery("#loader").css("display", "block");
     jQuery.ajax({
@@ -4920,7 +4984,7 @@ function choosedep() {
   trek = jQuery("#ppcdat").val();
   if (val == "") {
     data =
-      '<tr><td valign="top" colspan="6" class="dataTables_empty">No data available in table</td></tr>';
+        '<tr><td valign="top" colspan="6" class="dataTables_empty">No data available in table</td></tr>';
     jQuery("#trek_user_details").empty();
     jQuery("#trek_user_details").append(data);
     jQuery("#loader").css("display", "none");
@@ -4995,7 +5059,7 @@ function trekkersrDetails(id) {
   if (id == "") {
     jQuery("#trekkersDetailsBooking").empty();
     jQuery("#trekkersDetailsBooking").append(
-      '<tr><td valign="top" colspan="6" class="dataTables_empty">No data available in table</td></tr>'
+        '<tr><td valign="top" colspan="6" class="dataTables_empty">No data available in table</td></tr>'
     );
     // alert("Something went wrong!");
     toastr.error("Something went wrong!", "Oh no!");
@@ -5184,6 +5248,11 @@ function addEss(fun) {
     var idData = jQuery("#modalData1").val();
   } else if (fun == "default") {
     essential = jQuery("#ess-name").val();
+     if(essential==="")
+        {
+            toastr.error("Title cannot be empty", "Oh no!");
+            return;
+        }
   } else if (fun == "basic-edit") {
     var idData = jQuery("#modalDataEdit1").val();
     var target = jQuery("#edit-basic-gear").val();
@@ -5820,8 +5889,8 @@ function getModalDeparture(id, spin) {
                 jQuery(".detailsdep").css("display", "none");
                 jQuery(".expand-collapse h5").each(function () {
                   var tis = jQuery(this),
-                    state = false,
-                    answer = tis.next("div").slideUp();
+                      state = false,
+                      answer = tis.next("div").slideUp();
                   tis.click(function () {
                     state = !state;
                     answer.slideToggle(state);
@@ -5893,7 +5962,7 @@ function cancellationActionButton(id) {
               }).then((willDelete) => {
                 if (willDelete) {
                   window.location.replace(
-                    "admin.php?page=manage_cancellation&num=" + elementid
+                      "admin.php?page=manage_cancellation&num=" + elementid
                   );
                 }
               });
@@ -6118,7 +6187,7 @@ function getTrekData(item) {
 
         for (var i = 0; i < json.date.length; i++) {
           $("#coupon_selected_departure").append(
-            '<option value="' + json.id[i] + '">' + json.date[i] + "</option>"
+              '<option value="' + json.id[i] + '">' + json.date[i] + "</option>"
           );
         }
         jQuery("#loader").css("display", "none");
@@ -6289,7 +6358,7 @@ function addGrade() {
 function deleteEvent() {
   id = jQuery("#trek_event_delete").val();
   if (id == "") {
-    toastr.warning("Please select grade and continue!", "Wait!");
+    toastr.warning("Please select event and continue!", "Wait!");
     // alert("Please select grade and continue!");
     return;
   }
@@ -6299,7 +6368,7 @@ function deleteEvent() {
 
   swal({
     title: "Are you sure?",
-    text: "Do you really want to delete this Grade?",
+    text: "Do you really want to delete this Event?",
     icon: "warning",
     buttons: true,
     dangerMode: true,
@@ -6376,10 +6445,10 @@ function vendor_Edit(id) {
 
           var trId = json.outputPlaceID;
           $("#treks option")
-            .filter(function () {
-              return this.id === trId;
-            })
-            .prop("selected", true);
+              .filter(function () {
+                return this.id === trId;
+              })
+              .prop("selected", true);
 
           // jQuery("#treks").val(json.outputPlaceID);
           jQuery("#loader").css("display", "none");
@@ -6586,6 +6655,88 @@ function createNewContact() {
     });
   }
 }
+function updateContactFetch(id) {
+
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'getContact');
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.result == 'fetched') {
+              $("#edit_tth_user").val(json.name);
+              $("#edit_tth_user_mail").val(json.email);
+              $("#edit_tth_user_phone1").val(json.contact_num1);
+              $("#edit_tth_user_phone2").val(json.contact_num2);
+              document.getElementById('upadteContactButton').dataset.id = json.id;
+              jQuery('#editModal').modal('show');
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function updateContact(e) {
+  id = e.currentTarget.dataset.id;
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'updateContact');
+  data.append('contact_name', $('#edit_tth_user').val());
+  data.append('contact_email', $('#edit_tth_user_mail').val());
+  data.append('contact_num1', $('#edit_tth_user_phone1').val());
+  data.append('contact_num2', $('#edit_tth_user_phone2').val());
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.message == 'success') {
+              jQuery('#editModal').modal('hide');
+              location.reload();
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
 function deleteContact(id) {
   if (id == "") {
     swal("Warning", "Some error occured!");
@@ -6606,9 +6757,10 @@ function deleteContact(id) {
     data: data,
     success: function (msg) {
       json = JSON.parse(msg);
+      console.log(json);
       jQuery("#loader").css("display", "none");
       if (json.statusCode == 200) {
-        if (json.result == "deleted") {
+        if (json.result == "reload") {
           swal("Success", "Deleted Successfully!");
 
           location.reload();
@@ -6619,6 +6771,339 @@ function deleteContact(id) {
     },
   });
 }
+
+
+//cooks
+
+function createNewCook() {
+  //usererr,usersuccess,tth_user_phone2,tth_user_phone1,tth_user_mail,tth_user
+  $("#usererr").html("");
+  var mail = $("#tth_user_mail").val();
+  var ph1 = $("#tth_user_phone1").val();
+  var ph2 = $("#tth_user_phone2").val();
+  var user = $("#tth_user").val();
+
+  if (mail === "" || ph1 === "" || ph2 === "" || user === "") {
+    $("#usererr").html("All fields are required.");
+  } else {
+    // console.log(mail);
+    // console.log(ph1);
+    // console.log(ph2);
+    // console.log(user);
+
+    var data = new FormData();
+    data.append("user_id", user);
+    data.append("mail", mail);
+    data.append("phone1", ph1);
+    data.append("phone2", ph2);
+    data.append("action", "addCook");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+        if (json.statusCode == 200) {
+          swal("Success", "Added successfully!");
+
+          location.reload();
+        } else if (json.statusCode == 201) {
+          $("#usererr").html("User already added.");
+        } else {
+          swal("Warning", "Some error occured!");
+        }
+      },
+    });
+  }
+}
+function updateCookFetch(id) {
+
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'getCook');
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.result == 'fetched') {
+              $("#edit_tth_user").val(json.name);
+              $("#edit_tth_user_mail").val(json.email);
+              $("#edit_tth_user_phone1").val(json.cook_num1);
+              $("#edit_tth_user_phone2").val(json.cook_num2);
+              document.getElementById('upadteCookButton').dataset.id = json.id;
+              jQuery('#editModal').modal('show');
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function updateCook(e) {
+  id = e.currentTarget.dataset.id;
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'updateCook');
+  data.append('cook_name', $('#edit_tth_user').val());
+  data.append('cook_email', $('#edit_tth_user_mail').val());
+  data.append('cook_num1', $('#edit_tth_user_phone1').val());
+  data.append('cook_num2', $('#edit_tth_user_phone2').val());
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.message == 'success') {
+              jQuery('#editModal').modal('hide');
+              location.reload();
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function deleteCook(id) {
+  if (id == "") {
+    swal("Warning", "Some error occured!");
+    return;
+  }
+  var data = new FormData();
+
+  data.append("action", "deleteCook");
+  data.append("con_id", id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+    type: "post",
+    cache: false,
+    contentType: false,
+    processData: false,
+    url: my_obj.ajax_url,
+    data: data,
+    success: function (msg) {
+      json = JSON.parse(msg);
+      console.log(json);
+      jQuery("#loader").css("display", "none");
+      if (json.statusCode == 200) {
+        if (json.result == "reload") {
+          swal("Success", "Deleted Successfully!");
+
+          location.reload();
+        }
+      } else {
+        swal("Warning", "Some error occurred!");
+      }
+    },
+  });
+}
+
+
+//leaders
+
+function createNewLeader() {
+  //usererr,usersuccess,tth_user_phone2,tth_user_phone1,tth_user_mail,tth_user
+  $("#usererr").html("");
+  var mail = $("#tth_user_mail").val();
+  var ph1 = $("#tth_user_phone1").val();
+  var ph2 = $("#tth_user_phone2").val();
+  var user = $("#tth_user").val();
+
+  if (mail === "" || ph1 === "" || ph2 === "" || user === "") {
+    $("#usererr").html("All fields are required.");
+  } else {
+    // console.log(mail);
+    // console.log(ph1);
+    // console.log(ph2);
+    // console.log(user);
+
+    var data = new FormData();
+    data.append("user_id", user);
+    data.append("mail", mail);
+    data.append("phone1", ph1);
+    data.append("phone2", ph2);
+    data.append("action", "addLeader");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+        if (json.statusCode == 200) {
+          swal("Success", "Added successfully!");
+
+          location.reload();
+        } else if (json.statusCode == 201) {
+          $("#usererr").html("User already added.");
+        } else {
+          swal("Warning", "Some error occured!");
+        }
+      },
+    });
+  }
+}
+function updateLeaderFetch(id) {
+
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'getLeader');
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.result == 'fetched') {
+              $("#edit_tth_user").val(json.name);
+              $("#edit_tth_user_mail").val(json.email);
+              $("#edit_tth_user_phone1").val(json.leader_num1);
+              $("#edit_tth_user_phone2").val(json.leader_num2);
+              document.getElementById('upadteLeaderButton').dataset.id = json.id;
+              jQuery('#editModal').modal('show');
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function updateLeader(e) {
+  id = e.currentTarget.dataset.id;
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'updateLeader');
+  data.append('leader_name', $('#edit_tth_user').val());
+  data.append('leader_email', $('#edit_tth_user_mail').val());
+  data.append('leader_num1', $('#edit_tth_user_phone1').val());
+  data.append('leader_num2', $('#edit_tth_user_phone2').val());
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.message == 'success') {
+              jQuery('#editModal').modal('hide');
+              location.reload();
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function deleteLeader(id) {
+  if (id == "") {
+    swal("Warning", "Some error occured!");
+    return;
+  }
+  var data = new FormData();
+
+  data.append("action", "deleteLeader");
+  data.append("con_id", id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+    type: "post",
+    cache: false,
+    contentType: false,
+    processData: false,
+    url: my_obj.ajax_url,
+    data: data,
+    success: function (msg) {
+      json = JSON.parse(msg);
+      console.log(json);
+      jQuery("#loader").css("display", "none");
+      if (json.statusCode == 200) {
+        if (json.result == "reload") {
+          swal("Success", "Deleted Successfully!");
+
+          location.reload();
+        }
+      } else {
+        swal("Warning", "Some error occurred!");
+      }
+    },
+  });
+}
+
+
+
 
 //links
 
@@ -6838,3 +7323,463 @@ function viewmessage(id) {
   });
 }
 
+//Add remarks
+function addRemarks() {
+  let Trekker_ID = $("#hdntrekkerid").val();
+  let OffLoad =    $('input[name=radOffLoad]:checked').val();
+  let Transport = $('input[name=radTransport]:checked').val();
+  let Comments = $("#txtComments").val();
+  let Added_By = $("#hdnUserID").val();
+ 
+  if ($.trim(Comments) == "") {
+    alert("Comment is Required!");    
+    return false;
+  }
+  else if (Added_By != "") {
+    data = new FormData();
+    data.append("Trekker_ID", Trekker_ID);
+    data.append("OffLoad", OffLoad);
+    data.append("Transport", Transport);
+    data.append("Comments", $.trim(Comments));
+    data.append("Added_By", Added_By);
+    data.append("action", "addremarks");
+    // jQuery("#loader").css("display", "block");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+
+        if (json.statusCode == 200) {
+          toastr.success("Remarks added successfully", "Success!");
+          setTimeout(function () {
+            location.reload();
+          }, 3000);
+        } else if (json.statusCode == 400) {
+          toastr.error("Request Failed", "Oh no!");
+        }
+      },
+      // jQuery("#loader").css("display", "none");
+    });
+  } else {
+    toastr.error("Some error occurred", "Oh no!");
+  }
+}
+
+//Update remarks
+function updatedRemarks() {
+  let RemarksID = $("#hdnremarksID").val();
+  let OffLoad =    $('input[name=radeditOffLoad]:checked').val();
+  let Transport = $('input[name=radeditTransport]:checked').val();
+  let Comments = $("#txteditComments").val();
+  let Added_By = $("#hdnUserID").val();
+
+  if ($.trim(Comments) == "") {
+    alert("Comment is Required!");    
+    return false;
+  }
+  else if (Added_By != "") {
+    data = new FormData();
+    data.append("RemarksID", RemarksID);
+    data.append("OffLoad", OffLoad);
+    data.append("Transport", Transport);
+    data.append("Comments", $.trim(Comments));
+    data.append("Added_By", Added_By);
+    data.append("action", "updateremarks");
+    // jQuery("#loader").css("display", "block");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+
+        if (json.statusCode == 200) {
+          toastr.success("Remarks updated successfully", "Success!");
+          setTimeout(function () {
+            location.reload();
+          }, 3000);
+        } else if (json.statusCode == 400) {
+          toastr.error("Request Failed", "Oh no!");
+        }
+      },
+      // jQuery("#loader").css("display", "none");
+    });
+  } else {
+    toastr.error("Some error occurred", "Oh no!");
+  }
+}
+
+//Change Trekkers status
+function changeStatus(selectedValue,trekkerid,selectedDepartureID)
+{  
+  let Added_By = $("#hdnUserID").val();
+  $("#hdntrekkerid1").val(trekkerid);
+  if(selectedValue==3)//Transfer trek
+  {
+    jQuery("#Modal_departure").modal("show");  
+	$("#select-date").val(selectedDepartureID);
+  }
+  else {
+  if (confirm("Are you sure want to change status")) {
+data = new FormData();
+    data.append("Trekker_ID", trekkerid);
+    data.append("Status", selectedValue); 
+    data.append("Added_By", Added_By);
+    data.append("action", "updatetrekkerstatus");
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+
+        if (json.statusCode == 200) {
+          toastr.success("Status updated successfully", "Success!");
+          setTimeout(function () {
+            location.reload();
+          }, 3000);
+        } else if (json.statusCode == 400) {
+          toastr.error("Request Failed", "Oh no!");
+        }
+      },
+     
+    });
+  }
+}
+}
+//Upcomming departure date
+function getTrekDepartureData(trekid) {
+  if (trekid !== "") {
+    data = new FormData();
+    data.append("trek_id", trekid);
+    data.append("action", "get_trekData");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+        $("#select-date").html("");
+        $("#select-date").append('<option value="">Select Trek Date</option>');
+        for (var i = 0; i < json.date.length; i++) {
+          $("#select-date").append(
+            '<option value="' + json.id[i] + '">' + json.date[i] + "</option>"
+          );
+        }
+      },
+    });
+  }
+}
+
+
+//Update departure date
+function updateDepartureDate()
+{
+  let Added_By = $("#hdnUserID").val();
+  data = new FormData();
+  var departuredate=$("#select-date").val();
+  var trekkerid=$("#hdntrekkerid1").val();
+  var trekid=$("#select-trek").val();
+  data.append("Trekker_ID", trekkerid);
+  data.append("Departure_Date", departuredate); 
+  data.append("Added_By", Added_By);
+  data.append("TrekID", trekid);
+  data.append("action", "updatetrekkerdeparturedate");
+  
+  if(departuredate>0)
+  {
+  jQuery.ajax({
+    type: "post",
+    cache: false,
+    contentType: false,
+    processData: false,
+    url: my_obj.ajax_url,
+    data: data,
+    success: function (msg) {     
+      json = JSON.parse(msg);
+
+      if (json.statusCode == 200) {     
+        toastr.success("Updated successfully", "Success!");
+        return false;
+        //setTimeout(function () {
+          //location.reload();
+        //}, 3000);
+      } else if (json.statusCode == 400) {
+        toastr.error("Request Failed", "Oh no!");
+      }
+    },
+   
+  });
+}
+else
+{ toastr.error("Choose one date and continue", "Oh no!");
+//setTimeout(function () {
+  //location.reload();
+//}, 1500); 
+}
+}
+
+//leaders Rating
+//Add
+function createNewLeaderRating() {
+  //usererr,usersuccess,tth_user_phone2,tth_user_phone1,tth_user_mail,tth_user
+  $("#usererr").html("");
+  var leaderid = $("#trek_leader").val();
+  var noofbatch = $("#tth_no_of_batches").val();
+  var noofdays = $("#tth_no_of_days").val();
+  var rating = $("#input-2").val();
+  var Added_By = $("#hdnUserID").val();
+  if (leaderid === "" || noofbatch === "" || noofdays === "" || rating === "") {
+    $("#usererr").html("All fields are required.");
+  } else {
+  
+    var data = new FormData();
+    data.append("leaderid", leaderid);
+    data.append("noofbatch", noofbatch);
+    data.append("noofdays", noofdays);
+    data.append("rating", rating);
+    data.append("Added_By", Added_By);
+    data.append("action", "addTrekLeaderRating");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+        if (json.statusCode == 200) {
+          swal("Success", "Added successfully!");
+
+          location.reload();
+        } else if (json.statusCode == 201) {
+          $("#usererr").html("User already added.");
+        } else {
+          swal("Warning", "Some error occured!");
+        }
+      },
+    });
+  }
+}
+
+function updateLeaderRatingFetch(id) {
+
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'getTrekLeaderRating');
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.result == 'fetched') {
+              $("#edit_tth_user").val(json.name);
+              $("#edit_tth_user_mail").val(json.email);
+              $("#edit_tth_user_phone1").val(json.leader_num1);
+              $("#edit_tth_user_phone2").val(json.leader_num2);
+              document.getElementById('upadteLeaderButton').dataset.id = json.id;
+              jQuery('#editModal').modal('show');
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function updateLeader(e) {
+  id = e.currentTarget.dataset.id;
+  if (id == '') {
+     swal("Warning","Something went wrong!");
+     return;
+  }
+  var data = new FormData();
+
+  data.append('action', 'updateLeader');
+  data.append('leader_name', $('#edit_tth_user').val());
+  data.append('leader_email', $('#edit_tth_user_mail').val());
+  data.append('leader_num1', $('#edit_tth_user_phone1').val());
+  data.append('leader_num2', $('#edit_tth_user_phone2').val());
+  data.append('id', id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+     type: "post",
+     cache: false,
+     contentType: false,
+     processData: false,
+     url: my_obj.ajax_url,
+     data: data,
+     success: function(msg) {
+      console.log(msg);
+      json = JSON.parse(msg);
+      console.log(json);
+
+        if (json.statusCode == 200) {
+
+           if (json.message == 'success') {
+              jQuery('#editModal').modal('hide');
+              location.reload();
+              jQuery("#loader").css("display", "none");
+           }
+        } else {
+          swal("Warning","Some error occured!");
+        }
+     }
+  });
+}
+function deleteLeaderRating(id) {
+  if (id == "") {
+    swal("Warning", "Some error occured!");
+    return;
+  }
+  if(confirm("Are you sure want to delete?"))
+  {
+  var data = new FormData();
+
+  data.append("action", "deleteLeaderRating");
+  data.append("con_id", id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+    type: "post",
+    cache: false,
+    contentType: false,
+    processData: false,
+    url: my_obj.ajax_url,
+    data: data,
+    success: function (msg) {
+      json = JSON.parse(msg);
+      console.log(json);
+      jQuery("#loader").css("display", "none");
+      if (json.statusCode == 200) {
+        if (json.result == "reload") {
+          swal("Success", "Deleted Successfully!");
+
+          location.reload();
+        }
+      } else {
+        swal("Warning", "Some error occurred!");
+      }
+    },
+  });
+}
+}
+
+//Cook Rating
+//Add
+function createNewCookRating() {
+  //usererr,usersuccess,tth_user_phone2,tth_user_phone1,tth_user_mail,tth_user
+  $("#usererr").html("");
+  var cookid = $("#trek_cook").val();
+  var noofbatch = $("#tth_no_of_batches").val();
+  var noofdays = $("#tth_no_of_days").val();
+  var rating = $("#input-2").val();
+  var Added_By = $("#hdnUserID").val();
+  if (cookid === "" || noofbatch === "" || noofdays === "" || rating === "") {
+    $("#usererr").html("All fields are required.");
+  } else {
+  
+    var data = new FormData();
+    data.append("cookid", cookid);
+    data.append("noofbatch", noofbatch);
+    data.append("noofdays", noofdays);
+    data.append("rating", rating);
+    data.append("Added_By", Added_By);
+    data.append("action", "addTrekCookRating");
+
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_obj.ajax_url,
+      data: data,
+      success: function (msg) {
+        json = JSON.parse(msg);
+        if (json.statusCode == 200) {
+          swal("Success", "Added successfully!");
+
+          location.reload();
+        } else if (json.statusCode == 201) {
+          $("#usererr").html("User already added.");
+        } else {
+          swal("Warning", "Some error occured!");
+        }
+      },
+    });
+  }
+}
+
+function deleteCookRating(id) {
+  if (id == "") {
+    swal("Warning", "Some error occured!");
+    return;
+  }
+  if(confirm("Are you sure want to delete?"))
+  {
+  var data = new FormData();
+
+  data.append("action", "deleteCookRating");
+  data.append("con_id", id);
+
+  jQuery("#loader").css("display", "block");
+  jQuery.ajax({
+    type: "post",
+    cache: false,
+    contentType: false,
+    processData: false,
+    url: my_obj.ajax_url,
+    data: data,
+    success: function (msg) {
+      json = JSON.parse(msg);
+      console.log(json);
+      jQuery("#loader").css("display", "none");
+      if (json.statusCode == 200) {
+        if (json.result == "reload") {
+          swal("Success", "Deleted Successfully!");
+
+          location.reload();
+        }
+      } else {
+        swal("Warning", "Some error occurred!");
+      }
+    },
+  });
+}
+}

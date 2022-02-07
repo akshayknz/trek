@@ -469,11 +469,21 @@ function createTeamMember() {
    var people_name = $("#people-name").val();
    var people_description = $("#people-description").val();
    var people_description_long = $("#people-description-long").val();
-
+   var category="";
+   if(role==='advisor')
+   {
+      category= $("#advisory-cat-create").val();
+   }
+   else
+   {
+      category="";
+   }
    if (newsImage[0] != '') {
       var people_image = newsImage[0];
 
    }
+
+
 
 
    if ((role == '') || (people_priority == '') || (people_name == '') || (people_image == '') || (people_description == '')|| (people_description_long == '')) {
@@ -482,6 +492,7 @@ function createTeamMember() {
    } else {
       var data = new FormData();
       data.append('role', role);
+      data.append('advisor_category', category);
       data.append('people_priority', people_priority);
       data.append('people_name', people_name);
       data.append('people_image', people_image);
@@ -519,7 +530,7 @@ function createTeamMember() {
 }
 
 function EditTeamMember() {
-   // alert("update news");
+   // alert("update news"); advisory-cat-edit
    var people_id = '';
    people_id = $("#people-id-edit").val();
    var role = $("#people-role-edit").val();
@@ -528,9 +539,18 @@ function EditTeamMember() {
    var people_description = $("#people-description-edit").val();
    var people_description_long = $("#people-description-long-edit").val();
    var people_image = "";
+   var category="";
+   if(role==='advisor')
+   {
+      category= $("#advisory-cat-edit").val();
+   }
+   else
+   {
+      category="";
+   }
+
    if (newsImage[0] != '') {
        people_image = newsImage[0];
-
    }
    
    if ((role == '') || (people_priority == '') || (people_name == '') || (people_description == '')|| (people_description_long == '')) {
@@ -539,6 +559,7 @@ function EditTeamMember() {
    } else {
       var data = new FormData();
       data.append('role', role);
+      data.append('category', category);
       data.append('people_priority', people_priority);
       data.append('people_name', people_name);
       if ((people_image != '')||(people_image != 'undefined')) {
@@ -616,6 +637,16 @@ function EditTeamMemberFetch(id) {
             if (json.result == 'fetched') {
 
                $("#people-role-edit").val(json.message[0].trek_tth_role);
+               if(json.message[0].trek_tth_advisor_category)
+               {
+                  $("#advisory-cat-edit").val(json.message[0].trek_tth_advisor_category);
+                  $('#category_advisor_edit').css('display', 'block')
+               }
+               else
+               {
+                  $('#category_advisor_edit').css('display', 'none')
+               }
+
                $("#people-priority-edit").val(json.message[0].trek_tth_role_priority);
                $("#people-image-edit").attr("src", json.message[0].trek_tth_images);
                $("#people-name-edit").val(json.message[0].trek_tth_name);

@@ -133,7 +133,7 @@ $data = $wpdb->get_results('SELECT id,trek_name,trek_region_state FROM ' . $tabl
 
                 </div>
                 <img src="" id="tth-award-img" style="max-height: 200px;max-width: 200px;"><br>
-                <label for="recipient-name" class="col-form-label">Add Photo:</label>
+                <label for="recipient-name" class="col-form-label">Add Photo(180x60):</label>
                 <input type="button" value="Choose File" onclick="uploadNewsImage_graph()"
                        class="form-control-file" id="tth-award-img1" name="tth-award-img1">
             </div>

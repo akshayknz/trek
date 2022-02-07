@@ -99,7 +99,7 @@ $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'trektable_trek_br
                         <td class="text-center"><?php echo $j; ?></td>
                         <td style="text-align: center;"><?php echo $data[$i]->trek_brochure_name; ?></td>
                         <td class="text-center"><a class="btn btn-primary"
-                                                   href="http://18.222.150.171/wp-content/plugins/trek/template/admin<?php echo $data[$i]->trek_brochure_content; ?>"
+                                                   href="<?= get_site_url ()?>/wp-content/plugins/trek/template/admin<?php echo $data[$i]->trek_brochure_content; ?>"
                                                    target="_blank" role="button">Preview</a></td>
                         <td class="text-center">
                             <?php   
@@ -107,7 +107,7 @@ $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'trektable_trek_br
                                     ?>
                                 <a class="btn btn-success"
                                id="active_brochure" role="button">Active</a>
-                               <a class="btn btn-danger" onclick="manageBrochureWarning()"
+                               <a class="btn btn-danger" onclick="manageBrochureWarning(this.id)"
                                id="<?php echo $data[$i]->id; ?>-BBDelete" role="button">Delete</a>
 
                                 <?php

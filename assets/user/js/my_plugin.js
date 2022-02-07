@@ -5,14 +5,14 @@ jQuery(document).ready(function () {
     getTrekData(item);
   });
 
-  $("#trek-dates-pull-down").on("click", function () {
+   jQuery("#trek-dates-pull-down").on("click", function () {
     console.log("clicked");
-    $("#textBody").scrollTop($("#textBody").scrollTop() + 1000);
+     jQuery("#textBody").scrollTop($("#textBody").scrollTop() + 1000);
   });
 
-  $("#cscancel").on("click", function () {
+   jQuery("#cscancel").on("click", function () {
     console.log("clicked");
-    $("body").scrollTop($("body").scrollTop() + 100);
+     jQuery("body").scrollTop($("body").scrollTop() + 100);
   });
 });
 

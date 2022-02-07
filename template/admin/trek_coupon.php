@@ -160,7 +160,7 @@ wp_enqueue_media();
                             </button>
                         </label>
                         <input type="text" class="form-control" placeholder="Coupon Code" id="coupon_code"
-                               name="coupon_code">
+                               name="coupon_code" onblur="check_coupon_exist(this.value)">
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -176,9 +176,11 @@ wp_enqueue_media();
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="generate_coupon_amount" class="col-form-label" style="margin-bottom: 14px;">Coupon
+                        <label id="coupon_amount_label" for="generate_coupon_amount" class="col-form-label"
+                               style="margin-bottom: 14px;">Coupon
                             Amount * : &nbsp;&nbsp;</label>
-                        <input type="number" class="form-control" placeholder="Coupon Amount"
+                        <input type="number" min="0" oninput="this.value = 
+ !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" placeholder=""
                                id="generate_coupon_amount" name="generate_coupon_amount">
                     </div>
                 </div>
@@ -354,14 +356,14 @@ wp_enqueue_media();
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" style="display:none;">
                     <div class="form-group">
                         <label for="coupon_display_tran" style="margin-bottom: 13px;">&nbsp; Transfer type *</label>
                         <select id="coupon_display_tran" name="coupon_display_tran" class="form-control"
                                 data-error="Please specify your type.">
-                            <option value="" selected>--Coupon is--
+                            <option value="">--Coupon is--
                             </option>
-                            <option value="Transferable">Transferable</option>
+                            <option value="Transferable" selected>Transferable</option>
                             <option value="Not_transferable">Not transferable</option>
                         </select>
                     </div>
@@ -446,6 +448,45 @@ wp_enqueue_media();
 </script>
 
 <script>
+
+    // coupon_display_type
+
+    $('#trk_coupon_type').on('change', function () {
+        if (this.value === 'percentage') {
+            $("#coupon_amount_label").text("Percentage* :");
+        } else if (this.value === 'amount') {
+            $("#coupon_amount_label").text("Coupon Amount* :");
+        } else {
+            $("#coupon_amount_label").text("Coupon Amount* :");
+        }
+    });
+
+    function check_coupon_exist(coupon) {
+        var data = new FormData();
+        data.append('coupon', coupon);
+        data.append('action', "checkCouponExistence");
+        jQuery.ajax({
+            type: "post",
+            cache: false,
+            contentType: false,
+            processData: false,
+            url: my_objs.ajax_url_pages,
+            data: data,
+            success: function (msg) {
+
+                json = JSON.parse(msg);
+                if (json.statusCode === 200) {
+                    //alert("Coupon already exist.");
+                    toastr.error('Coupon already exist.', 'Try again');
+                    $('.btn-primary').prop('disabled', true);
+                } else {
+                    $('.btn-primary').prop('disabled', false);
+                }
+            }
+        });
+    }
+
+
     $(document).ready(function () {
 
         $('#coupon_display_type').on('change', function () {

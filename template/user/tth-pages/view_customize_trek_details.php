@@ -14,7 +14,8 @@ if (isset($_GET['num'])) {
     }
     global $wpdb, $table_prefix;
     $user_ID = get_current_user_id();
-    $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix .'trek_user_customization where trek_tth_status=0 and id=' . $ppc . ' limit 1');
+    $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix .'trek_user_customization where trek_tth_status!="1" and id=' . $ppc . ' limit 1');
+    
     $wpdb->update('' . $table_prefix . 'trek_user_customization', array('trek_info_read_status' => 0
             ), array('id' => $ppc));
 
@@ -101,6 +102,11 @@ global $wpdb, $table_prefix;
         <div class="row header" style="text-align:center;color:red">
             <h3>Customize Trek - User Response</h3>
         </div>
+        <div class="col-md-6 pb-3 pt-3">
+              <button type="button" class="btn btn-danger" id="<?= $data[0]->id ?>" onclick="deleteCustomizeTrekRequest(this.id)">Delete response</button>&nbsp;
+            
+                <a href="mailto:<?= $data[0]->trek_tth_email ?>"><button type="button" class="btn btn-info">Contact User</button></a>
+            </div>
         <div class="col-md-12">
         <div class="row">
             <div class="col-md-4">
@@ -200,14 +206,50 @@ global $wpdb, $table_prefix;
                 </div>
                 
             </div>
-            <div class="col-md-6">
-              <button type="button" class="btn btn-danger" onclick="deleteCustomizeTrekRequest(this.id)">Delete response</button>&nbsp;
-            
-                <a href="mailto:<?= $data[0]->trek_tth_email ?>"><button type="button" class="btn btn-info">Contact User</button></a>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="details">Notes</label>
+                    <div class="form-group">
+                        <textarea name="note" data-id=<?= $ppc ?> cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" onclick="saveNote();">Save</button>
+                    </div>
+                    <div class="form-group">
+                    <?php
+                    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+                    $args = array(  
+                        'post_type' => 'notes',
+                        'post_status' => 'publish',
+                        'posts_per_page' => -1, 
+                        'orderby' => 'title', 
+                        'order' => 'DESC', 
+                        'orderby' => 'date',
+                        'meta_query'     => array(
+                            array(
+                              'key'     => 'entry_id',
+                              'value'   => $ppc,
+                              'compare' => '='))
+                    );
+                    $loop = new WP_Query( $args );
+                    echo '<div class="list-group">'; 
+                    while ( $loop->have_posts() ) : $loop->the_post(); 
+                    ?>
+                        <div class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1"><?php echo(get_post_meta( get_the_id(), 'status', false )[0]); ?></h5>
+                            <small><?= get_the_date(); ?></small>
+                            </div>
+                            <p class="mb-1"><?= the_content(); ?></p>
+                        </div>
+                    <?php 
+                    endwhile;
+                    echo '</div>';
+                    wp_reset_postdata(); ?>
+                    </div>
+                </div>
             </div>
-           
-           
-            
+
         </div>
         </div>
 
@@ -216,6 +258,63 @@ global $wpdb, $table_prefix;
 </body>
 
 <script>
+const saveNote = () => {
+                    let note = document.querySelector('[name="note"]')
+                    jQuery("#loader").css("display", "block")
+                    var data = new FormData()
+                    data.append('action', 'addNewNoteCustomizeTrek')
+                    data.append('note', note.value)
+                    data.append('statusText', '')
+                    data.append('id', note.dataset.id)
+                    console.log(...data);
+                    jQuery.ajax({
+                        type: "post",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        url: my_objs.ajax_url_pages,
+                        data: data,
+                        success: function(msg) {
+                            jQuery("#loader").css("display", "none")
+                        }
+                    });
+                    location.reload();
+                }
+    function deleteCustomizeTrekRequest(id)
+    {
+        if (confirm('Are you sure you want to delete?')) {
+
+            var data = new FormData();
+            data.append('id', id);
+            data.append('action', 'removeCustomizeTrekMsg');
+            jQuery.ajax({
+                type: "post",
+                cache: false,
+                contentType: false,
+                processData: false,
+                url: my_objs.ajax_url_pages,
+                data: data,
+                success: function (msg) {
+                    json = JSON.parse(msg);
+                    console.log(json);
+                    if(json.statusCode==200)
+                    {
+                        toastr.success('Deleted.');
+                        setTimeout(function(){ window.location=document.referrer; }, 3000)
+                    }
+                    else
+                    {
+                        toastr.warning(json.info);
+                    }
+                }
+            });
+        }
+    }
+
+
+
+
+
 $(document).ready(function() {
     $('#myTable').dataTable();
 

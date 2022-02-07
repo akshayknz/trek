@@ -16,6 +16,8 @@ $dataFit = $wpdb->get_results('SELECT trek_fitness_policy_name,id FROM ' . $tabl
 $dataCancelPolicy = $wpdb->get_results('SELECT trek_policy_name,id FROM ' . $table_prefix . 'trektable_policy where trek_policy_status=0');
 $dataRiskAndRespond = $wpdb->get_results('SELECT id,trek_risk_name,trek_risk_content FROM ' . $table_prefix . 'trektable_trek_riskandrespond where trek_risk_status=0');
 $dataTeam = $wpdb->get_results('SELECT id,contact_name FROM ' . $table_prefix . 'trektable_contacts');
+$dataLeader = $wpdb->get_results('SELECT id,leader_name FROM ' . $table_prefix . 'trektable_leaders');
+$dataCook = $wpdb->get_results('SELECT id,cook_name FROM ' . $table_prefix . 'trektable_cooks');
 $intrests = $wpdb->get_results('SELECT id,interest FROM ' . $table_prefix . 'trek_filter_interests');
   
 wp_enqueue_media();
@@ -37,6 +39,21 @@ wp_enqueue_media();
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
+    
+    input::-webkit-input-placeholder { /* WebKit browsers */
+        color: #1f1f1f !important;
+    }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #242424 !important;
+    }
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #1a1a1a !important;
+    }
+    input:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: #1d1d1d!important;
+    }
+    
+    
     @media only screen and (max-width: 600px) {
         .loader {
             position: fixed;
@@ -369,6 +386,49 @@ wp_enqueue_media();
                                             </select>
                                         </div>
                                     </div>
+<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="trek_leader">Assign a leader </label>
+                                            <select id="trek_leader" 
+                                                style="max-width: 100%;"
+                                                class="form-control" required="required"
+                                                data-error="Please specify your Grade.">
+                                                <option value="" selected>--Select Trek Leader--
+                                                </option>
+                                               
+                                                <?php
+                                                $countf1 = count($dataLeader);
+                                                for ($i = 0; $i < $countf1; $i++) {
+                                                    ?>
+                                                <option value="<?= $dataLeader[$i]->id ?>"><?php echo $dataLeader[$i]->leader_name; ?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="trek_cook">Assign a cook </label>
+                                            <select id="trek_cook" 
+                                                style="max-width: 100%;"
+                                                class="form-control" required="required"
+                                                data-error="Please specify your Grade.">
+                                                <option value="" selected>--Select Trek Cook--
+                                                </option>
+                                               
+                                                <?php
+                                                $countf1 = count($dataCook);
+                                                for ($i = 0; $i < $countf1; $i++) {
+                                                    ?>
+                                                <option value="<?= $dataCook[$i]->id ?>"><?php echo $dataCook[$i]->cook_name; ?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     
                                 </div>
@@ -440,7 +500,7 @@ wp_enqueue_media();
                                                     <input type="button" value="Choose File" onclick="upload1()"
                                                         class="form-control-file" id="trek_upload1" name="trek_upload1">
                                                 </div>
-                                                <div id="p1" style="display: block;">Choose profile image</div><br>
+                                                <div id="p1" style="display: block;">Choose profile image(516x486)</div><br>
                                                 <div id="p2" style="display: none;"></div><br>
 
                                             </div>
@@ -452,7 +512,7 @@ wp_enqueue_media();
                                                         class="form-control-file file2" name="trek_upload2[]"
                                                         id="trek_upload2" multiple>
                                                 </div>
-                                                <div id="g1" style="display: block;">Choose multiple images</div><br>
+                                                <div id="g1" style="display: block;">Choose multiple images(176x182)</div><br>
                                                 <div id="g2" style="display: flex;flex-wrap: wrap;"></div><br>
                                             </div>
                                            
@@ -463,7 +523,7 @@ wp_enqueue_media();
                                                         class="form-control-file file3" name="trek_upload3[]"
                                                         id="trek_upload3" multiple>
                                                 </div>
-                                                <div id="s1" style="display: block;">Choose multiple images</div><br>
+                                                <div id="s1" style="display: block;">Choose multiple images(1536x650)</div><br>
                                                 <div id="s2" style="display: flex;flex-wrap: wrap;"></div><br>
                                             </div>
 
@@ -474,7 +534,7 @@ wp_enqueue_media();
                                                         class="form-control-file file4" name="trek_upload4[]"
                                                         id="trek_upload4" multiple>
                                                 </div>
-                                                <div id="l1" style="display: block;">Choose multiple images</div><br>
+                                                <div id="l1" style="display: block;">Choose multiple images(176x182)</div><br>
                                                 <div id="l2" style="display: flex;flex-wrap: wrap;"></div><br>
                                             </div>
                                         
@@ -912,7 +972,7 @@ for ($i = 0; $i < $countf; $i++) {
                                         <div class="col-md-3">
                                             <div class="form-group"><label>Discount Percentage</label>
                                                 <input id="trek_discount_percentage" type="number" class="form-control"
-                                                    placeholder="Example: 30 , (Must be less than 100)" required="required" data-error="required.">
+                                                    placeholder="Eg:30, (Must be less than 100)" required="required" data-error="required.">
                                             </div>
                                         </div>
 
@@ -1212,7 +1272,7 @@ for ($i = 0; $i < $countf; $i++) {
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <select multiple id="trek_season_delete" class="form-control" required="required"
+                            <select  id="trek_season_delete" class="form-control" required="required"
                                 data-error="Please specify your Grade.">
                                 <option value="" selected>--Select Season--
                                 </option>
@@ -1251,7 +1311,7 @@ for ($i = 0; $i < $countf; $i++) {
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <select multiple id="trek_theme_delete" class="form-control" required="required"
+                            <select id="trek_theme_delete" class="form-control" required="required"
                                 data-error="Please specify your Grade.">
                                 <option value="" selected>--Select Theme--
                                 </option>

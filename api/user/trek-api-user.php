@@ -1,6 +1,7 @@
 <?php
+
 /**
- *@package TrekPlugin
+ * @package TrekPlugin
  */
 $path = preg_replace('/wp-content.*$/', '', __DIR__);
 require_once $path . '/wp-load.php';
@@ -29,11 +30,11 @@ if (isset($_POST['action'])) {
         $ptbd_table_name3 = $wpdb->prefix . 'usermeta';
         $userid = '';
 
-// create a column in userdetails table with name as referenceId
+        // create a column in userdetails table with name as referenceId
 
         $data1 = $wpdb->get_results('SELECT id FROM ' . $ptbd_table_name2 . ' where  user_email ="' . $user_email . '" limit 1');
         $data = $wpdb->get_results('SELECT id,trek_user_id,trek_user_email FROM ' . $ptbd_table_name . ' where trek_user_status=0 and trek_user_email ="' . $user_email . '" limit 1');
-//check whether that user exist on users table
+        //check whether that user exist on users table
 
         $timestamp = time();
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -95,13 +96,13 @@ if (isset($_POST['action'])) {
             (" . $lsid . ", 'wp_user_level', '0'),
             (" . $lsid . ", 'dismissed_wp_pointers', '')";
 
-// print_r($query);
+            // print_r($query);
             $result = $wpdb->get_results($query);
 
-// mailing function to send temp password $password
+            // mailing function to send temp password $password
 
         }
-//check whether that user exist on userdetails table
+        //check whether that user exist on userdetails table
         if (empty($data)) {
             //insert booking user personal details inside userdetails table
 
@@ -128,7 +129,6 @@ if (isset($_POST['action'])) {
                 wp_clear_auth_cookie();
                 wp_set_current_user($lsid);
                 wp_set_auth_cookie($lsid);
-
             } else if (!empty($data1)) {
                 $wpdb->insert('' . $ptbd_table_name . '', array(
                     'trek_user_first_name' => $user_first_name,
@@ -160,7 +160,6 @@ if (isset($_POST['action'])) {
             $result->info = 'new user registered';
             echo json_encode($result);
             exit;
-
         } else {
 
             //Update column referenceId with user table primary key $data[0]->id
@@ -178,7 +177,6 @@ if (isset($_POST['action'])) {
                 $result->info = 'user  registered';
                 echo json_encode($result);
                 exit;
-
             } else {
                 $result = new stdClass();
                 $result->statusCode = 400;
@@ -188,9 +186,7 @@ if (isset($_POST['action'])) {
                 echo json_encode($result);
                 exit;
             }
-
         }
-
     }
 
     function registerTrekker($fname, $lname, $pnum, $pemnum, $gender, $mail, $weight, $height, $dob, $city, $country, $state)
@@ -230,12 +226,12 @@ if (isset($_POST['action'])) {
 
         $userid = '';
 
-// create a column in userdetails table with name as referenceId
+        // create a column in userdetails table with name as referenceId
 
         $data1 = $wpdb->get_results('SELECT id FROM ' . $ptbd_table_name2 . ' where  user_email ="' . $user_email . '" limit 1');
 
         $data = $wpdb->get_results('SELECT id,trek_user_id,trek_user_email FROM ' . $ptbd_table_name . ' where trek_user_status=0 and trek_user_email ="' . $user_email . '" limit 1');
-//check whether that user exist on users table
+        //check whether that user exist on users table
         if (!empty($data1)) {
             return 'success';
             exit;
@@ -300,13 +296,13 @@ if (isset($_POST['action'])) {
             (" . $lsid . ", 'wp_user_level', '0'),
             (" . $lsid . ", 'dismissed_wp_pointers', '')";
 
-// print_r($query);
+            // print_r($query);
             $result = $wpdb->get_results($query);
 
-// mailing function to send temp password $password
+            // mailing function to send temp password $password
 
         }
-//check whether that user exist on userdetails table
+        //check whether that user exist on userdetails table
         if (empty($data)) {
             //insert booking user personal details inside userdetails table
 
@@ -330,7 +326,6 @@ if (isset($_POST['action'])) {
                     'trek_user_id' => $userid,
 
                 ));
-
             } else if (!empty($data1)) {
                 $wpdb->insert('' . $ptbd_table_name . '', array(
                     'trek_user_first_name' => $user_first_name,
@@ -350,11 +345,9 @@ if (isset($_POST['action'])) {
                     // 'trek_user_trekked_with_us' => $select_before,
                     'trek_user_id' => $userid,
                 ));
-
             }
             return 'success';
             exit;
-
         } else {
 
             //Update column referenceId with user table primary key $data[0]->id
@@ -365,14 +358,11 @@ if (isset($_POST['action'])) {
 
                 return 'success';
                 exit;
-
             } else {
                 return 'success';
                 exit;
             }
-
         }
-
     }
 
     if ($_POST['action'] == 'checkExistance') {
@@ -411,7 +401,6 @@ if (isset($_POST['action'])) {
             echo json_encode($result);
             exit;
         }
-
     }
 
     if ($_POST['action'] == 'loginUser') {
@@ -423,7 +412,7 @@ if (isset($_POST['action'])) {
 
         $ptbd_table_name = $wpdb->prefix . 'users';
 
-// create a column in userdetails table with name as referenceId
+        // create a column in userdetails table with name as referenceId
 
         $data = $wpdb->get_results('SELECT ID FROM ' . $ptbd_table_name . ' where  user_email ="' . $email . '" and user_pass="' . $user_enc_pass . '" limit 1');
 
@@ -435,7 +424,6 @@ if (isset($_POST['action'])) {
             $result->info = 'Login failed';
             echo json_encode($result);
             exit;
-
         } else if (($data[0]->ID != '')) {
 
             wp_clear_auth_cookie();
@@ -459,7 +447,6 @@ if (isset($_POST['action'])) {
             echo json_encode($result);
             exit;
         }
-
     }
 
     if ($_POST['action'] == 'logout') {
@@ -506,11 +493,11 @@ if (isset($_POST['action'])) {
         $bookingid = '';
         //Get user email
 
-// create a column in userdetails table with name as referenceId
+        // create a column in userdetails table with name as referenceId
 
         $data1 = $wpdb->get_results('SELECT id FROM ' . $ptbd_table_name2 . ' where  user_email ="' . $mail . '" limit 1');
         $data = $wpdb->get_results('SELECT id,trek_user_id,trek_user_email FROM ' . $ptbd_table_name . ' where trek_user_status=0 and trek_user_email ="' . $mail . '" limit 1');
-//check whether that user exist on users table
+        //check whether that user exist on users table
 
         $timestamp = time();
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -573,13 +560,13 @@ if (isset($_POST['action'])) {
             (" . $lsid . ", 'wp_user_level', '0'),
             (" . $lsid . ", 'dismissed_wp_pointers', '')";
 
-// print_r($query);
+            // print_r($query);
             $result = $wpdb->get_results($query);
 
-// mailing function to send temp password $password
+            // mailing function to send temp password $password
 
         }
-//check whether that user exist on userdetails table
+        //check whether that user exist on userdetails table
         if (empty($data)) {
             //insert booking user personal details inside userdetails table
 
@@ -603,7 +590,6 @@ if (isset($_POST['action'])) {
                     'trek_user_id' => $userid,
 
                 ));
-
             } else if (!empty($data1)) {
                 $wpdb->insert('' . $ptbd_table_name . '', array(
                     'trek_user_first_name' => $firstname,
@@ -623,11 +609,9 @@ if (isset($_POST['action'])) {
                     'trek_user_trekked_with_us' => $select_before,
                     'trek_user_id' => $userid,
                 ));
-
             }
 
             $ownerid = $userid;
-
         } else {
 
             //Update column referenceId with user table primary key $data[0]->id
@@ -635,20 +619,16 @@ if (isset($_POST['action'])) {
                 $wpdb->update('' . $ptbd_table_name2 . '', array(
                     'referenceId' => $lsid,
                 ), array('trek_user_email' => $mail));
-
             } else if (!empty($data1)) {
                 $wpdb->update('' . $ptbd_table_name2 . '', array(
                     'referenceId' => $data1[0]->id,
                 ), array('trek_user_email' => $mail));
-
             }
-
         }
 
         //start session
         if (!empty($data)) {
             $ownerid = $data[0]->trek_user_id;
-
         }
         //insert new booking row
         for ($i = 0; $i < 8; $i++) {
@@ -688,10 +668,9 @@ if (isset($_POST['action'])) {
             echo json_encode($result);
             exit;
         }
-
     }
 
-//seat transfer
+    //seat transfer
 
     if ($_POST['action'] == 'seatTransfer') {
         $flag = 0;
@@ -758,7 +737,6 @@ wp_trektable_trek_departure.trek_start_date asc";
                     $departureDate .= $m2;
                     $departureDate .= '</option>';
                 }
-
             }
             $departureDate .= '</select>';
             $result = new stdClass();
@@ -796,9 +774,11 @@ wp_trektable_trek_departure.trek_start_date asc";
             $activityStatus = $result[0]->book_activity_status;
             if ($activityStatus == 0) {
                 $wpdb->update('' . $ptbd_table_name . '', array(
-                    'trek_selected_departure_id' => $date), array('trek_booking_id' => '' . $book . '', 'trek_booking_status' => 0, 'book_activity_status' => 0));
+                    'trek_selected_departure_id' => $date
+                ), array('trek_booking_id' => '' . $book . '', 'trek_booking_status' => 0, 'book_activity_status' => 0));
                 $wpdb->update('' . $ptbd_table_name1 . '', array(
-                    'trek_selected_date' => $date), array('trek_tbooking_id' => '' . $book . '', 'trek_trekker_status' => 0));
+                    'trek_selected_date' => $date
+                ), array('trek_tbooking_id' => '' . $book . '', 'trek_trekker_status' => 0));
 
                 $result = new stdClass();
                 $result->statusCode = 200;
@@ -824,7 +804,6 @@ wp_trektable_trek_departure.trek_start_date asc";
                 echo json_encode($result);
                 exit;
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 200;
@@ -903,7 +882,6 @@ wp_trektable_trek_departure.trek_section asc";
             $result->info = 'success';
             echo json_encode($result);
             exit;
-
         } else {
             $result = new stdClass();
             $result->statusCode = 300;
@@ -927,14 +905,17 @@ wp_trektable_trek_departure.trek_section asc";
             $orderId = $_POST['orderId'];
             $bookingId = $_POST['bookingId'];
             $participants = $_POST['participants'];
+            $amount = $_POST['amount'];
 
             $data1 = $wpdb->get_results('SELECT trek_booking_id,trek_selected_trek_id,trek_selected_departure_id FROM ' . $ptbd_table_name1 . ' where trek_booking_status=0 and trek_booking_owner_id ="' . $ownerid . '" and trek_booking_id="' . $bookingId . '" and book_activity_status!=5');
 
             if (!empty($data1)) {
-
-                if ($wpdb->update('' . $ptbd_table_name1 . '', array('book_activity_status' => 7,
+$singleamount=($amount/$participants);
+                if ($wpdb->update('' . $ptbd_table_name1 . '', array(
+                    'book_activity_status' => 7,'Amount' => $amount,'PaymentID' => $paymentId,
                 ), array('trek_booking_id' => $bookingId))) {
-                    if ($wpdb->update('' . $ptbd_table_name . '', array('payment_status' => 'paid',
+                    if ($wpdb->update('' . $ptbd_table_name . '', array(
+                        'payment_status' => 'paid','Amount' => $singleamount,'PaymentID' => $paymentId,
                     ), array('trek_tbooking_id' => $bookingId, 'trek_trekker_status' => 0))) {
                         $result = new stdClass();
                         $result->statusCode = 200;
@@ -959,7 +940,6 @@ wp_trektable_trek_departure.trek_section asc";
                     echo json_encode($result);
                     exit;
                 }
-
             } else {
 
                 $result = new stdClass();
@@ -967,9 +947,7 @@ wp_trektable_trek_departure.trek_section asc";
                 $result->result = 'no booking';
                 echo json_encode($result);
                 exit;
-
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 400;
@@ -978,7 +956,6 @@ wp_trektable_trek_departure.trek_section asc";
             echo json_encode($result);
             exit;
         }
-
     }
 
     function getTrekkersDetailsOwnerfun($trek, $date, $mail)
@@ -1075,7 +1052,8 @@ wp_trektable_trek_departure.trek_section asc";
                     die;
                 }
 
-                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array('trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
+                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array(
+                    'trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
                     'trek_tcontact_number' => $Tcontact,
                     'trek_tgender' => $Tgender,
                     'trek_dob' => $Tdob,
@@ -1110,7 +1088,6 @@ wp_trektable_trek_departure.trek_section asc";
                     echo json_encode($result);
                     die;
                 }
-
             } else {
 
                 //check person already added or not
@@ -1127,7 +1104,8 @@ wp_trektable_trek_departure.trek_section asc";
                     die;
                 }
 
-                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array('trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
+                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array(
+                    'trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
                     'trek_tcontact_number' => $Tcontact,
                     'trek_tgender' => $Tgender,
                     'trek_dob' => $Tdob,
@@ -1163,9 +1141,7 @@ wp_trektable_trek_departure.trek_section asc";
                     echo json_encode($result);
                     die;
                 }
-
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 405;
@@ -1174,7 +1150,6 @@ wp_trektable_trek_departure.trek_section asc";
             echo json_encode($result);
             exit;
         }
-
     }
 
     if ($_POST['action'] == 'getTrekkersDetails') {
@@ -1209,7 +1184,6 @@ wp_trektable_trek_departure.trek_section asc";
                 $result->ownerStatus = $bookStatus;
                 echo json_encode($result);
                 exit;
-
             } else {
 
                 $result = new stdClass();
@@ -1217,9 +1191,7 @@ wp_trektable_trek_departure.trek_section asc";
                 $result->result = 'no booking';
                 echo json_encode($result);
                 exit;
-
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 400;
@@ -1228,7 +1200,6 @@ wp_trektable_trek_departure.trek_section asc";
             echo json_encode($result);
             exit;
         }
-
     }
 
     if ($_POST['action'] == 'getTrekkersDetailsCoupon') {
@@ -1272,9 +1243,15 @@ wp_trektable_trek_departure.trek_section asc";
             wp_trektable_coupons_new.coupon_name,
             wp_trektable_coupons_new.coupon_expiry,
             wp_trektable_coupons_new.coupon_code,
+            wp_trektable_coupons_new.coupon_amount,
+            wp_trektable_coupons_new.coupon_expiry,
+            wp_trektable_coupons_new.coupon_type,
+            wp_trektable_coupons_new.coupon_trek_type,
             wp_trektable_coupons_new.coupon_region_type,
             wp_trektable_coupons_new.coupon_inc_trek,
             wp_trektable_coupons_new.coupon_ind_usage,
+            wp_trektable_coupons_new.coupon_terms,
+            wp_trektable_coupons_new.coupon_transfer_type,
             wp_trektable_coupons_new.coupon_merge,
             wp_trektable_coupons_new.coupon_description,
             wp_trektable_coupons_new.coupon_inc_region
@@ -1284,6 +1261,7 @@ wp_trektable_trek_departure.trek_section asc";
             ON wp_trektable_coupons_new.coupon_ind_email collate utf8_general_ci = wp_trektable_trekkers_list.trek_uid collate utf8_general_ci  Where CURDATE() <= wp_trektable_coupons_new.coupon_expiry
             and wp_trektable_trekkers_list.trek_trekker_status=0 and wp_trektable_trekkers_list.trek_tbooking_id ="' . $bookingid . '" and wp_trektable_trekkers_list.trek_selected_trek="' . $select_trek . '"
             and wp_trektable_trekkers_list.trek_selected_date="' . $select_date . '" order by wp_trektable_trekkers_list.id desc');
+
 
                 $result = new stdClass();
                 $result->statusCode = 200;
@@ -1317,7 +1295,6 @@ wp_trektable_trek_departure.trek_section asc";
         $select_date = $_POST['selDate'];
         $owner_mail = $_POST['ownerid'];
         getTrekkersDetailsOwnerfun($select_trek, $select_date, $owner_mail);
-
     }
 
     if ($_POST['action'] == 'removeTrekker') {
@@ -1356,6 +1333,38 @@ wp_trektable_trek_departure.trek_section asc";
             echo json_encode($result);
             exit;
         }
+    }
+
+    if ($_POST['action'] == 'getTreksAndDetailsByDate') {
+
+        $date = $_POST['date'];
+        $date_exp = explode(" - ", $date);
+        $start_date = $date_exp[0];
+        $end_date = $date_exp[1];
+
+        $query = "SELECT 
+        b.trek_name, 
+        b.trek_cost,
+        b.trek_days,
+        a.trek_start_date as trek_start_date,
+        b.id as trek_id,
+        a.trek_departure_status,
+        a.dep_event_name
+        FROM wp_trektable_trek_departure AS a
+        LEFT JOIN wp_trektable_addtrekdetails AS b
+        ON a.trek_selected_trek = b.id 
+        and ADDDATE(a.trek_start_date, 2) between '" . $start_date . "' and '" . $end_date . "' 
+        AND a.trek_departure_status=0 group by trek_name order by a.trek_start_date asc";
+
+        $upcoming_treks = $wpdb->get_results($query);
+
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->Results = $upcoming_treks;
+        $result->result = 'pass';
+        echo json_encode($result);
+        exit;
+
     }
 
     if ($_POST['action'] == 'purchaseslots') {
@@ -1407,7 +1416,6 @@ wp_trektable_trek_departure.trek_section asc";
             echo json_encode($result);
             exit;
         }
-
     }
 
     if ($_POST['action'] == 'addVolunteer') {
@@ -1430,36 +1438,32 @@ wp_trektable_trek_departure.trek_section asc";
         $ptbd_table_name = $wpdb->prefix . 'tth_volunteer_program';
 
         $test_res = $wpdb->insert('' . $ptbd_table_name . '', array(
-            'first_name'=>$f_name,
-            'last_name'=>$l_name,
-            'mail'=>$email,
-            'phone'=>$phone_number,
-            'address'=>$address,
-            'dob'=>$dob,
-            'country'=>$country,
-            'gender'=>$gender,
-            'pref_date'=>$pref_date,
-            'trek_duration'=>$duration,
-            'social'=>$social,
-            'how_did_hear_us'=>$find_us,
-            'object_for_join'=>$object_of_join,
-            'concerns'=>$concern,
-            'resume'=>$doc_url
+            'first_name' => $f_name,
+            'last_name' => $l_name,
+            'mail' => $email,
+            'phone' => $phone_number,
+            'address' => $address,
+            'dob' => $dob,
+            'country' => $country,
+            'gender' => $gender,
+            'pref_date' => $pref_date,
+            'trek_duration' => $duration,
+            'social' => $social,
+            'how_did_hear_us' => $find_us,
+            'object_for_join' => $object_of_join,
+            'concerns' => $concern,
+            'resume' => $doc_url
         ));
         $result = new stdClass();
-        if($test_res)
-        {
+        if ($test_res) {
             $result->statusCode = 200;
             $result->result = 'Success';
-        }
-        else{
+        } else {
             $result->statusCode = 400;
             $result->result = 'Failed';
         }
         echo json_encode($result);
         exit;
-
-
     }
 
     if ($_POST['action'] == 'addTrekBookingDetailsTrekkers') {
@@ -1539,7 +1543,8 @@ wp_trektable_trek_departure.trek_section asc";
                     die;
                 }
 
-                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array('trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
+                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array(
+                    'trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
                     'trek_tcontact_number' => $Tcontact,
                     'trek_tgender' => $Tgender,
                     'trek_dob' => $Tdob,
@@ -1572,7 +1577,6 @@ wp_trektable_trek_departure.trek_section asc";
                     echo json_encode($result);
                     die;
                 }
-
             } else {
 
                 //check person already added or not
@@ -1589,7 +1593,8 @@ wp_trektable_trek_departure.trek_section asc";
                     die;
                 }
 
-                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array('trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
+                $result_check = $wpdb->insert('' . $ptbd_table_name . '', array(
+                    'trek_tfname' => $Tfname, 'trek_tlname' => $Tlname, 'trek_tbooking_id' => $bookingid,
                     'trek_tcontact_number' => $Tcontact,
                     'trek_tgender' => $Tgender,
                     'trek_dob' => $Tdob,
@@ -1623,9 +1628,7 @@ wp_trektable_trek_departure.trek_section asc";
                     echo json_encode($result);
                     die;
                 }
-
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 400;
@@ -1634,7 +1637,6 @@ wp_trektable_trek_departure.trek_section asc";
             echo json_encode($result);
             exit;
         }
-
     }
 
     if ($_POST['action'] == 'get-remaining-seat-count') {
@@ -1688,7 +1690,6 @@ wp_trektable_trek_departure.trek_start_date asc";
                 echo json_encode($result);
                 exit;
             }
-
         } else {
             $result = new stdClass();
             $result->statusCode = 200;
@@ -1698,7 +1699,6 @@ wp_trektable_trek_departure.trek_start_date asc";
             echo json_encode($result);
             exit;
         }
-
     }
     if ($_POST['action'] == 'requestTrekCancellation') {
         $bookingId = $_POST['booking_id'];
@@ -1743,7 +1743,6 @@ wp_trektable_trek_departure.trek_start_date asc";
             $l2 = date('j M Y', $l1);
             $result->date[$k] = $k2 . "- " . $l2;
             $result->id[$k] = $results1[$k]->id;
-
         }
 
         echo json_encode($result);
@@ -1765,7 +1764,6 @@ wp_trektable_trek_departure.trek_start_date asc";
             $l2 = date('j M Y', $l1);
             $result->date[$k] = $k2 . "- " . $l2;
             $result->id[$k] = $results1[$k]->id;
-
         }
 
         echo json_encode($result);
@@ -1792,7 +1790,7 @@ wp_trektable_trek_departure.trek_start_date asc";
         exit;
     }
 
-    if($_POST['action'] == 'more_post_ajax'){
+    if ($_POST['action'] == 'more_post_ajax') {
         $offset = $_POST["offset"];
         // echo $offset;
         $args = array(
@@ -1801,14 +1799,14 @@ wp_trektable_trek_departure.trek_start_date asc";
             'posts_per_page' => 4,
             'offset' => $offset
         );
-        if(isset($_POST["trek"]) && $_POST['trek'] != ""){
+        if (isset($_POST["trek"]) && $_POST['trek'] != "") {
             $args['meta_query'] = [
                 array(
-                  'key' => 'trek_id',
-                  'value' => $_POST['trek'],
-                  'compare' => 'EQUAL'
+                    'key' => 'trek_id',
+                    'value' => $_POST['trek'],
+                    'compare' => 'EQUAL'
                 )
-              ];
+            ];
         }
         $post_query = new WP_Query($args);
         $data = [];
@@ -1816,10 +1814,10 @@ wp_trektable_trek_departure.trek_start_date asc";
             while ($post_query->have_posts()) {
                 $post_query->the_post();
                 $excerpt = substr(get_the_excerpt(), 0, 120);
-                $excerpt = substr($excerpt, 0, strrpos($excerpt, ' ')).'...';
+                $excerpt = substr($excerpt, 0, strrpos($excerpt, ' ')) . '...';
                 $data[] = array(
                     'title' => get_the_title(),
-                    'thumbnail' => wp_get_attachment_url( get_post_thumbnail_id(), 'thumbnail' ),
+                    'thumbnail' => wp_get_attachment_url(get_post_thumbnail_id(), 'thumbnail'),
                     'excerpt' => $excerpt,
                     'permalink' => get_permalink(get_the_ID()),
                     'author' => get_the_author_meta('display_name', $author_id),
@@ -1834,12 +1832,8 @@ wp_trektable_trek_departure.trek_start_date asc";
         echo json_encode($result);
         exit();
     }
-
 } else {
     $result = new stdClass();
     $result->message = 'Access Denied!';
     echo json_encode($result);
 }
-
-
-?>

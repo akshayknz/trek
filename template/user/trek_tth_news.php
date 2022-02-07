@@ -196,7 +196,7 @@ $dataTitle = $wpdb->get_results('SELECT trek_content,trek_context FROM ' . $tabl
 
                     </form>
                    
-                            <label for="recipient-name" class="col-form-label">Cover Photo:</label>
+                            <label for="recipient-name" class="col-form-label">Cover Photo(516x350):</label>
                              <input type="button" value="Choose File" onclick="uploadNewsImage()"
                                                         class="form-control-file" id="trek_upload1" name="trek_upload1">
                         
@@ -342,7 +342,7 @@ $dataTitle = $wpdb->get_results('SELECT trek_content,trek_context FROM ' . $tabl
 
                     </form>
                     <img src="" id="news_tth_cover_edit" style="max-height: 200px;max-width: 200px;"><br>
-                     <label for="recipient-name" class="col-form-label">Change Photo:</label>
+                     <label for="recipient-name" class="col-form-label">Change Photo (516x350):</label>
                              <input type="button" value="Choose File" onclick="uploadNewsImage()"
                                                         class="form-control-file" id="trek_upload1" name="trek_upload1">
                 </div>

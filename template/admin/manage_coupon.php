@@ -202,7 +202,8 @@ if (isset($_GET['num'])) {
                     <div class="form-group">
                         <label for="generate_coupon_amount" class="col-form-label" style="margin-bottom: 14px;">Coupon
                             Amount * : &nbsp;&nbsp;</label>
-                        <input type="number" class="form-control" placeholder="Coupon Amount"
+                        <input type="number" min="0" oninput="this.value = 
+ !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" placeholder="Coupon Amount"
                                id="generate_coupon_amount" name="generate_coupon_amount"
                                value="<?php echo $dataFlags[0]->coupon_amount; ?>">
                     </div>
@@ -442,14 +443,14 @@ if (isset($_GET['num'])) {
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="display:none;">
                             <div class="form-group">
                                 <label for="coupon_display_tran" style="margin-bottom: 13px;">&nbsp; Transfer type *</label>
                                 <select id="coupon_display_tran" name="coupon_display_tran" class="form-control"
                                         data-error="Please specify your type.">
-                                    <option value="" selected>--Coupon is--
+                                    <option value="" >--Coupon is--
                                     </option>
-                                    <option value="Transferable" <?php if ($dataFlags[0]->coupon_transfer_type == 'Transferable') echo ' selected="selected"'; ?>>Transferable</option>
+                                    <option selected value="Transferable" <?php if ($dataFlags[0]->coupon_transfer_type == 'Transferable') echo ' selected="selected"'; ?>>Transferable</option>
                                     <option value="Not_transferable" <?php if ($dataFlags[0]->coupon_transfer_type == 'Not_transferable') echo ' selected="selected"'; ?>>Not transferable</option>
                                 </select>
                             </div>

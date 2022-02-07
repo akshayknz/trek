@@ -59,7 +59,7 @@ $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'tth_why where tth
             </div>
 
             <div class="col-md-3 card gallarybox2 set-padding" style="margin-left: 26px;">
-                <div class="form-group"><label for="trek_Transportation"> Images *
+                <div class="form-group"><label for="trek_Transportation"> Images (144x156)*
                         </label>
                     <input type="button" value="Choose File" onclick="upload2Edit()"
                            class="form-control-file file2" name="trek_upload2[]"

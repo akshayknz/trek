@@ -59,7 +59,7 @@ $data_web = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'wp_trek_volun
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    text
+    
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">

@@ -98,7 +98,7 @@ $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'trektable_fitness
                     <tr>
                         <td class="text-center"><?php echo $j; ?></td>
                         <td style="text-align: center;"><?php echo $data[$i]->trek_fitness_policy_name; ?></td>
-                        <td class="text-center"> <a class="btn btn-primary" href="http://3.22.169.104/wp-content/plugins/trek/template/admin<?php echo $data[$i]->trek_fitness_policy_description; ?>"  target="_blank" role="button" >Preview</a></td>
+                        <td class="text-center"> <a class="btn btn-primary" href="<?= site_url() ?>/wp-content/plugins/trek/template/admin<?php echo $data[$i]->trek_fitness_policy_description; ?>"  target="_blank" role="button" >Preview</a></td>
                         <td class="text-center">
                             <a class="btn btn-danger" onclick="FitDelete(this.id)"
                                id="<?php echo $data[$i]->id; ?>-FitDelete" role="button">Delete</a>
@@ -135,13 +135,14 @@ $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'trektable_fitness
                             <input type="file" name="trek_fitness_file" id="trek_fitness_file" onchange="upload(trek_fitness_file)" accept="application/pdf">
                         </div>
                     </div>
-                    <button type="button" name="submit" onclick="addfitness()" class="btn btn-primary">Add Fitness</button>
+                   
                     <input type="text" id="uploadurl" hidden>
                     <span id="uploaderr" style="color: red;"></span>
                     <span id="uploadSucess" style="color: green"></span>
                 </form>
             </div>
             <div class="modal-footer">
+             <button type="button" name="submit" onclick="addfitness()" class="btn btn-primary">Add Fitness</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
             </div>

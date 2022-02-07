@@ -26,6 +26,7 @@ $query12 = "select count(id) as tcount FROM wp_trektable_bookings where trek_sel
 $results12 = $wpdb->get_results($query12);
 $cancellationCount = $results12[0]->tcount;
 
+
 ?>
 
 <!DOCTYPE html>
@@ -124,11 +125,12 @@ $cancellationCount = $results12[0]->tcount;
         padding: 20px;
         margin: 0 0 2px;
     }
+		
     </style>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
-    </style>
+   
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">  
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -186,6 +188,8 @@ if ($cancellationCount > 0) {
 
             </div>
         </div>
+
+
 
 
     </div>
@@ -251,6 +255,9 @@ if ($cancellationCount > 0) {
             </div>
         </div>
     </div>
+	
+
+
 </body>
 
 <script>
@@ -259,7 +266,11 @@ $(document).ready(function() {
     getModalDeparture("<?php echo $ppc; ?>-getDeparture", "getReleventTrekUpcoming");
     jQuery("#trek_choose_dep").empty();
     jQuery("#trek_choose_dep").append('<?php echo $alltrekdate; ?>');
+
+   
 });
+
+
 </script>
 
 </html>

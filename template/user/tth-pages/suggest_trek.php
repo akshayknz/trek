@@ -2,7 +2,7 @@
 
 global $wpdb, $table_prefix;
 $user_ID = get_current_user_id();
-$data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email,service_required,trek_updated_time,trek_info_read_status FROM ' . $table_prefix . 'trek_user_sugget_trek where trek_tth_status="0" order by id DESC');
+$data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email,trek_tth_status,service_required,trek_updated_time,trek_info_read_status FROM ' . $table_prefix . 'trek_user_sugget_trek where trek_tth_status!=1 order by id DESC');
 
 // print_r(json_encode($data));
 // die;
@@ -55,8 +55,8 @@ $data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email
         margin-right: 25px;
     }
     </style>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
     </style>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
@@ -88,6 +88,7 @@ $data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email
                             <th class="text-center">Looking_for</th>
                             <th class="text-center">Service</th>
                             <th class="text-center">Enquiry Date</th>
+                            <th class="text-center">Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -99,7 +100,7 @@ $data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email
                                 $j++;
 
                         ?>
-                        <tr>
+                        <tr class="status-color" data-status=<?= $data[$i]->trek_tth_status ?>>
                             <td class="text-center"><?php echo $j; ?></td>
                             <td style="text-align: center;"><?php echo $data[$i]->full_name; ?></td>
                             <td style="text-align: center;"><?php echo $data[$i]->email; ?></td>
@@ -118,6 +119,17 @@ $data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email
                             }
                             ?>
 
+                            <td style="text-align: center;"  data-order="<?= $data[$i]->trek_tth_status ?>">
+                                <select 
+                                    data-id="<?= $data[$i]->id ?>" 
+                                    onChange = "updateStatus(event);"
+                                    name="status" 
+                                    id="status">
+                                    <option value="0" <?= ($data[$i]->trek_tth_status == 0)? "selected":null ?>>Pending</option>
+                                    <option value="2" <?= ($data[$i]->trek_tth_status == 2)? "selected":null ?>>Converted</option>
+                                    <option value="3" <?= ($data[$i]->trek_tth_status == 3)? "selected":null ?>>Cancelled</option>
+                                </select>
+                            </td>
                             
                             <td class="text-center">
                                 <a class="btn btn-info" role="button" href="admin.php?page=view_suggest_trek_details&num=<?php echo $data[$i]->id; ?>"
@@ -286,6 +298,26 @@ $data = $wpdb->get_results('SELECT id,preferred_time,looking_for,full_name,email
             </div>
         </div>
     </div>
+    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Notes</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Enter notes:</p>
+          <div >
+              <textarea class="form-control" name="" id="statusNote" cols="30" rows="10"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="submitStatus()">Submit</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </body>
 <script>
 var editor21 = CKEDITOR.replace('news_content');
@@ -293,11 +325,59 @@ CKFinder.setupCKEditor(editor21);
 var editor22 = CKEDITOR.replace('news_content_edit');
 CKFinder.setupCKEditor(editor22);
 </script>
+<style>
+.status-color[data-status="2"]{
+    background-color: #00ff064d !important;
+}
+.status-color[data-status="3"]{
+    background-color: #ff000040 !important;
+}
+</style>
 <script>
+
 $(document).ready(function() {
     $('#myTable').dataTable();
-
 });
+
+var data = new FormData()
+const updateStatus = (e) => {
+    data = new FormData()
+    $('#myModal').modal('show');
+    e.currentTarget.closest('tr').dataset.status = e.currentTarget.value
+    data.append('action', 'updateStatusSuggestTrek')
+    data.append('id', e.currentTarget.dataset.id)
+    data.append('status', e.currentTarget.value)
+    data.append('statusText', e.currentTarget.options[e.currentTarget.selectedIndex].text)
+    currentItem = e.currentTarget.dataset.id
+}
+$('#myModal').on('hidden.bs.modal', function (e) {
+    if(!data.has('note')){
+        data.append('note', '')
+    }
+    sendUpdateStatusRequest(data);
+    $(this).off('hidden.bs.modal');
+})
+const submitStatus = () => {
+    data.append('note', document.querySelector('#statusNote').value)
+
+}
+const sendUpdateStatusRequest = (data) => {
+    console.log(...data);
+    jQuery("#loader").css("display", "block")
+    jQuery.ajax({
+      type: "post",
+      cache: false,
+      contentType: false,
+      processData: false,
+      url: my_objs.ajax_url_pages,
+      data: data,
+      success: function(msg) {
+        jQuery("#loader").css("display", "none")
+      }
+   });
+   location.reload();
+}
+
 </script>
 
 </html>

@@ -2,7 +2,7 @@
 
 global $wpdb, $table_prefix;
 $user_ID = get_current_user_id();
-$data = $wpdb->get_results('SELECT contact_name,contact_num1,contact_num2,contact_email FROM ' . $table_prefix . 'trektable_contacts');
+$data = $wpdb->get_results('SELECT id, contact_name,contact_num1,contact_num2,contact_email FROM ' . $table_prefix . 'trektable_contacts');
 
 ?>
 
@@ -53,8 +53,8 @@ $data = $wpdb->get_results('SELECT contact_name,contact_num1,contact_num2,contac
             margin-right: 25px;
         }
     </style>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
     </style>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
@@ -104,13 +104,13 @@ $data = $wpdb->get_results('SELECT contact_name,contact_num1,contact_num2,contac
                         <td style="text-align: center;"><?php echo $data[$i]->contact_email; ?></td>
                         <td style="text-align: center;"><?php echo $data[$i]->contact_num1; ?></td>
                         <td class="text-center"><?php echo $data[$i]->contact_num2; ?></td>
-                       <!--  <td class="text-center"><a class="btn btn-info" onclick="updateNewsLetterFetch(this.id)"
+                        <td class="text-center"><a class="btn btn-info" onclick="updateContactFetch(<?php echo $data[$i]->id; ?>)"
                                                    id="<?php echo $data[$i]->id; ?>-NewsEdit" role="button"
                                                    data-toggle="modal"
                                                    data-target="#editModal">Edit</a>
-                            <a class="btn btn-danger" onclick="deleteContact(this.id)"
+                            <a class="btn btn-danger" onclick="deleteContact(<?php echo $data[$i]->id; ?>)"
                                id="<?php echo $data[$i]->id; ?>-NewsDelete" role="button">Delete</a>
-                        </td> -->
+                        </td>
                     </tr>
                     <?php
                 }
@@ -165,7 +165,49 @@ $data = $wpdb->get_results('SELECT contact_name,contact_num1,contact_num2,contac
         </div>
     </div>
 </div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="tth-news-category">Select user:</label>
 
+                         <input type="text" class="form-control" id="edit_tth_user">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input type="text" class="form-control" id="edit_tth_user_mail">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Phone 1:</label>
+                        <input type="text" class="form-control" id="edit_tth_user_phone1">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Phone 2:</label>
+                        <input type="text" class="form-control" id="edit_tth_user_phone2">
+                    </div>
+                    <span style="color: red;" id="usererr"></span>
+                    <span style="color: green;" id="usersuccess"></span>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="upadteContactButton" data-id="0" onclick="updateContact(event)" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 <!--<script>-->

@@ -99,7 +99,7 @@ $data = $wpdb->get_results('SELECT * FROM ' . $table_prefix . 'trektable_trek_ri
                         <td class="text-center"><?php echo $j; ?></td>
                         <td style="text-align: center;"><?php echo $data[$i]->trek_risk_name; ?></td>
                         <td class="text-center"><a class="btn btn-primary"
-                                                   href="http://3.22.169.104/wp-content/plugins/trek/template/admin<?php echo $data[$i]->trek_risk_content; ?>"
+                                                   href="<?= get_site_url() ?>/wp-content/plugins/trek/template/admin<?php echo $data[$i]->trek_risk_content; ?>"
                                                    target="_blank" role="button">Preview</a></td>
                         <td class="text-center">
                             <a class="btn btn-danger" onclick="menuRiskDelete(this.id)"
