@@ -1338,9 +1338,9 @@ $singleamount=($amount/$participants);
     if ($_POST['action'] == 'getTreksAndDetailsByDate') {
 
         $date = $_POST['date'];
-        $date_exp = explode(" - ", $date);
-        $start_date = $date_exp[0];
-        $end_date = $date_exp[1];
+        // $date_exp = explode(" - ", $date);
+        // $start_date = $date_exp[0];
+        // $end_date = $date_exp[1];
 
         $query = "SELECT 
         b.trek_name, 
@@ -1353,8 +1353,8 @@ $singleamount=($amount/$participants);
         FROM wp_trektable_trek_departure AS a
         LEFT JOIN wp_trektable_addtrekdetails AS b
         ON a.trek_selected_trek = b.id 
-        and ADDDATE(a.trek_start_date, 2) between '" . $start_date . "' and '" . $end_date . "' 
-        AND a.trek_departure_status=0 group by trek_name order by a.trek_start_date asc";
+        and a.trek_start_date = '" . $date . "' 
+        AND a.trek_departure_status!=1 group by trek_name order by a.trek_start_date asc";
 
         $upcoming_treks = $wpdb->get_results($query);
 

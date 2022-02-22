@@ -235,7 +235,7 @@ $data1 = $wpdb->get_results('SELECT trek_name,id FROM ' . $table_prefix . 'trekt
                         </div>
                          <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Trek :<span class="note">(For home page select general)</span></label>
-                           <select class="form-control" name="tth-video-trek"  id="video-trek-edit">
+                           <select class="form-control" multiple name="tth-video-trek"  id="video-trek-edit">
                             <option value="general" selected>General</option>
                             <?php
                                 $count = count($data1);

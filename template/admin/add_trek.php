@@ -723,7 +723,9 @@ for ($i = 0; $i < $countf; $i++) {
                                                         onclick="enableOverview()"></i></label>
                                                 <span id="trek_overview_error" style="display: none;color: red;">This
                                                     Field is Required *</span>
-                                                <textarea class="form-control" id="trek_overview" rows="3"></textarea>
+                                                <!--<textarea class="form-control" id="trek_overview" rows="3"></textarea>-->
+                                                                                                <?php wp_editor( $data[0]->trek_about_trek , 'trek_about', $settings = array('editor_height' => 210,'textarea_name'=>'$POST name') ); ?> 
+
                                             </div>
                                         </div>
 
@@ -732,7 +734,8 @@ for ($i = 0; $i < $countf; $i++) {
                                                 <label for="trek_about">About the Trek *</label>
                                                 <span id="trek_about_error" style="display: none;color: red;">This Field
                                                     is Required *</span>
-                                                <textarea class="form-control" id="trek_about" rows="3"></textarea>
+                                                <!-- <textarea class="form-control" id="trek_about" rows="3"></textarea> -->
+                                                <?php wp_editor( $data[0]->trek_about_trek , 'trek_about', $settings = array('editor_height' => 210,'textarea_name'=>'$POST name') ); ?> 
                                             </div>
                                         </div>
 
@@ -1564,8 +1567,8 @@ var editor4 = CKEDITOR.replace('trek_overview');
 // CKEDITOR.instances.editor4.config.readOnly = true;
 // CKFinder.setupCKEditor( editor4 );
 // CKEDITOR.instances.editor4.config.readOnly = true;
-var editor5 = CKEDITOR.replace('trek_about');
-CKFinder.setupCKEditor(editor5);
+// var editor5 = CKEDITOR.replace('trek_about');
+// CKFinder.setupCKEditor(editor5);
 // var editor6 = CKEDITOR.replace('trek_faq');
 // CKFinder.setupCKEditor(editor6);
 // var editor7 = CKEDITOR.replace('trek_transportation');

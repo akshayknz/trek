@@ -1139,8 +1139,9 @@ function get_values() {
   // trek_itinerary =  CKEDITOR.instances.trek_itinerary.getData();
   //  trek_itinerary=trek_itinerary.replace(/"/g, "&&");
 
-  trek_about = CKEDITOR.instances.trek_about.getData();
-  trek_about = trek_about.replace(/"/g, "&&");
+  trek_about = tinymce.get("trek_about").getContent();
+  // trek_about = trek_about.replace(/"/g, "&&");
+  console.log(trek_about);
 
   // trek_rr =  CKEDITOR.instances.trek_rr.getData();
   // trek_rr=trek_rr.replace(/"/g, "&&");

@@ -1943,7 +1943,7 @@ wp_trektable_addtrekdetails.id asc";
         $len = strlen($text);
         $space = strrpos($text, " ", -$len / 3);
         $col1 = substr($text, 0, $space);
-        $col2 = substr($text, $space);
+        $col2 = apply_filters("the_content", substr($text, $space));
 
         // print_r($col1);
         // print_r("<br>AMAL");
@@ -1986,7 +1986,7 @@ wp_trektable_addtrekdetails.id asc";
             for ($j = 0; $j < $innerLoopCount; $j++) {
                 $trek_details_hero .= '<img src="' . $imgSlideTreks[$j] . '"/>';
             }
-            $trek_details_hero .= '</div><div class="content"> <h1 class="page_title">' . $result[0]->trek_name . '</h1> <ul class="meta"> <li><img src="' . get_template_directory_uri() . '/assets/icons/map_marker.png" alt=""> ' . $result[0]->trek_region_state . '</li><li><img src="' . get_template_directory_uri() . '/assets/icons/calendar.png" alt="">' . $result[0]->trek_days . ' Days</li></ul> </div></div></section> <section class="trek_details_wrapper"><div class="container-fluid"><div class="row"><div class="column1"><div class="row"><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/altitude.svg" alt=""></div><div class="info"><p>Max Altitude</p><p class="bold">' . number_format($result[0]->trek_altitude) . ' FT</p></div></div><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/grade.svg" alt=""></div><div class="info"><p>Grade</p><p class="bold trk-grade" style="float:right;font-size:15px;">' . $result[0]->trek_grade . '</p></div></div><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/duration.svg" alt=""></div><div class="info"><p>Duration</p><p class="bold">' . $result[0]->trek_days . ' Days</p></div></div><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/approx.svg" alt=""></div><div class="info"><p>Trekking KM.</p><p class="bold">' . $result[0]->trek_distance . ' KM</p></div></div></div></div><div class="column2"><table class="table"><tr><td>Suitable for:</td><td>' . $result[0]->trek_suitable . '</td></tr><tr><td>Experience:</td><td>' . $result[0]->trek_experience . '</td></tr><tr><td>Fitness:</td><td>' . $result[0]->trek_fitness . '</td></tr></table></div><div class="column3">' . $trk_price . '<ul class="dotted_list"><li>' . $result[0]->trek_service_tax . '</li><li>' . ucfirst(strtolower($result[0]->trek_filter_from)) . ' to ' . ucfirst(strtolower($result[0]->trek_filter_to)) . '</li><li>' . $result[0]->trek_ins_policy_status . '</li></ul></div><div class="column4 support"><h3>Help & Support</h3><ul class="contact_list"><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum1 . '</li><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum2 . '</li><li><i class="fa fa-envelope"></i>' . $assigned_contact_details[0]->cmail . '</li></ul><ul class="dotted_list" style="width:44%;"><li><u><a href="' . site_url() . '/customize_trip"> <p>Customise Trek</p></a></u></li><li id="cscancel"><a href="#tab4-content"><u style="white-space: nowrap;">Cost & Cancellation Terms</u></a></li><li style="display:none;"><u>Risk & Respond </u></li></ul></div></div></div> </section><section class="trek_detail_tabs"><div class="tabs_nav"><div class="container"><ul><li class="active"><a href="#tab1-content"><img src="' . get_template_directory_uri() . '/assets/icons/overview.png" alt="">Overview</a></li><li class=""><a href="#tab2-content"><img src="' . get_template_directory_uri() . '/assets/icons/itenary.png" alt="">Itinerary</a></li><li class=""><a href="#tab3-content"><img src="' . get_template_directory_uri() . '/assets/icons/how-to-reach.png" alt="">How To Reach</a></li><li class=""><a href="#tab4-content"><img src="' . get_template_directory_uri() . '/assets/icons/cost.png" alt="">Cost Terms</a></li><li class=""><a href="#tab5-content"><img src="' . get_template_directory_uri() . '/assets/icons/trek.png" alt="">Trek Essential</a></li><li class=""><a href="#tab6-content"><img src="' . get_template_directory_uri() . '/assets/icons/links.png" alt="">Important Links</a></li><li class=""><a href="#tab7-content"><img src="' . get_template_directory_uri() . '/assets/icons/fitness.png" alt="">Fitness</a></li><li class=""><a href="#tab8-content"><img src="' . get_template_directory_uri() . '/assets/icons/map.png" alt="">Map</a></li><li class="" id="review-banner"><a href="#tab9-content"><img src="' . get_template_directory_uri() . '/assets/icons/reviews.png" alt="">Reviews</a></li><li class=""><a href="#tab10-content"><img src="' . get_template_directory_uri() . '/assets/icons/gallery.png" alt="">Gallery</a></li></ul></div></div><div class="container"><div class="trek_details_outer"><div class="all_tabs"><div class="tabs"><div id="tab1-content"><h3 class="fancy_head">Overview</h3><p class="font_18"><b>Trek Info</b></p> <br /><ul class="dotted_list colum_count_2"><li><span style="display: flex;">Trail Type</span>' . $trail_type . '</li><li><span style="display: flex;">Rail Head</span>' . $rail_head . '</li><li><span style="display: flex;">Airport</span>' . $airport . '</li><li><span style="display: flex;">Base Camp</span>' . $base_camp . '</li><li><span style="display: flex;">Best Season</span>' . ('<ul class="best-season">'.implode(" ",array_map(function ($item){return '<li>'.$item.'</li>';}, json_decode($trek_season))).'</ul>'). '</li><li><span style="display: flex;">Snow</span>' . $snow . '</li><li><span style="display: flex;">Services from</span>' . $services_from . '</li><li><span style="display: flex;">Meals</span>' . $meals . '</li><li><span style="display: flex;">Stay</span>' . $stay . '</li></ul> <br /><br /><ul class="dotted_list"><li>Region - <b>' . $result[0]->trek_region_state . '</b></li><li>Duration - <b>' . $result[0]->trek_days . ' Days</b></li><li>Grade - <b>' . $result[0]->trek_grade . '</b></li><li>Max Altitude - <b>' . $result[0]->trek_altitude . ' Ft.</b></li><li>Approx Trekking Km - <b>' . $result[0]->trek_distance . ' Kms.</b></li></ul>';
+            $trek_details_hero .= '</div><div class="content"> <h1 class="page_title">' . $result[0]->trek_name . '</h1> <ul class="meta"> <li><img src="' . get_template_directory_uri() . '/assets/icons/map_marker.png" alt=""> ' . $result[0]->trek_region_state . '</li><li><img src="' . get_template_directory_uri() . '/assets/icons/calendar.png" alt="">' . $result[0]->trek_days . ' Days</li></ul> </div></div></section> <section class="trek_details_wrapper"><div class="container-fluid"><div class="row"><div class="column1"><div class="row"><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/altitude.svg" alt=""></div><div class="info"><p>Max Altitude</p><p class="bold">' . number_format($result[0]->trek_altitude) . ' FT</p></div></div><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/grade.svg" alt=""></div><div class="info"><p>Grade</p><p class="bold trk-grade" style="float:right;font-size:15px;">' . $result[0]->trek_grade . '</p></div></div><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/duration.svg" alt=""></div><div class="info"><p>Duration</p><p class="bold">' . $result[0]->trek_days . ' Days</p></div></div><div class="col-md-6 features_style1"><div><img src="' . get_template_directory_uri() . '/assets/icons/approx.svg" alt=""></div><div class="info"><p>Trekking KM.</p><p class="bold">' . $result[0]->trek_distance . ' KM</p></div></div></div></div><div class="column2"><table class="table"><tr><td>Suitable for:</td><td>' . $result[0]->trek_suitable . '</td></tr><tr><td>Experience:</td><td>' . $result[0]->trek_experience . '</td></tr><tr><td>Fitness:</td><td>' . $result[0]->trek_fitness . '</td></tr></table></div><div class="column3">' . $trk_price . '<ul class="dotted_list"><li>' . $result[0]->trek_service_tax . '</li><li>' . ucfirst(strtolower($result[0]->trek_filter_from)) . ' to ' . ucfirst(strtolower($result[0]->trek_filter_to)) . '</li><li>' . $result[0]->trek_ins_policy_status . '</li></ul></div><div class="column4 support"><h3>hhHeelp and Supportttt</h3><ul class="contact_list"><li><a href="tel:' . str_replace( ' ', '', str_replace( '-', '', $assigned_contact_details[0]->cnum2 ) ) . '"><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum1 . '</a></li><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum2 . '</li><li><a href="mailto:' . $assigned_contact_details[0]->cmail . '"><i class="fa fa-envelope"></i>' . $assigned_contact_details[0]->cmail . '</a></li></ul><ul class="dotted_list" style="width:44%;"><li><u><a href="' . site_url() . '/customize_trip"> <p>Customise Trek</p></a></u></li><li id="cscancel"><a href="#tab4-content"><u style="white-space: nowrap;">Cost & Cancellation Terms</u></a></li><li style="display:none;"><u>Risk & Respond </u></li></ul></div></div></div> </section><section class="trek_detail_tabs"><div class="tabs_nav"><div class="container"><ul><li class="active"><a href="#tab1-content"><img src="' . get_template_directory_uri() . '/assets/icons/overview.png" alt="">Overview</a></li><li class=""><a href="#tab2-content"><img src="' . get_template_directory_uri() . '/assets/icons/itenary.png" alt="">Itinerary</a></li><li class=""><a href="#tab3-content"><img src="' . get_template_directory_uri() . '/assets/icons/how-to-reach.png" alt="">How To Reach</a></li><li class=""><a href="#tab4-content"><img src="' . get_template_directory_uri() . '/assets/icons/cost.png" alt="">Cost Terms</a></li><li class=""><a href="#tab5-content"><img src="' . get_template_directory_uri() . '/assets/icons/trek.png" alt="">Trek Essential</a></li><li class=""><a href="#tab6-content"><img src="' . get_template_directory_uri() . '/assets/icons/links.png" alt="">Important Links</a></li><li class=""><a href="#tab7-content"><img src="' . get_template_directory_uri() . '/assets/icons/fitness.png" alt="">Fitness</a></li><li class=""><a href="#tab8-content"><img src="' . get_template_directory_uri() . '/assets/icons/map.png" alt="">Map</a></li><li class="" id="review-banner"><a href="#tab9-content"><img src="' . get_template_directory_uri() . '/assets/icons/reviews.png" alt="">Reviews</a></li><li class=""><a href="#tab10-content"><img src="' . get_template_directory_uri() . '/assets/icons/gallery.png" alt="">Gallery</a></li></ul></div></div><div class="container"><div class="trek_details_outer"><div class="all_tabs"><div class="tabs"><div id="tab1-content"><h3 class="fancy_head">Overview</h3><p class="font_18"><b>Trek Info</b></p> <br /><ul class="dotted_list colum_count_2"><li><span style="display: flex;">Trail Type</span>' . $trail_type . '</li><li><span style="display: flex;">Rail Head</span>' . $rail_head . '</li><li><span style="display: flex;">Airport</span>' . $airport . '</li><li><span style="display: flex;">Base Camp</span>' . $base_camp . '</li><li><span style="display: flex;">Best Season</span>' . ('<ul class="best-season">'.implode(" ",array_map(function ($item){return '<li>'.$item.'</li>';}, json_decode($trek_season))).'</ul>'). '</li><li><span style="display: flex;">Snow</span>' . $snow . '</li><li><span style="display: flex;">Services from</span>' . $services_from . '</li><li><span style="display: flex;">Meals</span>' . $meals . '</li><li><span style="display: flex;">Stay</span>' . $stay . '</li></ul> <br /><br /><ul class="dotted_list"><li>Region - <b>' . $result[0]->trek_region_state . '</b></li><li>Duration - <b>' . $result[0]->trek_days . ' Days</b></li><li>Grade - <b>' . $result[0]->trek_grade . '</b></li><li>Max Altitude - <b>' . $result[0]->trek_altitude . ' Ft.</b></li><li>Approx Trekking Km - <b>' . $result[0]->trek_distance . ' Kms.</b></li></ul>';
 
             if (isset($result[0]->trek_video_about_url)) {
                 $trek_details_hero .= '<div class="video"><iframe width="100%" height="540" src="' . $result[0]->trek_video_about_url . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
@@ -2076,14 +2076,18 @@ wp_trektable_addtrekdetails.id asc";
 
 
         if (!empty($result)) {
-            $trek_help .= '<div class="widget"><h3 class="fancy_head" id="tth_help_supp">Help & Support</h3><ul class="contact_list" style="width:55%;"><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum1 . '</li><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum2 . '</li><li><i class="fa fa-envelope"></i>' . $assigned_contact_details[0]->cmail . '</li></ul><ul class="dotted_list" style="width:44%;"><li><u><a href="' . site_url() . '/customize_trip"> <p>Customise Trek</p></a></u></li><li id="cscancel"><a href="#tab4-content"><u>Cost & Cancellation Terms</u></a></li><li style="display:none;"><u>Risk & Respond </u></div>';
+            $trek_help .= '<div class="widget"><h3 class="fancy_head" id="tth_help_supp">hhHeelp and Support</h3><ul class="contact_list" style="width:55%;"><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum1 . '</li><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum2 . '</li><li><i class="fa fa-envelope"></i>' . $assigned_contact_details[0]->cmail . '</li></ul><ul class="dotted_list" style="width:44%;"><li><u><a href="' . site_url() . '/customize_trip"> <p>Customise Trek</p></a></u></li><li id="cscancel"><a href="#tab4-content"><u>Cost & Cancellation Terms</u></a></li><li style="display:none;"><u>Risk & Respond </u></div>';
         } else {
-            $trek_help .= '<div class="widget"><h3 class="fancy_head" id="tth_help_supp">Help & Support</h3><ul class="contact_list" style="width:55%;"><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum1 . '</li><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum2 . '</li><li><i class="fa fa-envelope"></i>' . $assigned_contact_details[0]->cmail . '</li></ul><ul class="dotted_list"><li><u>Customize the Trip</u></li><li><u>Cost &amp; Cancellation Terms</u></li><li><u>Risk &amp; Respond</u></li></ul></div>';
+            $trek_help .= '<div class="widget"><h3 class="fancy_head" id="tth_help_supp">Heelp and Support</h3><ul class="contact_list" style="width:55%;"><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum1 . '</li><li><i class="fa fa-phone"></i>' . $assigned_contact_details[0]->cnum2 . '</li><li><i class="fa fa-envelope"></i>' . $assigned_contact_details[0]->cmail . '</li></ul><ul class="dotted_list"><li><u>Customize the Trip</u></li><li><u>Cost &amp; Cancellation Terms</u></li><li><u>Risk &amp; Respond</u></li></ul></div>';
         }
         echo $trek_amount;
 
         echo $trek_help;
         $this->amount_contact_departure_fixture($id);
+    }
+
+    public function pad($n){
+        return ($n<10)? '0'.$n:$n;
     }
 
     public function amount_contact_departure_fixture($atts)
@@ -2111,7 +2115,7 @@ wp_trektable_trek_departure.trek_start_date asc;";
         if (!empty($result)) {
 
             $alldeparturecount = count($result);
-            $trek_fixture = '<div class="widget shockwave"><h3 class="fancy_head" id="radio_group_fixd">Fixed Departure</h3><div class="radio_group" id="radio_group"><div class="radio"> <input type="radio" class="form_radio" name="view" id="list_view" checked /> <label for="list_view">List View</label></div><div class="radio" > <input type="radio" class="form_radio" name="view" id="month_view" /> <label for="month_view">Month View</label></div></div><div class="vertical_scroll"><table class="schedule_table"><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody>';
+            $trek_fixture = '<div class="widget shockwave"><h3 class="fancy_head" id="radio_group_fixd">fFixed Departure</h3><div class="radio_group" id="radio_group"><div class="radio"> <input type="radio" class="form_radio" name="view" id="list_view" checked /> <label for="list_view">List View</label></div><div class="radio" > <input type="radio" class="form_radio" name="view" id="month_view" /> <label for="month_view">Month View</label></div></div><div class="vertical_scroll"><table class="schedule_table"><thead><tr><th>Dates</th><th>Status</th></tr></thead><tbody>';
 
 
 
@@ -2121,17 +2125,17 @@ wp_trektable_trek_departure.trek_start_date asc;";
                 $percentage = ($totalReserverd / $totalSeats) * 100;
                 $k1 = strtotime($result[$k]->trek_start_date);
                 $l1 = strtotime($result[$k]->trek_end_date);
-                $k2 = date('j M ', $k1);
-                $l2 = date('j M Y', $l1);
+                $k2 = $this->pad(date('j M ', $k1));
+                $l2 = $this->pad(date('j M Y', $l1));
                 if ($percentage <= 50) {
-                    $trek_fixture .= '<tr><td>' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></td><td><span class="open">Open </span></td></tr>';
+                    $trek_fixture .= '<tr><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'">' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></a></td><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'"><span class="open">Open </span></a></td></tr>';
                 } else if ($percentage >= 100) {
-                    $trek_fixture .= '<tr><td>' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></td><td><span class="close" style="color:red;">Full </span></td></tr>';
+                    $trek_fixture .= '<tr><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'">' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></a></td><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'"><span class="close" style="color:red;">Full </span></a></td></tr>';
                 } else {
-                    $trek_fixture .= '<tr><td>' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></td><td><span class="close">Closing </span></td></tr>';
+                    $trek_fixture .= '<tr><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'">' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></a></td><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'"><span class="close">Closing </span></a></td></tr>';
                 }
             }
-            $trek_fixture .= '</tbody></table></div><div class="calendar_wrapper"><div id="calendar"></div></div></div>';
+            $trek_fixture .= '</tbody></table></div><div class="calendar_wrapper"><div class="calender-el-wrapper"><div id="month-picker"></div><div id="calendar"></div></div></div></div>';
         } else {
             echo 'No departure found.<a href="' . site_url() . '/contactus"><span style="margin-left:10px;"> <u>Contact Us</u> <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""></span></a>';
         }
@@ -2153,14 +2157,14 @@ wp_trektable_trek_departure.trek_start_date asc;";
                 $k2 = date('j M ', $k1);
                 $l2 = date('j M Y', $l1);
                 if ($percentage <= 50) {
-                    $trek_fixture1 .= '<tr><td>' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></td><td><span class="open">Open </span></td></tr>';
+                    $trek_fixture1 .= '<tr><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'">' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></a></td><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'"><span class="open">Open </span></a></td></tr>';
                 } else if ($percentage >= 100) {
-                    $trek_fixture1 .= '<tr><td>' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></td><td><span class="close" style="color:red;">Full </span></td></tr>';
+                    $trek_fixture1 .= '<tr><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'">' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></a></td><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'"><span class="close" style="color:red;">Full </span></a></td></tr>';
                 } else {
-                    $trek_fixture1 .= '<tr><td>' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></td><td><span class="close">Closing </span></td></tr>';
+                    $trek_fixture1 .= '<tr><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'">' . $k2 . ' - ' . $l2 . '<span class="event_dep"> &nbsp;' . $result[$k]->dep_event_name . '</span></a></td><td><a href="'.get_site_url().'/booking?trek='.$id.'&date='.$result[$k]->id.'"><span class="close">Closing </span></a></td></tr>';
                 }
             }
-            $trek_fixture1 .= '</tbody></table></div><div class="calendar_wrapper"><div id="calendar"></div></div></div>';
+            $trek_fixture1 .= '</tbody></table></div><div class="calendar_wrapper"><div class="calender-el-wrapper"><div id="month-picker"></div><div id="calendar"></div></div></div></div>';
         } else {
             echo 'No departure found.<a href="' . site_url() . '/contactus"><span style="margin-left:10px;"> <u>Contact Us</u> <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""></span></a>';
         }
@@ -2279,7 +2283,6 @@ function save( $post_id ) {
 
 
 
-
 function create_posttype_growth() {
  
     register_post_type( 'growth',
@@ -2316,7 +2319,7 @@ function render_meta_box_content_growth( $post ) {
 
     $value = get_post_meta( $post->ID, 'date', true );
     ?>
-    <label for="date">Description for this field :</label>
+    <label for="date">Date (timeline will be ordered by date) :</label>
     <input type="hidden" name="date_val" value="<?php echo esc_attr( $value ); ?>" />
     <select name="date" id="yearpicker"></select>
     <?php
@@ -2385,24 +2388,3 @@ function prefix_disable_gutenberg($current_status, $post_type)
     if ($post_type === 'growth') return false;
     return $current_status;
 }
-
-function your_theme_new_customizer_settings($wp_customize) {
-    //<img src='<?php echo get_theme_mod('footer_logo');' />
-    $wp_customize->add_setting( 'footer_logo', array(
-        // 'default' => get_theme_file_uri('assets/image/logo.jpg'), // Add Default Image URL 
-        'sanitize_callback' => 'esc_url_raw'
-    ));
- 
-    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'footer_logo_control', array(
-        'label' => 'Upload Logo',
-        'priority' => 90,
-        'section' => 'title_tagline',
-        'settings' => 'footer_logo',
-        'button_labels' => array(// All These labels are optional
-                    'select' => 'Select Logo',
-                    'remove' => 'Remove Logo',
-                    'change' => 'Change Logo',
-                    )
-    )));
-}
-add_action('customize_register', 'your_theme_new_customizer_settings');

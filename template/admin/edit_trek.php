@@ -915,15 +915,11 @@ if ($ppc != '000') {
                                                 <label for="trek_about">About the Trek *</label>
                                                 <span id="trek_about_error" style="display: none;color: red;">This
                                                      Field is Required *</span>
-                                                <textarea class="form-control" id="trek_about" rows="3"><?php
-                                                    echo str_replace('&&', '"', '' . $data[0]->trek_about_trek . '');
-                                                    ?></textarea>
+                                               <!-- str_replace('&&', '"', '' . $data[0]->trek_about_trek . '') -->
+                                                    <?php wp_editor( $data[0]->trek_about_trek , 'trek_about', $settings = array('editor_height' => 210,'textarea_name'=>'$POST name') ); ?> 
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
                                 <div class="row col-md-12">
                                     <div class="nexbut pull-right">
@@ -1604,8 +1600,8 @@ if ($ppc != '000') {
 
         var editor4 = CKEDITOR.replace('trek_overview');
         CKFinder.setupCKEditor(editor4);
-        var editor5 = CKEDITOR.replace('trek_about');
-        CKFinder.setupCKEditor(editor5);
+        // var editor5 = CKEDITOR.replace('trek_about');
+        // CKFinder.setupCKEditor(editor5);
 
 
         var editor31 = CKEDITOR.replace('trek_cost_terms_inclusion');

@@ -138,7 +138,7 @@ wp_enqueue_media();
         <hr style="margin-top: 29px;">
         <div class="container" id="coupon-tabs">
             <div style="margin: auto;">
-                <h4>Basic Details</h4>
+                <h4>Basic Detailsss</h4>
             </div>
             <div class="row">
 
@@ -212,8 +212,7 @@ wp_enqueue_media();
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="coupon_description" class="col-form-label">Coupon Description: (Should be less than
-                            30 words)</label>
+                        <label for="coupon_description" class="col-form-label">Coupon Description: (Should be less than 30 words)</label>
                         <textarea class="col-md-12" rows="4" id="coupon_description"
                                   name="coupon_description"></textarea>
                     </div>
@@ -399,9 +398,12 @@ wp_enqueue_media();
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="coupon_individual_user" class="col-form-label couponImg"
-                               style="margin-bottom: 14px;">User Email:</label>
-                        <input type="text" class="form-control" id="coupon_individual_user"
-                               name="coupon_individual_user" placeholder="User email">
+                               style="margin-bottom: 14px;">User Email:</label><br>
+                        <!-- <input type="text" class="form-control" id="coupon_individual_user"
+                               name="coupon_individual_user" placeholder="User email"> -->
+                        <select class="js-data-example-ajax" class="form-control" id="coupon_individual_user"
+                               name="coupon_individual_user" placeholder="User email" style="width:100%"></select>
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -436,10 +438,28 @@ wp_enqueue_media();
     </div>
 </form>
 
-
 </body>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript">
+
+$('.js-data-example-ajax').select2({
+  ajax: {
+    url: ajaxurl,
+    data: function (params) {
+      var query = {
+        search: params.term,
+        type: 'public',
+        action: 'get_users_autocomplete'
+      }
+      return query;
+    },
+    processResults: function (data) {
+       console.log(JSON.parse(data));
+       return {results: JSON.parse(data)};
+    }
+  }
+  });
+
     $(".js-example-basic-multiple").select2();
     $('.mselect').select2({
         placeholder: 'This is my placeholder',

@@ -270,7 +270,7 @@ if (isset($_POST['data'])) {
                 }
             }
         }
-        $checkBasicDetails = $wpdb->get_results('SELECT id,coupon_name,coupon_amount,coupon_type,coupon_merge,coupon_description,coupon_terms,coupon_transfer_type,coupon_code,coupon_expiry,coupon_trek_type,coupon_ind_usage FROM wp_trektable_coupons_new where coupon_code ="' . $couponId . '" limit 1');
+        $checkBasicDetails = $wpdb->get_results('SELECT id,coupon_name,coupon_amount,coupon_type,coupon_merge,coupon_description,coupon_terms,coupon_transfer_type,coupon_code,coupon_expiry,coupon_trek_type,coupon_ind_usage FROM wp_trektable_coupons_new where status=1 and coupon_code ="' . $couponId . '" limit 1');
         if (empty($checkBasicDetails)) {
             $info_message = "Something Went wrong";
             $result = new stdClass();
@@ -520,6 +520,26 @@ if (isset($_POST['data'])) {
         }
     }
 
+    if ($_POST['data'] == 'savePayableToBackend') {
+        $_SESSION["payable_amount"] = $_POST['amount'];
+        if (true) {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            echo json_encode($result);
+            exit;
+        }
+    }
+
+    if ($_POST['data'] == 'getPayableFromBackend') {
+        if (true) {
+            $result = new stdClass();
+            $result->statusCode = 200;
+            $result->value = $_SESSION["payable_amount"];
+            echo json_encode($result);
+            exit;
+        }
+    }
+
     if ($_POST['data'] == 'suggestMe') {
         $ptbd_table_name = 'wp_trek_user_sugget_trek';
         $step_radio = $_POST['step_radio'];
@@ -759,7 +779,7 @@ if (isset($_POST['data'])) {
             if (!empty($output)) {
                 $cout = count($output);
                 for ($k = 0; $k < $cout; $k++) {
-                    $target .= ' <p><input type="checkbox" value="' . $output[$k]->trek_start_date . '" class="trek_basic_filtering filter-dates" id="dates' . $k . '"><label for="dates' . $k . '">' . $output[$k]->trek_start_date . '</label></p>';
+                    $target .= ' <p><input type="checkbox" value="' . $output[$k]->trek_start_date . '" class="trek_basic_filtering filter-dates" id="dates' . $k . '"><label for="dates' . $k . '">' . date("d-M-Y", strtotime($output[$k]->trek_start_date)) . '</label></p>';
                 }
             } else {
                 $target .= 'No Treks';

@@ -186,7 +186,7 @@ if (isset($_POST['action'])) {
         $trek_drop_place = $_POST['trek_drop_place'];
         $trek_selected_flags = $_POST['trek_selected_flags'];
         $trek_overview = $_POST['trek_overview'];
-        $trek_about_trek = $_POST['trek_about_trek'];
+        $trek_about_trek = stripcslashes($_POST['trek_about_trek']); 
         $trek_participation_policy = $_POST['trek_participation_policy'];
         $trek_fitness_policy = $_POST['trek_fitness_policy'];
         $trek_team_member = $_POST['trek_team_member'];
@@ -230,7 +230,6 @@ if (isset($_POST['action'])) {
         );
 
         if ($results[0]->tk_name == 1) {
-
             if ($wpdb->update('' . $ptbd_table_name . '', array(
                 'trek_name' => $trek_name,
                 'trek_cost' => $trek_cost,
@@ -933,6 +932,32 @@ if (isset($_POST['action'])) {
         }
     }
 
+    if ($_POST['action'] == 'activateCoupon') {
+        $ptbd_table_name = $wpdb->prefix . 'trektable_coupons_new';
+        $coupon_id = $_POST['coupon_id'];
+        $userdata = get_user_by('login', $_POST['email']);
+        $result = wp_check_password($_POST['password'], $userdata->user_pass, $userdata->ID);
+        if($result == true && in_array('administrator',$userdata->roles)){
+            $res = $wpdb->update($ptbd_table_name, array('status'=>1-$_POST['currently']), 
+            array('id'=>$_POST['coupon-id']));
+            if($res){
+                $result = new stdClass();
+                $result->statusCode = 200;
+                $result->message = 'success';
+                $result->result = 'reload';
+                $result->info = 'update action success';
+                echo json_encode($result);
+                exit;
+            }
+        }
+        $result = new stdClass();
+        $result->statusCode = 200;
+        $result->message = 'failed';
+        $result->result = 'fail';
+        echo json_encode($result);
+        exit;
+    }
+
     if ($_POST['action'] == 'deleteCoupon') {
         $coupon_id = $_POST['coupon_id'];
         $ptbd_table_name = $wpdb->prefix . 'trektable_coupons_new';
@@ -1036,6 +1061,7 @@ GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selecte
 wp_trektable_trek_departure.trek_start_date asc";
         } else if ($spin == "getReleventTrekUpcoming") {
             $flag = 2;
+            //trek_trekker_status
             $query = "SELECT
   wp_trektable_trek_departure.*,
   COUNT(wp_trektable_trekkers_list.id) AS Total,trek_trekker_status, (select count(wp_trektable_trekkers_list.id) from
@@ -1050,16 +1076,23 @@ wp_trektable_trek_departure.trek_start_date asc";
         } else if ($spin == "getReleventTrekPrevious") {
             $flag = 3;
             $query = "SELECT
-  wp_trektable_trek_departure.*,
-  COUNT(wp_trektable_trekkers_list.id) AS Total,trek_trekker_status, (select count(wp_trektable_trekkers_list.id) from
-  wp_trektable_trekkers_list where wp_trektable_trekkers_list.payment_status='paid' and
-    wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date ) as paid
-FROM
-  wp_trektable_trek_departure
-LEFT JOIN wp_trektable_trekkers_list ON wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date
-where wp_trektable_trek_departure.trek_selected_trek = '" . $trek_id . "' and wp_trektable_trek_departure.trek_departure_status!=1 and wp_trektable_trek_departure.trek_end_date < CURDATE()
-GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selected_trek order by
-wp_trektable_trek_departure.trek_start_date asc";
+                wp_trektable_trek_departure.*,
+                COUNT(wp_trektable_trekkers_list.id) AS Total,trek_trekker_status, 
+                (select count(wp_trektable_trekkers_list.id) from
+                    wp_trektable_trekkers_list 
+                    where wp_trektable_trekkers_list.payment_status='paid' 
+                    and
+                    wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date 
+                ) as paid
+                FROM
+                wp_trektable_trek_departure
+                LEFT JOIN wp_trektable_trekkers_list ON wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date
+                where trek_trekker_status != 2 
+                AND wp_trektable_trek_departure.trek_selected_trek = '" . $trek_id . "' 
+                AND wp_trektable_trek_departure.trek_departure_status!=1 
+                AND wp_trektable_trek_departure.trek_end_date < CURDATE()
+                GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selected_trek 
+                ORDER BY wp_trektable_trek_departure.trek_start_date asc";
         }
         if (isset($query)) {
             $result = $wpdb->get_results($query);

@@ -147,8 +147,8 @@ function tth_list_upcoming_treks()
 
     if (!empty($upcoming_treks)) {
         $fcount = count($upcoming_treks);
-
-        $content .= '<section class="table-sec" style="padding-top: 10px;"> <div class="container" > <p class="subtitle">Top Picks</p><div class="heading-filter"> <h2>Upcoming Treks</h2><input type="text" id="reg_trekkers_dob" name="reg_trekkers_dob" placeholder="Filter by date" class="hasDatepicker custom_date_picker required date-width" style="font-size: 12px;width: 15%;margin: 15px 0;padding: 5px;border-radius: 6px;" readonly="" onchange="renderDeps(this.id)"></div><table class="table"> <thead ><tr > <th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Trek Name</th> <th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Status</th> <th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Cost In Rupees</th><th scope="col"></th> </tr></thead><tbody id="treks_data_filter"> ';
+        $content= '';
+        $content .= '<section class="table-sec" style="padding-top: 10px;"> <div class="container" > <p class="subtitle">Top Picks</p><div class="heading-filter"> <h2>Upcoming Treks</h2><input type="text" id="reg_trekkers_dob" name="reg_trekkers_dob" placeholder="Filter by date" class=" custom_date_picker required date-width" style="font-size: 12px;width: 15%;margin: 15px 0;padding: 5px;border-radius: 6px;" readonly="" onchange="renderDeps(this.id)"></div><table class="table"> <thead ><tr > <th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Trek Name</th> <th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Status</th><th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Date</th> <th scope="col" style="text-align: left;border-bottom: 1px solid #dedddd;padding-bottom: 10px;">Cost In Rupees</th><th scope="col"></th> </tr></thead><tbody id="treks_data_filter"> ';
 
         for ($i = 0; $i < $fcount; $i++) {
 
@@ -165,7 +165,7 @@ function tth_list_upcoming_treks()
             }
 
 
-                $content .= '<tr style="border-bottom: 1px solid #dedddd;"> <td scope="row" style="padding-left: 0px;">' . $upcoming_treks[$i]->trek_name . '</td>'.$trek_close_opn.'<td>' . number_format($upcoming_treks[$i]->trek_cost) . '</td><td class="border-0 td-block" style="display: flex;border-top: 4px solid #faf5f5 !important;margin-top: -3px;"><a class="button" href="'.  home_url() .'/index.php/trek-details?trek='.$upcoming_treks[$i]->trek_id.'" target="_blank" style="margin-right: 10px;"> More Info <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""> </a><a class="button" href="'.  home_url() .'/booking?trek='.$upcoming_treks[$i]->trek_id.'"> Book Now <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""> </a></td></tr>';
+                $content .= '<tr style="border-bottom: 1px solid #dedddd;"> <td scope="row" style="padding-left: 0px;">' . $upcoming_treks[$i]->trek_name . '</td>'.$trek_close_opn.'<td>' . date("d/m/Y", strtotime($upcoming_treks[$i]->trek_start_date)) . '</td><td>' . number_format($upcoming_treks[$i]->trek_cost) . '</td><td class="border-0 td-block" style="display: flex;border-top: 4px solid #faf5f5 !important;margin-top: -3px;"><a class="button" href="'.  home_url() .'/index.php/trek-details?trek='.$upcoming_treks[$i]->trek_id.'" target="_blank" style="margin-right: 10px;"> More Info <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""> </a><a class="button" href="'.  home_url() .'/booking?trek='.$upcoming_treks[$i]->trek_id.'"> Book Now <img src="' . get_template_directory_uri() . '/assets/icons/darrow.svg" alt=""> </a></td></tr>';
 
         }
         $content .= '</tbody> </table> </div></section>';
@@ -283,7 +283,7 @@ function video_review_four($atts)
     $type = $atts['type'];
     global $wpdb, $table_prefix;
     if (isset($type)) {
-        $query = "select trek_tth_name,trek_tth_title,trek_tth_year,trek_tth_video_poster,trek_tth_video_url from wp_trek_pages_tth_video_review where assigned_trek='" . $type . "'  order by trek_tth_video_priority ASC;";
+        $query = "select trek_tth_name,trek_tth_title,trek_tth_year,trek_tth_video_poster,trek_tth_video_url from wp_trek_pages_tth_video_review where find_in_set('" . $type . "',assigned_trek) order by trek_tth_video_priority ASC;";
         $result = $wpdb->get_results($query);
 
     } else {
@@ -337,8 +337,9 @@ function show_tth_news()
         while($post_query->have_posts() ) {
             $post_query->the_post();
             ?>
-            <div class="image" style="background: url('<?php $url = wp_get_attachment_url( get_post_thumbnail_id($post->ID), 'thumbnail' );echo $url; ?>') !important; cursor: auto;">
-                 <div class="boxing"> 
+            <div class="cardbox blog_story_card">
+            <img src='<?php $url = wp_get_attachment_url( get_post_thumbnail_id($post->ID), 'thumbnail' );echo $url; ?>' alt='TTH Latest Information' />    
+            <div class="boxing"> 
                  <p class="subtitle">
                  posted by 
                     <span><?php echo get_the_author_meta('display_name', $author_id) ?></span> | 
@@ -355,7 +356,7 @@ function show_tth_news()
                  <a href="<?php echo get_permalink(get_the_ID());  ?>" target ="_blank" style="color:white;"> 
                  Know More
                  </a> 
-                 <img src="<?= get_template_directory_uri() ?>/assets/icons/darrow.svg" alt=""/> 
+             
                  </div>
                 </div>
             </div>
@@ -363,8 +364,6 @@ function show_tth_news()
       }
     }
 }
-
-
 
 
 function show_tth_info_section()

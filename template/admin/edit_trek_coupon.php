@@ -2,7 +2,7 @@
 
 global $wpdb, $table_prefix;
 $user_ID = get_current_user_id();
-$data = $wpdb->get_results('SELECT id,coupon_name,coupon_code,coupon_amount,coupon_inc_trek,coupon_display_category FROM ' . $table_prefix . 'trektable_coupons_new order by id desc');
+$data = $wpdb->get_results('SELECT id,coupon_name,status,coupon_code,coupon_amount,coupon_inc_trek,coupon_display_category FROM ' . $table_prefix . 'trektable_coupons_new order by id desc');
 
 ?>
 
@@ -78,7 +78,7 @@ $data = $wpdb->get_results('SELECT id,coupon_name,coupon_code,coupon_amount,coup
 </div>
 <div class="container">
     <div class="row header" style="text-align:center;color:green">
-        <h3>Edit Coupons</h3>
+        <h3>Edit Couponsss</h3>
     </div>
     <div style="width: auto;margin-top: 50px;">
         <div class="table-responsive">
@@ -113,16 +113,26 @@ $data = $wpdb->get_results('SELECT id,coupon_name,coupon_code,coupon_amount,coup
 
                         <td class="text-center"><?php echo $data[$i]->coupon_display_category; ?></td>
 
-                        <td class="text-center"><a class="btn btn-info"
-                                                   href="admin.php?page=manage_coupon&num=<?php echo                                                                                                       $data[$i]->id; ?>"
-                                                   id="<?php echo $data[$i]->id; ?>-alledit"
-                                                   data-toggle="modal"
-                                                   data-target="#exampleModal"
-                                                   onclick='editCoupon(this.id)'
-                                                   role="button">Edit</a>&nbsp;&nbsp;<a class="btn btn-danger"
-                                                               id="<?php echo $data[$i]->id; ?>-Coupondelete"
-                                                               onclick='deleteCoupon(this.id)'
-                                                               role="button">Delete</a> &nbsp;
+                        <td class="text-center">
+                            <a class="btn btn-info <?= ($data[$i]->status)? "active-coupon":null ; ?>"
+                                id="<?php echo $data[$i]->id; ?>-activate"
+                                data-toggle="modal"
+                                data-target="#exampleModal"
+                                data-id="<?php echo $data[$i]->id; ?>"
+                                data-currently="<?php echo $data[$i]->status; ?>"
+                                onclick='showPasswordDialog(event)'
+                                role="button"><?= ($data[$i]->status)? "Active":"Activate" ; ?></a>&nbsp;&nbsp;
+                            <a class="btn btn-info"
+                                href="admin.php?page=manage_coupon&num=<?php echo $data[$i]->id; ?>"
+                                id="<?php echo $data[$i]->id; ?>-alledit"
+                                data-toggle="modal"
+                                data-target="#exampleModal"
+                                onclick='editCoupon(this.id)'
+                                role="button">Edit</a>&nbsp;&nbsp;
+                            <a class="btn btn-danger"
+                                id="<?php echo $data[$i]->id; ?>-Coupondelete"
+                                onclick='deleteCoupon(this.id)'
+                                role="button">Delete</a> &nbsp;
                         </td>
                     </tr>
 
@@ -136,10 +146,96 @@ $data = $wpdb->get_results('SELECT id,coupon_name,coupon_code,coupon_amount,coup
         </div>
     </div>
 </div>
-
+<div id="password-confirm">
+<form onsubmit="activateCoupon(event)">
+    <h4>Activate coupon</h4>
+    <input type="hidden" name="coupon-id">
+    <input type="hidden" name="currently">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="text" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <button onclick="event.preventDefault();document.querySelector('#password-confirm').style.display='none';" class="btn btn-outline-primary">Cancel</button>
+</form>
+</div>
 </body>
+<style>
+    div#password-confirm {
+    position: fixed;
+    /* height: 100px; */
+    /* width: 100px; */
+    z-index: 100;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 105vh;
+    width: 100vw;
+    background: #00000026;
+}
 
+div#password-confirm form {
+    /* height: 160px; */
+    width: 320px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 13px 0 #00000038;
+}
+.active-coupon {
+    background: var(--green);
+}
+</style>
 <script>
+    function activateCoupon(e) {
+        e.preventDefault();
+        console.log(e);
+        data = new FormData(document.querySelector('#password-confirm form'));
+        console.log(data);
+        console.log(...data);
+        data.append("action", 'activateCoupon');
+        jQuery.ajax({
+            type: "post",
+            cache: false,
+            contentType: false,
+            processData: false,
+            url: my_obj.ajax_url,
+            data: data,
+            success: function (msg) {
+                json = JSON.parse(msg);
+                if(json.message == 'success'){
+                    swal(
+                        'Coupon status changed',
+                        '',
+                        'success'
+                    ).then(()=>{
+                        document.querySelector('#password-confirm').style.display='none';
+                        location.reload();
+                    })
+                }else{
+                    swal(
+                        'Incorrect credentials',
+                        '',
+                        'error'
+                    ).then(()=>{
+                        document.querySelector('#password-confirm').style.display='none';
+                    })
+                }
+            }
+        });
+    }
+    function showPasswordDialog(e){
+        console.log(e.currentTarget.dataset.id);
+        document.querySelector('#password-confirm [name="coupon-id"]').value = e.currentTarget.dataset.id;
+        document.querySelector('#password-confirm [name="currently"]').value = e.currentTarget.dataset.currently;
+        document.querySelector('#password-confirm').style.display='flex';
+    }
     $(document).ready(function () {
         $('#myTable').dataTable();
     });

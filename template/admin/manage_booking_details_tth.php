@@ -35,6 +35,56 @@ $m2 = $results12[0]->trek_section;
 if (empty($results12)) {
     die("No trek Exists!");
 }
+$trek_id = $ppc;
+/**
+ * wp_trektable_trekkers_list.trek_trekker_status
+ * 
+ * 0 pending
+ * 1 completed
+ * 2 cancelled
+ * 3 transfer
+ * 4 incomplete
+ */
+$query = "SELECT
+    wp_trektable_trek_departure.*,
+    wp_trektable_trekkers_list.trek_trekker_status,
+    trek_trekker_status,
+    (
+        select count(wp_trektable_trekkers_list.id)  
+        from wp_trektable_trekkers_list 
+        where wp_trektable_trekkers_list.trek_trekker_status=0
+        and wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date 
+    ) as pending,
+    (
+        select count(wp_trektable_trekkers_list.id)  
+        from wp_trektable_trekkers_list 
+        where wp_trektable_trekkers_list.trek_trekker_status=1 
+        and wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date 
+    ) as completed,
+    (
+        select count(wp_trektable_trekkers_list.id)  
+        from wp_trektable_trekkers_list 
+        where wp_trektable_trekkers_list.trek_trekker_status=2 
+        and wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date 
+    ) as cancelled,
+    (
+        select count(wp_trektable_trekkers_list.id)  
+        from wp_trektable_trekkers_list 
+        where wp_trektable_trekkers_list.trek_trekker_status=3 
+        and wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date 
+    ) as transferred,
+    (
+        select count(wp_trektable_trekkers_list.id)  
+        from wp_trektable_trekkers_list 
+        where wp_trektable_trekkers_list.trek_trekker_status=4 
+        and wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date 
+    ) as incomplete
+    FROM wp_trektable_trek_departure
+    LEFT JOIN wp_trektable_trekkers_list ON wp_trektable_trek_departure.id = wp_trektable_trekkers_list.trek_selected_date
+    WHERE wp_trektable_trek_departure.trek_selected_trek = '62' 
+    GROUP BY wp_trektable_trek_departure.id,wp_trektable_trek_departure.trek_selected_trek 
+    ORDER BY wp_trektable_trek_departure.trek_start_date ASC";
+$result = $wpdb->get_results($query);
 
 // $query1 = "SELECT tb.fname as trek_user_first_name,tb.lname as trek_user_last_name,tb.trek_booking_owner_id as trek_user_id,tb.email as trek_user_email,tb.trek_booking_id, COUNT(tl.id) AS Total, tb.trek_booking_status, tb.trek_booking_id, tb.book_activity_status FROM 
 // wp_trektable_bookings tb 
@@ -108,8 +158,25 @@ function setBoolean($val){
 
 $count = count($result3);
 $target3 = '';
-
+$rentals = [];
 for ($k = 0; $k < $count; $k++) {
+    $args = array(
+        'numberposts' => -1,
+         'meta_key' => '_customer_user',
+         'meta_value' => $result3[$k]->trek_user_id,
+         'post_type' => wc_get_order_types('view-orders'),
+         'post_status' => array_keys( wc_get_is_paid_statuses() ),
+     );
+    $customer_orders = get_posts( $args);
+    foreach ( $customer_orders as $customer_order ) {
+        $order = wc_get_order( $customer_order->ID );
+        if($order->get_status() == 'completed'){
+            $items = $order->get_items();
+            foreach ( $items as $item ) {
+                $rentals[] = '<a href="'.get_site_url().'/wp-admin/post.php?post='.$customer_order->ID.'&action=edit">'.wc_get_product($item->get_product_id())->get_title().'</a>';
+            }
+        }
+    }
     $target3 .= '<tr><td class="text-center">';
     $target3 .= $k + 1;
     $target3 .= '</td>';
@@ -141,7 +208,7 @@ for ($k = 0; $k < $count; $k++) {
     $target3 .= '<a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-trkerid="'.$result3[$k]->trekker_token.'" class="ancRemarks btn btn-warning" data-target="#Modal_remarks">Add</a>';
     }
     $target3 .= '</td>';
-	$target3 .= '<td class="renting"></td>';
+	$target3 .= '<td class="renting">'.implode(',', $rentals).'</td>';
 	$target3 .= '<td class="phone-no">'.$result3[$k]->trek_tcontact_number.'</td>';
 	$target3 .= '<td class="weight">'.$result3[$k]->trek_tweight.'</td>';
 	$target3 .= '<td class="height">'.$result3[$k]->trek_theight.'</td>';
@@ -345,9 +412,8 @@ $AllTreks = $wpdb->get_results('SELECT id,trek_name FROM ' . $table_prefix . 'tr
 		
 		<!-- Grid -->
  <div class="col-md-12">
-
             <div >           
-            <?php if (!empty($result3)) {  ?>
+            <?php if (!empty($result3) && strtotime($results12[0]->trek_start_date) > strtotime(Date("Y-m-d"))) {  ?>
                 <div class="row">
                 <div class="col-md-6">
                 <label for="trek_leader">Choose a cook </label>
